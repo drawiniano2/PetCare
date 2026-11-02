@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% block section_title %}Horarios{% endblock %}
+
+{% block content %}
+
+<style>
+.horarios-v18 {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 12px;
+}
+
+.horarios-v18 .horarios-titulo {
+    display: table;
+    width: max-content;
+    max-width: 100%;
+    color: #17365D;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 12px;
+}
+
+.horarios-v18 .horarios-titulo::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 3px;
+    margin-top: 9px;
+    background: #C94B3F;
+    border-radius: 3px;
+}
+
+.horarios-v18 .horarios-subtitulo {
+    color: #526174;
+    margin-bottom: 25px;
+}
+
+.horarios-v18 .horarios-tarjeta {
+    background: #FFFFFF;
+    border: 1px solid #E6E2DB;
+    border-top: 5px solid #C94B3F;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 18px rgba(23, 54, 93, .07);
+}
+
+.horarios-v18 .horarios-buscador {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.horarios-v18 .horarios-buscador input {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 15px;
+    border: 1px solid #CCD5DE;
+    border-radius: 9px;
+    font: inherit;
+}
+
+.horarios-v18 .horarios-boton {
+    display: inline-block;
+    background: #17365D;
+    color: #FFFFFF;
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.horarios-v18 .horarios-tabla-contenedor {
+    overflow-x: auto;
+}
+
+.horarios-v18 .horarios-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.horarios-v18 .horarios-tabla th {
+    background: #F4F0E8;
+    color: #17365D;
+    padding: 15px;
+    border-bottom: 2px solid #C94B3F;
+}
+
+.horarios-v18 .horarios-tabla td {
+    padding: 15px;
+    border-bottom: 1px solid #E8E5DF;
+    color: #34445A;
+}
+
+.horarios-v18 .horarios-tabla tbody tr:hover {
+    background: #FFFCF6;
+}
+
+.horarios-v18 .horarios-estado {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.horarios-v18 .horarios-activo {
+    background: #E2F3EB;
+    color: #176747;
+}
+
+.horarios-v18 .horarios-inactivo {
+    background: #FCE8E5;
+    color: #A23930;
+}
+
+.horarios-v18 .horarios-vacio {
+    text-align: center;
+    padding: 32px 15px;
+    color: #687687;
+}
+
+@media (max-width: 600px) {
+    .horarios-v18 .horarios-tarjeta {
+        padding: 15px;
+    }
+    .horarios-v18 .horarios-titulo {
+        font-size: 26px;
+    }
+}
+
+/* PETCARE ACCIONES HORARIOS V19 */
+.horarios-v18 .horarios-tabla td:last-child {
+    white-space: nowrap;
+}
+
+.horarios-v18 .horarios-accion-editar,
+.horarios-v18 .horarios-accion-estado {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    box-sizing: border-box;
+    padding: 9px 14px !important;
+    font-size: 13px !important;
+    font-weight: 600;
+    border-radius: 8px !important;
+    vertical-align: middle;
+}
+
+.horarios-v18 .horarios-accion-editar {
+    margin-right: 12px;
+}
+
+.horarios-v18 .horarios-tabla td:last-child form {
+    margin: 0 !important;
+    vertical-align: middle;
+}
+
+</style>
+
+<section class="horarios-v18">
+
+    <h2 class="horarios-titulo">
+        Horarios de atención
+    </h2>
+
+    <p class="horarios-subtitulo">
+        Organización semanal del equipo veterinario.
+    </p>
+
+    <div class="horarios-tarjeta">
+
+        {% if perms.horarios.add_horario %}
+        <div style="display:flex;justify-content:flex-end;margin-bottom:18px;">
+            <a href="{% url 'horarios:nuevo' %}"
+               class="horarios-boton"
+               style="background:#DCAE50;color:#17365D;">
+                + Nuevo horario
+            </a>
+        </div>
+        {% endif %}
+
+        <form method="get" class="horarios-buscador">
+            <input
+                type="search"
+                name="q"
+                value="{{ busqueda }}"
+                placeholder="Buscar veterinario, RUT o especialidad"
+                aria-label="Buscar horarios"
+            >
+            <button type="submit" class="horarios-boton">
+                Buscar
+            </button>
+        </form>
+
+        <div class="horarios-tabla-contenedor">
+            <table class="horarios-tabla">
+                <thead>
+                    <tr>
+                        <th>Veterinario</th>
+                        <th>Día</th>
+                        <th>Inicio</th>
+                        <th>Término</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for horario in horarios %}
+                    <tr>
+                        <td>
+                            {{ horario.veterinario.nombre }}
+                            {{ horario.veterinario.apellido }}
+                        </td>
+                        <td>{{ horario.get_dia_semana_display }}</td>
+                        <td>{{ horario.hora_inicio|time:"H:i" }}</td>
+                        <td>{{ horario.hora_fin|time:"H:i" }}</td>
+                        <td>
+                            {% if horario.activo %}
+                            <span class="horarios-estado horarios-activo">
+                                Activo
+                            </span>
+                            {% else %}
+                            <span class="horarios-estado horarios-inactivo">
+                                Inactivo
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if perms.horarios.change_horario %}
+                            <a href="{% url 'horarios:editar' horario.pk %}"
+                               class="horarios-accion-editar"
+                               style="display:inline-block;padding:8px 13px;background:#17365D;color:white;border-radius:7px;text-decoration:none;font-size:13px;">
+                                Editar
+                            </a>
+
+                            <form method="post"
+                                  action="{% url 'horarios:cambiar_estado' horario.pk %}"
+                                  style="display:inline-block;margin:4px 0;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="horarios-accion-estado"
+                                        style="padding:8px 11px;border:0;border-radius:7px;cursor:pointer;background:{% if horario.activo %}#FCE8E5{% else %}#E2F3EB{% endif %};color:{% if horario.activo %}#A23930{% else %}#176747{% endif %};font-weight:600;font-size:12px;">
+                                    {% if horario.activo %}
+                                        Desactivar
+                                    {% else %}
+                                        Activar
+                                    {% endif %}
+                                </button>
+                            </form>
+                            {% else %}
+                            ?
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="horarios-vacio">
+                            No hay horarios registrados
+                            para esta búsqueda.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <p class="horarios-subtitulo" style="margin-top: 20px; margin-bottom: 0;">
+            Total de horarios: {{ total_horarios }}
+        </p>
+
+    </div>
+</section>
+
+{% endblock %}

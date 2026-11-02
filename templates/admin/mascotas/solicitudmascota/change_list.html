@@ -1,0 +1,148 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style id="PETCARE_ADMIN_SOLICITUDES_134B">
+
+:root {
+    --pc-azul: #17354d;
+    --pc-azul-claro: #f2f7fc;
+    --pc-borde: #cbdced;
+    --pc-texto: #526779;
+}
+
+#content {
+    background: #f7f6f2;
+}
+
+#content h1 {
+    color: var(--pc-azul);
+    font-weight: 800;
+    letter-spacing: -.4px;
+}
+
+.pc-solicitudes-cabecera {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 22px 26px;
+    margin-bottom: 22px;
+    background: var(--pc-azul-claro);
+    border: 1px solid var(--pc-borde);
+    border-radius: 10px;
+}
+
+.pc-solicitudes-cabecera img {
+    width: 115px;
+    max-height: 95px;
+    object-fit: contain;
+}
+
+.pc-solicitudes-cabecera h2 {
+    margin: 0 0 8px;
+    color: var(--pc-azul);
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.pc-solicitudes-cabecera p {
+    margin: 0;
+    color: var(--pc-texto);
+    line-height: 1.6;
+}
+
+#changelist {
+    background: #fff;
+    border: 1px solid var(--pc-borde);
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(23,53,77,.05);
+}
+
+#changelist table thead th {
+    background: var(--pc-azul);
+    color: #fff;
+    padding: 12px;
+}
+
+#changelist table thead th a,
+#changelist table thead th .text a {
+    color: #fff;
+}
+
+#changelist table tbody td,
+#changelist table tbody th {
+    padding: 12px;
+    vertical-align: middle;
+}
+
+#changelist table tbody tr:hover {
+    background: #f2f7fc;
+}
+
+#changelist-filter {
+    border: 1px solid var(--pc-borde);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#changelist-filter h2 {
+    background: var(--pc-azul);
+    color: #fff;
+}
+
+#changelist-search input[type="submit"] {
+    background: var(--pc-azul);
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: none;
+}
+
+.pc-solicitudes-aviso {
+    margin-bottom: 18px;
+    padding: 12px 16px;
+    border-left: 4px solid #e5aa20;
+    border-radius: 5px;
+    background: #fff8e6;
+    color: #594716;
+    line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+    .pc-solicitudes-cabecera {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 16px;
+    }
+
+    #changelist {
+        padding: 10px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pc-solicitudes-cabecera">
+    <img
+        src="{% static 'img/petcare_logo_bauhaus.png' %}"
+        alt="PetCare"
+    >
+    <div>
+        <h2>Solicitudes de mascotas</h2>
+        <p>
+            Panel administrativo de consulta y seguimiento
+            de solicitudes realizadas por los tutores.
+        </p>
+    </div>
+</div>
+
+<div class="pc-solicitudes-aviso">
+    Las solicitudes se encuentran en modo de consulta.
+    Su aprobacion o rechazo requiere una revision
+    administrativa segura.
+</div>
+
+{{ block.super }}
+{% endblock %}

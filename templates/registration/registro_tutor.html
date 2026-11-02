@@ -1,0 +1,546 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registro de tutores | PetCare</title>
+    <link rel="stylesheet" href="{% static 'css/petcare.css' %}">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: #f3f6fb;
+            color: #142d4e;
+            font-family: Arial, sans-serif;
+        }
+        .registro-pagina {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 28px 18px;
+        }
+        .registro-tarjeta {
+            display: grid;
+            grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.5fr);
+            width: min(1080px, 100%);
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 18px 55px rgba(20,45,78,.13);
+        }
+        .registro-marca {
+            background: #142d4e;
+            color: #fff;
+            padding: 44px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            gap: 20px;
+        }
+        .registro-marca img {
+            width: min(100%, 260px);
+            height: auto;
+            object-fit: contain;
+        }
+        .registro-marca h2 {
+            margin: 0;
+            font-size: 25px;
+        }
+        .registro-marca p {
+            margin: 0;
+            color: #d4e6ec;
+            line-height: 1.7;
+        }
+        .registro-contenido {
+            padding: 38px 42px;
+        }
+        .registro-contenido h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+        .registro-subtitulo {
+            color: #60748b;
+            margin: 0 0 28px;
+            line-height: 1.6;
+        }
+        .registro-campos {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+        .registro-campo {
+            min-width: 0;
+        }
+        .registro-campo.ancho {
+            grid-column: 1 / -1;
+        }
+        .registro-campo label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .registro-campo input {
+            display: block;
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            background: #fff;
+            color: #142d4e;
+            font: inherit;
+            font-size: 15px;
+        }
+        .registro-campo input:focus {
+            outline: 2px solid #2563a6;
+            outline-offset: 1px;
+        }
+        .registro-campo input[aria-invalid="true"] {
+            border-color: #bd4736;
+        }
+        .registro-ayuda {
+            font-size: 11px;
+            line-height: 1.4;
+            color: #60748b;
+            margin-top: 5px;
+        }
+        .registro-errores {
+            color: #a83225;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 7px 0 0;
+            padding-left: 18px;
+        }
+        .registro-alerta {
+            background: #fff1ee;
+            border-left: 5px solid #d15a3c;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+        }
+        .registro-boton {
+            width: 100%;
+            border: 0;
+            border-radius: 9px;
+            background: #e4b343;
+            color: #142d4e;
+            padding: 15px 20px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 24px;
+        }
+        .registro-boton:hover {
+            background: #f0c45c;
+        }
+        .registro-acceso {
+            text-align: center;
+            margin: 22px 0 0;
+            font-size: 14px;
+            color: #60748b;
+        }
+        .registro-acceso a {
+            color: #2563a6;
+            font-weight: 700;
+        }
+        .registro-pie {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 12px;
+            color: #60748b;
+        }
+        @media (max-width: 800px) {
+            .registro-tarjeta {
+                grid-template-columns: 1fr;
+            }
+            .registro-marca {
+                padding: 25px;
+            }
+            .registro-marca img {
+                width: 150px;
+            }
+            .registro-contenido {
+                padding: 28px 24px;
+            }
+        }
+        @media (max-width: 520px) {
+            .registro-campos {
+                grid-template-columns: 1fr;
+            }
+            .registro-contenido {
+                padding: 24px 18px;
+            }
+        }
+
+        .registro-ayuda-desplegable {
+            margin-top: 7px;
+            color: #60748b;
+            font-size: 12px;
+        }
+        .registro-ayuda-desplegable summary {
+            cursor: pointer;
+            color: #2563a6;
+            font-weight: 600;
+        }
+        .registro-ayuda-desplegable .registro-ayuda {
+            margin-top: 9px;
+            padding: 10px 12px;
+            background: #f3f6fb;
+            border-radius: 8px;
+        }
+    
+/* PETCARE_PASO_99_PASSWORD_TOGGLE */
+.pc-registro-password {
+    position: relative;
+    width: 100%;
+}
+.pc-registro-password input {
+    padding-right: 55px;
+}
+.pc-registro-toggle {
+    position: absolute;
+    top: 50%;
+    right: 9px;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #142d4e;
+    cursor: pointer;
+    font-size: 20px;
+}
+.pc-registro-toggle:hover {
+    background: #eaf0f7;
+}
+.pc-registro-toggle:focus-visible {
+    outline: 2px solid #2563a6;
+}
+
+</style>
+
+<style id="PETCARE_REGISTRO_DISENO_133B">
+
+html,
+body {
+    background: #f7f6f2 !important;
+    background-image: none !important;
+}
+
+body::before,
+body::after {
+    display: none !important;
+    content: none !important;
+}
+
+.registro-pagina {
+    width: min(100%, 1050px) !important;
+    margin: 35px auto !important;
+    padding: 0 18px !important;
+    box-sizing: border-box !important;
+}
+
+.registro-tarjeta {
+    border: 1px solid #cbdced !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+    box-shadow: 0 8px 22px rgba(23,53,77,.07) !important;
+    overflow: hidden !important;
+}
+
+.registro-tarjeta::before,
+.registro-tarjeta::after {
+    display: none !important;
+    content: none !important;
+}
+
+.registro-marca {
+    background: #f2f7fc !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: #17354d !important;
+    text-align: center !important;
+    padding: 32px 26px !important;
+}
+
+.registro-marca img {
+    display: block !important;
+    width: min(100%, 250px) !important;
+    max-width: 250px !important;
+    height: auto !important;
+    object-fit: contain !important;
+    margin: 0 auto 15px !important;
+}
+
+.registro-marca h2 {
+    color: #17354d !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+}
+
+.registro-marca p {
+    color: #526779 !important;
+    line-height: 1.55 !important;
+}
+
+.registro-contenido {
+    background: #ffffff !important;
+    box-shadow: none !important;
+}
+
+.registro-contenido h1 {
+    color: #17354d !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: 800 !important;
+    letter-spacing: -.4px !important;
+    line-height: 1.2 !important;
+}
+
+.registro-subtitulo {
+    color: #526779 !important;
+    line-height: 1.55 !important;
+}
+
+.registro-campo label {
+    color: #17354d !important;
+    font-weight: 700 !important;
+}
+
+.registro-campo input,
+.registro-campo select,
+.registro-campo textarea {
+    background: #ffffff !important;
+    border: 1px solid #bdcad5 !important;
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+}
+
+.registro-campo input:focus,
+.registro-campo select:focus,
+.registro-campo textarea:focus {
+    border-color: #2866a5 !important;
+    outline: 2px solid rgba(40,102,165,.14) !important;
+    outline-offset: 1px !important;
+}
+
+.pc-registro-toggle {
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+.registro-boton {
+    background: #17354d !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transform: none !important;
+}
+
+.registro-boton:hover {
+    background: #244d6d !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.registro-boton:focus-visible {
+    outline: 3px solid #e5aa20 !important;
+    outline-offset: 3px !important;
+}
+
+.registro-alerta,
+.registro-errores {
+    border-radius: 5px !important;
+    box-shadow: none !important;
+}
+
+.registro-acceso a {
+    color: #2866a5 !important;
+}
+
+.registro-pie {
+    color: #526779 !important;
+    text-align: center !important;
+}
+
+@media (max-width: 700px) {
+    .registro-pagina {
+        margin: 18px auto !important;
+        padding: 0 10px !important;
+    }
+
+    .registro-marca {
+        padding: 24px 18px !important;
+    }
+
+    .registro-marca img {
+        max-width: 205px !important;
+    }
+
+    .registro-contenido {
+        padding: 24px 18px !important;
+    }
+}
+
+</style>
+
+</head>
+<body>
+<main class="registro-pagina">
+    <div class="registro-tarjeta">
+        <aside class="registro-marca">
+            <img
+                src="{% static 'img/petcare_logo_bauhaus.png' %}"
+                alt="PetCare Clínica Veterinaria"
+            >
+            <h2>Bienvenido a PetCare</h2>
+            <p>
+                Crea tu cuenta de tutor para consultar
+                tus datos y las mascotas vinculadas
+                a tu perfil.
+            </p>
+        </aside>
+
+        <section class="registro-contenido">
+            <h1>Registro de tutores</h1>
+            <p class="registro-subtitulo">
+                Completa tus datos para crear una cuenta personal.
+            </p>
+
+            {% if form.non_field_errors %}
+                <div class="registro-alerta" role="alert">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="registro-campos">
+                    {% for campo in form %}
+                        <div class="registro-campo{% if campo.name == 'direccion' %} ancho{% endif %}">
+                            <label for="{{ campo.id_for_label }}">
+                                {{ campo.label }}
+                                {% if campo.field.required %}*{% endif %}
+                            </label>
+
+                            {% if campo.name == 'password1' or campo.name == 'password2' %}
+                                <div class="pc-registro-password">
+                                    {{ campo }}
+                                    <button
+                                        type="button"
+                                        class="pc-registro-toggle"
+                                        aria-label="Mostrar contrase&#241;a"
+                                        aria-pressed="false"
+                                        title="Mostrar contrase&#241;a"
+                                    >
+<!-- PETCARE_REGISTRO_OJO_136B -->
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    focusable="false"
+>
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+    <circle cx="12" cy="12" r="3"/>
+</svg>
+</button>
+                                </div>
+                            {% else %}
+                                {{ campo }}
+                            {% endif %}
+
+                            {% if campo.help_text %}
+                                {% if campo.name == 'password1' %}
+                                    <details class="registro-ayuda-desplegable">
+                                        <summary>Requisitos de contraseña</summary>
+                                        <div class="registro-ayuda">
+                                            {{ campo.help_text }}
+                                        </div>
+                                    </details>
+                                {% else %}
+                                    <div class="registro-ayuda">
+                                        {{ campo.help_text }}
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+
+                            {% if campo.errors %}
+                                <div class="registro-errores" role="alert">
+                                    {{ campo.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="registro-boton">
+                    CREAR CUENTA DE TUTOR
+                </button>
+            </form>
+
+            <p class="registro-acceso">
+                ¿Ya tienes una cuenta?
+                <a href="{% url 'petcare_login' %}">
+                    Iniciar sesión
+                </a>
+            </p>
+
+            <div class="registro-pie">
+                PetCare | Gestión veterinaria
+            </div>
+        </section>
+    </div>
+</main>
+
+<script>
+(function () {
+    "use strict";
+
+    document.querySelectorAll(".pc-registro-password").forEach(function (grupo) {
+        const campo = grupo.querySelector("input");
+        const boton = grupo.querySelector(".pc-registro-toggle");
+
+        if (!campo || !boton) return;
+
+        boton.addEventListener("click", function () {
+            const mostrar = campo.type === "password";
+            campo.type = mostrar ? "text" : "password";
+
+            boton.setAttribute("aria-pressed", String(mostrar));
+            boton.setAttribute(
+                "aria-label",
+                mostrar ? "Ocultar contrase\u00f1a" : "Mostrar contrase\u00f1a"
+            );
+            boton.title = mostrar
+                ? "Ocultar contrase\u00f1a"
+                : "Mostrar contrase\u00f1a";
+        });
+    });
+})();
+</script>
+
+<!-- PETCARE_TEXTO_PASSWORD_137 -->
+<!-- PETCARE_PASSWORD_TEXTO_138 -->
+</body>
+</html>

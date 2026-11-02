@@ -1,0 +1,101 @@
+# Variables privadas
+.env
+.env.*
+
+# Entorno virtual
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Archivos locales
+*.log
+.DS_Store
+.vscode/
+
+# Bases de datos locales
+db.sqlite3
+
+# Archivos generados
+media/
+staticfiles/
+
+
+# PETCARE - Archivos excluidos de GitHub
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Variables privadas y credenciales
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.json
+credentials.json
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-*
+media/
+staticfiles/
+
+# Respaldos locales
+respaldos/
+backups/
+*.bak
+*.backup
+
+# Bases de datos y exportaciones
+*.sql
+*.dump
+*.sqlite3
+
+# IDE y sistema operativo
+.vscode/
+.idea/
+.vs/
+.DS_Store
+Thumbs.db
+
+# Archivos temporales
+*.tmp
+*.temp
+~$*
+
+
+# Configuraciones de respaldo
+**/settings_respaldo*.py
+**/settings_backup*.py
+**/settings_old*.py
+**/*_respaldo_*.py
+
+# Archivos auxiliares locales
+recortar_tutor_v12.py
+
+
+# Respaldos historicos de interfaz
+**/*respaldo*.css
+**/*respaldo*.html
+**/*backup*.css
+**/*backup*.html
+
+
+# Pruebas auxiliares pendientes de revision
+/accounts/test_solicitudes_165r32.py
+/citas/test_concurrencia.py

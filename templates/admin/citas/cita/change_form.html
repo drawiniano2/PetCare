@@ -1,0 +1,379 @@
+{% extends "admin/change_form.html" %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+/* petcare_cita_165r72 */
+
+#content > h1 {
+    display: none !important;
+}
+
+.pc-cita-cabecera {
+    background: #17354d;
+    color: #ffffff;
+    border-left: 5px solid #d99c1d;
+    border-radius: 11px;
+    padding: 22px 25px;
+    margin-bottom: 20px;
+}
+
+.pc-cita-marca {
+    color: #e8b64f;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .4px;
+}
+
+.pc-cita-fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 9px 0;
+}
+
+.pc-cita-titulo {
+    font-size: 23px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.pc-cita-subtitulo {
+    font-size: 12px;
+    color: #e0eaf1;
+}
+
+.pc-cita-estado {
+    display: inline-block;
+    border-radius: 25px;
+    padding: 7px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #fff0bf;
+    color: #805900;
+}
+
+.pc-cita-estado.confirmada {
+    background: #dcecff;
+    color: #15538a;
+}
+
+.pc-cita-estado.completada {
+    background: #d9f4e5;
+    color: #12623e;
+}
+
+.pc-cita-estado.cancelada {
+    background: #fce1e1;
+    color: #972d2d;
+}
+
+/* Secciones del formulario */
+
+#content .module.aligned {
+    border: 1px solid #d7e2eb;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background: #ffffff;
+}
+
+#content .module.aligned h2 {
+    background: #417b99;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 12px 15px;
+}
+
+#content .module.aligned .form-row {
+    padding: 13px 16px;
+}
+
+/* Campos editables */
+
+#content .aligned input[type="text"],
+#content .aligned input[type="number"],
+#content .aligned select,
+#content .aligned textarea {
+    border: 1px solid #b9cad8;
+    border-radius: 6px;
+    padding: 9px;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+#content .aligned select {
+    min-height: 38px;
+}
+
+/* Reducir altura de motivo y observaciones */
+
+#content .field-motivo textarea,
+#content .field-observaciones textarea {
+    height: 105px !important;
+    min-height: 90px;
+    width: min(100%, 700px);
+    resize: vertical;
+}
+
+/* Botones de guardado */
+
+#content .submit-row {
+    background: #f5f8fa;
+    border: 1px solid #d7e2eb;
+    border-radius: 9px;
+    padding: 15px;
+}
+
+#content .submit-row input[type="submit"] {
+    border-radius: 6px;
+    padding: 11px 16px;
+    font-weight: 700;
+}
+
+#content .submit-row input.default {
+    background: #104766 !important;
+    color: #ffffff !important;
+    border: 1px solid #d99c1d !important;
+}
+
+.pc-cita-volver {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 11px 17px;
+    background: #104766;
+    color: #ffffff !important;
+    border: 1px solid #d99c1d;
+    border-radius: 7px;
+    font-weight: 700;
+    text-decoration: none !important;
+}
+
+.pc-cita-volver:hover {
+    background: #17354d;
+}
+
+@media (max-width: 760px) {
+    .pc-cita-cabecera {
+        padding: 17px;
+    }
+
+    .pc-cita-titulo {
+        font-size: 19px;
+    }
+}
+
+/* petcare_ficha_165r73 */
+
+/* Ocultar el titulo secundario original de Django. */
+#content > h1 {
+    display: none !important;
+}
+
+/* Mantener visible el encabezado PetCare. */
+#content .pc-detalle-cabecera,
+#content .pc-cita-cabecera,
+#content .pc-ficha-cabecera {
+    display: block !important;
+}
+
+/* Espaciado uniforme de secciones. */
+#content .module.aligned {
+    margin-bottom: 16px;
+}
+
+#content .module.aligned .form-row {
+    padding-top: 11px;
+    padding-bottom: 11px;
+}
+
+/* Campos editables compactos. */
+#content .field-fecha,
+#content .field-hora_inicio,
+#content .field-duracion_minutos {
+    box-sizing: border-box;
+}
+
+#content .field-motivo textarea,
+#content .field-observaciones textarea {
+    width: 100%;
+    max-width: 630px;
+    min-height: 92px;
+    height: 96px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+/* Barra de acciones. */
+#content .submit-row {
+    padding: 14px;
+    border: 1px solid #d5e1eb;
+    border-radius: 9px;
+    background: #f5f8fa;
+}
+
+#content .submit-row input {
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+/* Enlaces de regreso. */
+#content a[href$="/admin/citas/cita/"],
+#content a[href="/admin/citas/cita/"] {
+    text-decoration: none;
+}
+
+@media (max-width: 700px) {
+    #content .field-motivo textarea,
+    #content .field-observaciones textarea {
+        max-width: 100%;
+    }
+}
+
+
+/* petcare_bauhaus_165r74 */
+
+#content .submit-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+#content .pc-volver-bauhaus {
+    margin-left: auto !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px !important;
+    background: #be342b !important;
+    color: #ffffff !important;
+    border: 1px solid #9e241d !important;
+    border-radius: 6px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+#content .pc-volver-bauhaus:hover {
+    background: #9e241d !important;
+    color: #ffffff !important;
+}
+
+#content .pc-volver-bauhaus:focus-visible {
+    outline: 3px solid #d99c1d;
+    outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+    #content .pc-volver-bauhaus {
+        margin-left: 0 !important;
+    }
+}
+
+</style>
+{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block content %}
+
+<script>
+/* petcare_bauhaus_165r74 */
+(function () {
+    function colocarBoton() {
+        const barra = document.querySelector(
+            "#content .submit-row"
+        );
+
+        if (!barra) return;
+
+        const enlaces = Array.from(
+            document.querySelectorAll(
+                '#content a[href]'
+            )
+        );
+
+        const volver = enlaces.find(function (enlace) {
+            const texto = enlace.textContent
+                .trim()
+                .toLowerCase();
+
+            const url = new URL(
+                enlace.href,
+                window.location.href
+            );
+
+            return (
+                texto.includes("volver a citas") &&
+                url.pathname === "/admin/citas/cita/"
+            );
+        });
+
+        if (!volver) return;
+
+        volver.classList.add("pc-volver-bauhaus");
+        volver.textContent = "\u2190 Volver a citas";
+
+        barra.appendChild(volver);
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            colocarBoton
+        );
+    } else {
+        colocarBoton();
+    }
+})();
+</script>
+
+
+{% if original %}
+<div class="pc-cita-cabecera">
+    <div class="pc-cita-marca">
+        PETCARE | ADMINISTRACI&Oacute;N VETERINARIA
+    </div>
+
+    <div class="pc-cita-fila">
+        <div class="pc-cita-titulo">
+            Ficha de cita N.&ordm; {{ original.pk }}
+        </div>
+
+        <span class="pc-cita-estado {{ original.estado|lower }}">
+            {{ original.get_estado_display|upper }}
+        </span>
+    </div>
+
+    <div class="pc-cita-subtitulo">
+        {{ original.mascota }} |
+        {{ original.veterinario }} |
+        {{ original.fecha|date:"d/m/Y" }} |
+        {{ original.hora_inicio|time:"H:i" }}
+    </div>
+</div>
+{% else %}
+<div class="pc-cita-cabecera">
+    <div class="pc-cita-marca">
+        PETCARE | ADMINISTRACI&Oacute;N VETERINARIA
+    </div>
+    <div class="pc-cita-fila">
+        <div class="pc-cita-titulo">
+            Nueva cita veterinaria
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{{ block.super }}
+
+<a class="pc-cita-volver"
+   href="{% url 'admin:citas_cita_changelist' %}">
+    &larr; Volver a citas
+</a>
+
+{% endblock %}

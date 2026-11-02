@@ -1,0 +1,110 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Gestión de Mascotas | PetCare{% endblock %}
+{% block section_title %}Gestión de Mascotas{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <h1>Gestión de Mascotas</h1>
+    <p>Registro y consulta de pacientes veterinarios.</p>
+</section>
+
+<section class="panel mascotas-v14">
+
+    <div class="mascotas-v14-encabezado mascota-v16-listado-encabezado">
+        <h2 class="panel-title">
+            Mascotas registradas: {{ total_mascotas }}
+        </h2>
+
+        {% if perms.mascotas.add_mascota %}
+        <a href="{% url 'mascotas:crear' %}"
+           class="mascota-v16-boton-nuevo">
+            + Nueva mascota
+        </a>
+        {% endif %}
+    </div>
+
+    <form method="get" class="mascotas-v14-buscador">
+        <input
+            type="search"
+            name="q"
+            value="{{ busqueda }}"
+            placeholder="Buscar por nombre, raza, especie, tutor o microchip"
+            aria-label="Buscar mascotas"
+        >
+
+        <button type="submit" class="tutor-btn-primary">
+            Buscar
+        </button>
+
+        <a href="{% url 'mascotas:lista' %}"
+           class="tutor-btn-secondary">
+            Limpiar
+        </a>
+    </form>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Mascota</th>
+                    <th>Especie</th>
+                    <th>Raza</th>
+                    <th>Tutor</th>
+                    <th>Sexo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for mascota in mascotas %}
+                <tr>
+                    <td>
+                        <a href="{% url 'mascotas:detalle' mascota.pk %}">
+    <strong>{{ mascota.nombre }}</strong>
+</a>
+                    </td>
+
+                    <td>{{ mascota.get_especie_display }}</td>
+
+                    <td>{{ mascota.raza|default:"No registrada" }}</td>
+
+                    <td>
+                        <a href="{% url 'tutores:detalle' mascota.tutor.pk %}">
+                            {{ mascota.tutor.nombre }}
+                            {{ mascota.tutor.apellido }}
+                        </a>
+                    </td>
+
+                    <td>{{ mascota.get_sexo_display }}</td>
+
+                    <td>
+                        {% if mascota.activo %}
+                            <span class="estado-cita estado-programada">
+                                Activo
+                            </span>
+                        {% else %}
+                            <span class="estado-cita estado-cancelada">
+                                Inactivo
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        No se encontraron mascotas registradas.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+{% endblock %}
+
+

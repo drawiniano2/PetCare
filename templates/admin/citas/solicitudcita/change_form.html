@@ -1,0 +1,122 @@
+{% extends "admin/change_form.html" %}
+{% block content_title %}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+/* petcare_detalle_165r66b */
+#content > h1 {
+    display:none!important;
+}
+.pc-detalle-cabecera {
+    background:#17354d;
+    color:#fff;
+    border-left:5px solid #d99c1d;
+    border-radius:11px;
+    padding:20px 24px;
+    margin:0 0 22px;
+}
+.pc-detalle-superior {
+    color:#e5b65a;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+}
+.pc-detalle-fila {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+    margin:8px 0;
+}
+.pc-detalle-titulo {
+    color:#fff;
+    font-size:23px;
+    font-weight:700;
+}
+.pc-detalle-estado {
+    background:#fff0bf;
+    color:#805900;
+    border-radius:22px;
+    padding:7px 13px;
+    font-size:11px;
+    font-weight:700;
+}
+.pc-detalle-estado.aprobada {
+    background:#d9f4e5;
+    color:#12623e;
+}
+.pc-detalle-estado.rechazada {
+    background:#fce1e1;
+    color:#972d2d;
+}
+.pc-detalle-estado.cancelada {
+    background:#e9edf1;
+    color:#536475;
+}
+.pc-detalle-subtitulo {
+    color:#e0eaf1;
+    font-size:12px;
+}
+#content .module.aligned {
+    margin-bottom:20px;
+}
+#content .form-row {
+    padding-top:13px;
+    padding-bottom:13px;
+}
+#content .field-acceso_gestion .readonly a {
+    color:#fff!important;
+    text-decoration:none!important;
+}
+#content .submit-row {
+    border-radius:7px;
+    padding:13px;
+}
+@media(max-width:700px) {
+    .pc-detalle-cabecera {
+        padding:17px;
+    }
+    .pc-detalle-titulo {
+        font-size:19px;
+    }
+}
+
+/* petcare_detalle_165r66c */
+#content > h1 {
+    display:none!important;
+}
+#content > h2 {
+    display:none!important;
+}
+#content .pc-detalle-cabecera {
+    display:block!important;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+{% if original %}
+<div class="pc-detalle-cabecera">
+    <div class="pc-detalle-superior">
+        PETCARE | ADMINISTRACI&Oacute;N VETERINARIA
+    </div>
+    <div class="pc-detalle-fila">
+        <div class="pc-detalle-titulo">
+            Solicitud de cita N.&ordm; {{ original.pk }}
+        </div>
+        <span class="pc-detalle-estado {{ original.estado|lower }}">
+            {{ original.get_estado_display|upper }}
+        </span>
+    </div>
+    <div class="pc-detalle-subtitulo">
+        {{ original.mascota }} |
+        {{ original.fecha_preferida|date:"d/m/Y" }} |
+        {{ original.hora_preferida|time:"H:i" }}
+    </div>
+</div>
+{% endif %}
+{{ block.super }}
+{% endblock %}

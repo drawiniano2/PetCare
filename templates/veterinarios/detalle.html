@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Ficha veterinaria | PetCare{% endblock %}
+{% block section_title %}Gestión de Veterinarios{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <div>
+        <h1>Ficha del veterinario</h1>
+        <p>Información personal y profesional registrada en PetCare.</p>
+    </div>
+</div>
+
+<section class="panel veterinarios-v172-ficha">
+
+    <div class="veterinarios-v172-perfil">
+        <div class="veterinarios-v172-avatar">
+            {{ veterinario.nombre|first|upper }}{{ veterinario.apellido|first|upper }}
+        </div>
+
+        <div class="veterinarios-v172-identidad">
+            <h2>{{ veterinario.nombre }} {{ veterinario.apellido }}</h2>
+            <p>{{ veterinario.especialidad }}</p>
+
+            {% if veterinario.activo %}
+                <span class="veterinarios-v17-estado activo">Activo</span>
+            {% else %}
+                <span class="veterinarios-v17-estado inactivo">Inactivo</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <h3 class="veterinarios-v172-subtitulo">
+        Antecedentes profesionales
+    </h3>
+
+    <div class="veterinarios-v172-datos">
+
+        <div class="veterinarios-v172-dato">
+            <span>RUT</span>
+            <strong>{{ veterinario.rut }}</strong>
+        </div>
+
+        <div class="veterinarios-v172-dato">
+            <span>Registro profesional</span>
+            <strong>{{ veterinario.numero_registro }}</strong>
+        </div>
+
+        <div class="veterinarios-v172-dato">
+            <span>Especialidad</span>
+            <strong>{{ veterinario.especialidad }}</strong>
+        </div>
+
+        <div class="veterinarios-v172-dato">
+            <span>Fecha de registro</span>
+            <strong>{{ veterinario.fecha_registro|date:"d/m/Y" }}</strong>
+        </div>
+
+        <div class="veterinarios-v172-dato">
+            <span>Teléfono</span>
+            <strong>{{ veterinario.telefono }}</strong>
+        </div>
+
+        <div class="veterinarios-v172-dato">
+            <span>Correo electrónico</span>
+            <strong>{{ veterinario.correo }}</strong>
+        </div>
+
+    </div>
+
+    <div class="veterinarios-v17-form-acciones">
+
+        <a href="{% url 'veterinarios:lista' %}"
+           class="veterinarios-v17-cancelar">
+            Volver al listado
+        </a>
+
+        {% if perms.veterinarios.change_veterinario %}
+        <a href="{% url 'veterinarios:editar' veterinario.pk %}"
+           class="veterinarios-v17-guardar">
+            Editar veterinario
+        </a>
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

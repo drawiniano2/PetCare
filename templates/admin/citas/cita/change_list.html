@@ -1,0 +1,460 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+/* petcare_citas_165r68 */
+
+.pc-citas-panel{
+    margin:8px 0 20px;
+}
+
+.pc-citas-cabecera{
+    background:#17354d;
+    color:#ffffff;
+    border-left:5px solid #d99c1d;
+    border-radius:11px;
+    padding:22px 26px;
+    margin-bottom:18px;
+}
+
+.pc-citas-marca{
+    color:#e5b65a;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.4px;
+}
+
+.pc-citas-cabecera h2{
+    color:#ffffff!important;
+    font-size:23px;
+    font-weight:700;
+    margin:9px 0 6px;
+    padding:0;
+    background:transparent!important;
+}
+
+.pc-citas-descripcion{
+    color:#e0eaf1;
+    font-size:12px;
+}
+
+.pc-citas-indicadores{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:11px;
+    margin-bottom:20px;
+}
+
+.pc-citas-indicador{
+    background:#ffffff;
+    border:1px solid #d6e0e8;
+    border-radius:9px;
+    padding:15px;
+    box-shadow:0 2px 5px rgba(0,0,0,.04);
+    min-width:0;
+}
+
+.pc-citas-indicador strong{
+    display:block;
+    font-size:12px;
+    color:#17354d;
+    margin-bottom:12px;
+}
+
+.pc-citas-indicador span{
+    display:block;
+    font-size:25px;
+    font-weight:700;
+    color:#17354d;
+}
+
+.pc-citas-indicador.programadas{
+    border-top:3px solid #d99c1d;
+}
+
+.pc-citas-indicador.programadas span{
+    color:#a66a00;
+}
+
+.pc-citas-indicador.completadas{
+    border-top:3px solid #16764c;
+}
+
+.pc-citas-indicador.completadas span{
+    color:#16764c;
+}
+
+.pc-citas-indicador.canceladas{
+    border-top:3px solid #a63a3a;
+}
+
+.pc-citas-indicador.canceladas span{
+    color:#a63a3a;
+}
+
+/* Tabla compacta: conserva las columnas originales */
+#changelist #result_list{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+}
+
+#changelist #result_list th,
+#changelist #result_list td{
+    padding:10px 7px;
+    vertical-align:middle;
+    white-space:normal;
+    overflow-wrap:normal;
+}
+
+#changelist #result_list thead th{
+    background:#edf4f8;
+    color:#17354d;
+    font-size:11px;
+    font-weight:700;
+}
+
+#changelist #result_list tbody tr:hover{
+    background:#f0f7fa;
+}
+
+#changelist #result_list td a{
+    color:#104766;
+    font-weight:600;
+}
+
+/* Reducir el ancho de las columnas extensas */
+#changelist #result_list .field-mascota,
+#changelist #result_list .field-veterinario{
+    max-width:210px;
+}
+
+/* Evitar que una etiqueta extensa fuerce toda la tabla */
+#changelist .results{
+    max-width:100%;
+    overflow-x:auto;
+}
+
+/* Boton de agregar cita */
+#content-main .object-tools a.addlink{
+    background:#104766!important;
+    color:#ffffff!important;
+    border:1px solid #d99c1d;
+    border-radius:7px;
+    padding:10px 15px;
+    font-weight:700;
+}
+
+/* Ocultar solo el titulo principal duplicado */
+#content > h1{
+    display:none!important;
+}
+
+@media(max-width:900px){
+    .pc-citas-indicadores{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+}
+
+@media(max-width:560px){
+    .pc-citas-cabecera{
+        padding:17px;
+    }
+    .pc-citas-cabecera h2{
+        font-size:19px;
+    }
+    .pc-citas-indicadores{
+        gap:8px;
+    }
+    .pc-citas-indicador{
+        padding:11px;
+    }
+}
+
+/* petcare_citas_estilo_165r69 */
+
+/* Eliminar solamente el titulo original duplicado */
+#content > h1 {
+    display:none!important;
+}
+
+/* Busqueda */
+#changelist #toolbar {
+    border-radius:7px;
+    margin-bottom:13px;
+}
+
+#changelist #searchbar {
+    min-height:32px;
+}
+
+/* Tabla y distribucion */
+#changelist #result_list {
+    table-layout:fixed;
+    width:100%;
+    font-size:12px;
+}
+
+#changelist #result_list th,
+#changelist #result_list td {
+    padding:11px 8px;
+    vertical-align:middle;
+    overflow-wrap:normal;
+    word-break:normal;
+}
+
+#changelist #result_list th {
+    font-size:11px;
+}
+
+/* Mascota y veterinario pueden usar dos lineas */
+#changelist #result_list .field-mascota_resumen_pc,
+#changelist #result_list .field-veterinario_resumen_pc {
+    white-space:normal;
+    overflow-wrap:break-word;
+}
+
+/* Fecha, hora, duracion y estados sin cortes */
+#changelist #result_list .field-fecha_resumen_pc,
+#changelist #result_list .field-hora_resumen_pc,
+#changelist #result_list .field-duracion_resumen_pc,
+#changelist #result_list .field-estado_resumen_pc,
+#changelist #result_list .field-ver_cita {
+    white-space:nowrap;
+    overflow-wrap:normal;
+    word-break:normal;
+}
+
+/* Etiquetas uniformes */
+.pc-estado {
+    display:inline-block;
+    min-width:92px;
+    text-align:center;
+    padding:7px 9px;
+    border-radius:7px;
+    font-size:10px;
+    font-weight:700;
+    white-space:nowrap;
+    box-sizing:border-box;
+}
+
+/* Boton VER CITA */
+#changelist .pc-ver-cita {
+    display:inline-block;
+    background:#104766!important;
+    color:#ffffff!important;
+    border:1px solid #d99c1d;
+    border-radius:7px;
+    padding:9px 12px;
+    font-size:11px;
+    font-weight:700;
+    text-decoration:none!important;
+    white-space:nowrap;
+}
+
+#changelist .pc-ver-cita:hover {
+    background:#17354d!important;
+}
+
+/* Enlace mascota */
+#changelist .pc-cita-enlace {
+    color:#104766;
+    font-weight:600;
+}
+
+/* Anchos por columna */
+#changelist #result_list th.column-mascota_resumen_pc {
+    width:19%;
+}
+
+#changelist #result_list th.column-veterinario_resumen_pc {
+    width:23%;
+}
+
+#changelist #result_list th.column-fecha_resumen_pc {
+    width:11%;
+}
+
+#changelist #result_list th.column-hora_resumen_pc {
+    width:7%;
+}
+
+#changelist #result_list th.column-duracion_resumen_pc {
+    width:9%;
+}
+
+#changelist #result_list th.column-estado_resumen_pc {
+    width:13%;
+}
+
+#changelist #result_list th.column-ver_cita {
+    width:12%;
+}
+
+/* Permitir desplazamiento solo cuando sea necesario */
+@media(max-width:1100px) {
+    #changelist #result_list {
+        min-width:850px;
+    }
+}
+
+
+/* petcare_citas_165r70a */
+
+/* Ocultar el titulo original de Django */
+body.change-list #content > h1 {
+    display: none !important;
+}
+
+/* Boton Anadir cita */
+body.change-list #content .object-tools a.addlink,
+body.change-list #content .object-tools a.addlink:link,
+body.change-list #content .object-tools a.addlink:visited {
+    background: #104766 !important;
+    color: #ffffff !important;
+    border: 1px solid #d99c1d !important;
+    border-radius: 7px !important;
+    padding: 9px 16px !important;
+    font-weight: 700 !important;
+}
+
+/* Encabezados de la tabla */
+body.change-list #result_list thead th {
+    vertical-align: middle !important;
+}
+
+/* Espacio reservado para ordenamiento */
+body.change-list #result_list thead th.sorted .text {
+    padding-right: 22px !important;
+}
+
+body.change-list #result_list thead th.sorted .sortoptions {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    margin-left: 7px !important;
+    vertical-align: middle !important;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pc-citas-panel">
+    <div class="pc-citas-cabecera">
+        <div class="pc-citas-marca">
+            PETCARE | ADMINISTRACI&Oacute;N VETERINARIA
+        </div>
+        <h2>Gesti&oacute;n de citas</h2>
+        <div class="pc-citas-descripcion">
+            Consulta, seguimiento y administraci&oacute;n
+            de citas veterinarias
+        </div>
+    </div>
+
+    <div class="pc-citas-indicadores">
+        <div class="pc-citas-indicador">
+            <strong>Total citas</strong>
+            <span>{{ pc_total }}</span>
+        </div>
+
+        <div class="pc-citas-indicador programadas">
+            <strong>Programadas / confirmadas</strong>
+            <span>{{ pc_programadas }}</span>
+        </div>
+
+        <div class="pc-citas-indicador completadas">
+            <strong>Completadas</strong>
+            <span>{{ pc_completadas }}</span>
+        </div>
+
+        <div class="pc-citas-indicador canceladas">
+            <strong>Canceladas</strong>
+            <span>{{ pc_canceladas }}</span>
+        </div>
+    </div>
+</div>
+
+{{ block.super }}
+{% endblock %}
+
+
+{# petcare_citas_165r70b #}
+{% block content_title %}
+<!-- petcare_citas_165r71 -->
+<style>
+.pc-indicador-enlace {
+    cursor: pointer !important;
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+.pc-indicador-enlace:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 13px rgba(16,71,102,.15);
+}
+.pc-indicador-enlace:focus-visible {
+    outline: 3px solid #d99c1d;
+    outline-offset: 3px;
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const rutas = [
+        ["total citas", ""],
+        ["programadas / confirmadas", "?estado_activo=si"],
+        ["completadas", "?estado__exact=COMPLETADA"],
+        ["canceladas", "?estado__exact=CANCELADA"]
+    ];
+
+    const elementos = Array.from(
+        document.querySelectorAll(
+            "#content div, #content article"
+        )
+    );
+
+    rutas.forEach(function (entrada) {
+        const titulo = entrada[0];
+        const destino = entrada[1];
+
+        const candidatos = elementos.filter(function (el) {
+            if (el.children.length > 5) return false;
+
+            const texto = (el.innerText || "")
+                .trim()
+                .toLowerCase();
+
+            return texto.startsWith(titulo)
+                && texto.length < titulo.length + 20;
+        });
+
+        if (!candidatos.length) return;
+
+        const tarjeta = candidatos[0];
+
+        tarjeta.classList.add("pc-indicador-enlace");
+        tarjeta.setAttribute("role", "link");
+        tarjeta.setAttribute("tabindex", "0");
+        tarjeta.setAttribute(
+            "aria-label",
+            "Filtrar: " + titulo
+        );
+
+        const navegar = function () {
+            window.location.href =
+                window.location.pathname + destino;
+        };
+
+        tarjeta.addEventListener("click", navegar);
+
+        tarjeta.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                navegar();
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

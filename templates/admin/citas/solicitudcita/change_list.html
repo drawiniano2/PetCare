@@ -1,0 +1,198 @@
+{% extends "admin/change_list.html" %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+/* petcare_listado_165r67a */
+.pc-listado-cabecera {
+    background:#17354d;
+    color:#fff;
+    border-left:5px solid #d99c1d;
+    border-radius:11px;
+    padding:22px 25px;
+    margin:0 0 20px;
+}
+.pc-listado-superior {
+    color:#e5b65a;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+}
+.pc-listado-titulo {
+    color:#fff!important;
+    font-size:24px;
+    font-weight:700;
+    margin:9px 0;
+}
+.pc-listado-descripcion {
+    color:#dce8ef;
+    font-size:12px;
+}
+.pc-indicadores {
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:12px;
+    margin-bottom:22px;
+}
+.pc-indicador {
+    background:#fff;
+    border:1px solid #d7e1e8;
+    border-radius:9px;
+    padding:16px;
+    box-shadow:0 2px 5px rgba(0,0,0,.04);
+}
+.pc-indicador-etiqueta {
+    color:#526679;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:9px;
+}
+.pc-indicador-numero {
+    color:#17354d;
+    font-size:27px;
+    font-weight:700;
+}
+.pc-indicador.pendientes {
+    border-top:4px solid #d99c1d;
+}
+.pc-indicador.pendientes .pc-indicador-numero {
+    color:#a77400;
+}
+.pc-indicador.aprobadas {
+    border-top:4px solid #16764c;
+}
+.pc-indicador.aprobadas .pc-indicador-numero {
+    color:#16764c;
+}
+.pc-indicador.rechazadas {
+    border-top:4px solid #a63a3a;
+}
+.pc-indicador.rechazadas .pc-indicador-numero {
+    color:#a63a3a;
+}
+#content > h1 {
+    display:none!important;
+}
+#result_list {
+    border:1px solid #d7e1e8;
+}
+#result_list thead th {
+    background:#edf3f7;
+    padding:12px 10px;
+}
+#result_list tbody td,
+#result_list tbody th {
+    padding:12px 10px;
+    vertical-align:middle;
+}
+#changelist-filter {
+    border-radius:7px;
+}
+@media(max-width:900px) {
+    .pc-indicadores {
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+}
+@media(max-width:520px) {
+    .pc-indicadores {
+        grid-template-columns:1fr;
+    }
+    .pc-listado-cabecera {
+        padding:17px;
+    }
+}
+
+/* petcare_listado_165r67b */
+
+/* Igualar tipografia y dimensiones visuales */
+#result_list tbody a,
+#result_list tbody .readonly,
+#result_list tbody span[style*="background"] {
+    font-size:12px!important;
+}
+
+/* Boton azul Ver solicitud */
+#result_list tbody a[style*="background"] {
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-height:34px!important;
+    padding:0 13px!important;
+    border-radius:7px!important;
+    font-size:12px!important;
+    font-weight:700!important;
+    box-sizing:border-box!important;
+    text-decoration:none!important;
+}
+
+/* Etiqueta de estado */
+#result_list tbody span[style*="background"] {
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-height:34px!important;
+    padding:0 13px!important;
+    border-radius:7px!important;
+    font-size:12px!important;
+    font-weight:700!important;
+    box-sizing:border-box!important;
+    line-height:1.2!important;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pc-listado-cabecera">
+    <div class="pc-listado-superior">
+        PETCARE | ADMINISTRACI&Oacute;N VETERINARIA
+    </div>
+    <div class="pc-listado-titulo">
+        Solicitudes de citas
+    </div>
+    <div class="pc-listado-descripcion">
+        Consulta, seguimiento y gesti&oacute;n
+        de solicitudes veterinarias
+    </div>
+</div>
+
+<div class="pc-indicadores">
+    <div class="pc-indicador">
+        <div class="pc-indicador-etiqueta">
+            Total solicitudes
+        </div>
+        <div class="pc-indicador-numero">
+            {{ pc_total|default:0 }}
+        </div>
+    </div>
+
+    <div class="pc-indicador pendientes">
+        <div class="pc-indicador-etiqueta">
+            Pendientes
+        </div>
+        <div class="pc-indicador-numero">
+            {{ pc_pendientes|default:0 }}
+        </div>
+    </div>
+
+    <div class="pc-indicador aprobadas">
+        <div class="pc-indicador-etiqueta">
+            Aprobadas
+        </div>
+        <div class="pc-indicador-numero">
+            {{ pc_aprobadas|default:0 }}
+        </div>
+    </div>
+
+    <div class="pc-indicador rechazadas">
+        <div class="pc-indicador-etiqueta">
+            Rechazadas / canceladas
+        </div>
+        <div class="pc-indicador-numero">
+            {{ pc_rechazadas_canceladas|default:0 }}
+        </div>
+    </div>
+</div>
+
+{{ block.super }}
+{% endblock %}

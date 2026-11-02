@@ -1,0 +1,91 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Tutores | PetCare{% endblock %}
+{% block section_title %}Gestión de Tutores{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <h1>Gestión de Tutores</h1>
+    <p>Registro y consulta de responsables de mascotas.</p>
+</section>
+
+<section class="panel">
+
+    <div class="tutores-cabecera">
+    <h2 class="panel-title">Tutores registrados: {{ total_tutores }}</h2>
+
+    {% if perms.tutores.add_tutor %}
+    <a href="{% url 'tutores:crear' %}" class="tutor-btn-primary">
+        + Nuevo tutor
+    </a>
+    {% endif %}
+</div>
+
+    <form method="get" class="tutores-busqueda">
+        <input
+            type="search"
+            name="q"
+            value="{{ busqueda }}"
+            placeholder="Buscar por nombre, apellido, RUT o correo"
+            aria-label="Buscar tutores"
+        >
+        <button type="submit">Buscar</button>
+        <a href="{% url 'tutores:lista' %}">Limpiar</a>
+    </form>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>RUT</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Estado</th><th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for tutor in tutores %}
+                <tr>
+                    <td>{{ tutor.rut }}</td>
+                    <td>{{ tutor.nombre }} {{ tutor.apellido }}</td>
+                    <td>{{ tutor.telefono }}</td>
+                    <td>{{ tutor.correo }}</td>
+                    <td>
+                        {% if tutor.activo %}
+                            <span class="estado-cita estado-programada">Activo</span>
+                        {% else %}
+                            <span class="estado-cita estado-cancelada">Inactivo</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'tutores:detalle' tutor.pk %}"
+                           class="tutor-accion-ver">
+                            Ver
+                        </a>
+                        {% if perms.tutores.change_tutor %}
+                        <a href="{% url 'tutores:editar' tutor.pk %}"
+                           class="tutor-accion-editar">
+                            Editar
+                        </a>
+                        {% else %}
+                        —
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No se encontraron tutores.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+{% endblock %}
+
+

@@ -1,0 +1,700 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+.pc-receta {
+    max-width: 1100px;
+    margin: 0 auto;
+    color: #19375e;
+}
+.pc-receta h1 {
+    font-size: 34px;
+    margin-bottom: 8px;
+}
+.pc-receta .subtitulo {
+    color: #64748b;
+    margin-bottom: 26px;
+}
+.pc-receta .panel {
+    background: #ffffff;
+    border: 1px solid #e4d5b7;
+    border-radius: 14px;
+    padding: 26px;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.04);
+}
+.pc-receta h2 {
+    font-size: 21px;
+    margin: 0 0 18px;
+    color: #19375e;
+}
+.pc-receta .datos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 20px;
+}
+.pc-receta .dato strong {
+    display: block;
+    color: #9a722d;
+    margin-bottom: 6px;
+}
+.pc-receta .dato span {
+    color: #19375e;
+}
+.pc-receta .acciones {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.pc-receta .boton {
+    display: inline-block;
+    background: #19375e;
+    color: white;
+    padding: 13px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+}
+.pc-receta .aviso {
+    background: #fff8e9;
+    border-left: 4px solid #dcae50;
+    padding: 16px;
+    border-radius: 8px;
+    line-height: 1.6;
+}
+@media(max-width:700px) {
+    .pc-receta .datos {
+        grid-template-columns: 1fr;
+    }
+    .pc-receta .panel {
+        padding: 18px;
+    }
+}
+</style>
+
+
+<style>
+.pc-receta .pc-campos-receta {
+    display: grid;
+    gap: 18px;
+}
+.pc-receta .pc-campo-receta {
+    margin-bottom: 15px;
+}
+.pc-receta .pc-campo-receta label {
+    display: block;
+    font-weight: 700;
+    color: #9a722d;
+    margin-bottom: 8px;
+}
+.pc-receta .pc-campo-receta input:not([type="checkbox"]),
+.pc-receta .pc-campo-receta select,
+.pc-receta .pc-campo-receta textarea {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    padding: 11px 13px;
+    border: 1px solid #d9c9ac;
+    border-radius: 8px;
+    background: #fff;
+    color: #19375e;
+    font: inherit;
+}
+.pc-receta .pc-campo-receta textarea {
+    min-height: 75px;
+}
+.pc-receta .pc-medicamento {
+    padding: 22px;
+    border: 1px solid #e4d5b7;
+    border-radius: 12px;
+    background: #fffaf1;
+}
+.pc-receta .pc-medicamento h3 {
+    color: #19375e;
+    margin: 0 0 20px;
+}
+.pc-receta .pc-error {
+    color: #a12424;
+    margin-top: 6px;
+}
+.pc-receta button.boton {
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+.pc-receta button.boton:hover {
+    background: #102843;
+}
+</style>
+
+
+<style>
+.pc-receta .pc-medicamento {
+    margin-bottom: 18px;
+}
+.pc-receta .pc-boton-agregar {
+    background: #dcae50;
+    color: #19375e;
+    border: none;
+    cursor: pointer;
+    margin-top: 8px;
+}
+.pc-receta .pc-boton-agregar:hover {
+    background: #c99a3c;
+}
+</style>
+
+
+<style>
+/* PETCARE_V20_BOTONES_FINALES */
+
+.pc-receta #pc-agregar-medicamento {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 22px;
+    background: #ddaf51;
+    color: #17365d;
+    border: 1px solid #ddaf51;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+}
+
+.pc-receta #pc-agregar-medicamento:hover {
+    background: #c99a3c;
+    transform: translateY(-1px);
+}
+
+.pc-receta .acciones button[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 13px 26px;
+    background: #17365d;
+    color: #ffffff;
+    border: 1px solid #17365d;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+}
+
+.pc-receta .acciones button[type="submit"]:hover {
+    background: #244b78;
+    transform: translateY(-1px);
+}
+
+.pc-receta .acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.pc-receta a[href*="/atenciones/"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 22px;
+    background: #e9e1d5;
+    color: #17365d;
+    border: 1px solid #d5c6b2;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: background .2s;
+}
+
+.pc-receta a[href*="/atenciones/"]:hover {
+    background: #d9cbb9;
+}
+
+@media (max-width: 600px) {
+    .pc-receta #pc-agregar-medicamento,
+    .pc-receta .acciones button[type="submit"],
+    .pc-receta a[href*="/atenciones/"] {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+</style>
+
+
+<style>
+/* PETCARE_V20_ACCIONES_DEFINITIVAS */
+
+.pc-receta .acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-top: 18px;
+}
+
+.pc-receta .acciones .pc-guardar-receta,
+.pc-receta .acciones .pc-volver-receta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-height: 48px;
+    padding: 12px 24px;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+
+.pc-receta .acciones .pc-guardar-receta {
+    background: #17365d;
+    color: #ffffff;
+    border: 1px solid #17365d;
+}
+
+.pc-receta .acciones .pc-guardar-receta:hover {
+    background: #244b78;
+}
+
+.pc-receta .acciones .pc-volver-receta {
+    background: #e9e1d5;
+    color: #17365d;
+    border: 1px solid #d5c6b2;
+}
+
+.pc-receta .acciones .pc-volver-receta:hover {
+    background: #d9cbb9;
+}
+
+@media (max-width: 600px) {
+    .pc-receta .acciones .pc-guardar-receta,
+    .pc-receta .acciones .pc-volver-receta {
+        width: 100%;
+    }
+}
+</style>
+
+
+<style>
+/* PETCARE_V20_ACCIONES_ALINEADAS */
+
+.pc-receta {
+    position: relative;
+}
+
+.pc-receta .pc-acciones-fila {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.pc-receta .pc-acciones-fila .acciones {
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+}
+
+.pc-receta .pc-guardar-receta,
+.pc-receta .pc-volver-receta {
+    min-height: 48px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+}
+
+@media (max-width: 600px) {
+    .pc-receta .pc-acciones-fila {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pc-receta .pc-acciones-fila .acciones,
+    .pc-receta .pc-guardar-receta,
+    .pc-receta .pc-volver-receta {
+        width: 100%;
+    }
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+<style>
+/* PETCARE_V20_FLEX_FINAL */
+
+.pc-receta {
+    display: block !important;
+}
+
+.pc-receta #pc-formulario-receta,
+.pc-receta form {
+    display: block !important;
+}
+
+.pc-receta .pc-fila-botones {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    width: 100%;
+    margin-top: 24px;
+}
+
+.pc-receta .pc-fila-botones > .acciones {
+    display: flex !important;
+    align-items: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+}
+
+.pc-receta .pc-fila-botones > .pc-volver-receta {
+    margin: 0 !important;
+}
+
+.pc-receta .pc-fila-botones .pc-guardar-receta,
+.pc-receta .pc-fila-botones .pc-volver-receta {
+    min-height: 48px !important;
+    box-sizing: border-box !important;
+}
+
+@media (max-width: 600px) {
+    .pc-receta .pc-fila-botones {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .pc-receta .pc-fila-botones > .acciones,
+    .pc-receta .pc-fila-botones .pc-guardar-receta,
+    .pc-receta .pc-fila-botones .pc-volver-receta {
+        width: 100% !important;
+    }
+}
+</style>
+
+
+<style>
+/* PETCARE_V20_TRES_BOTONES */
+
+.pc-fila-botones {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+}
+
+.pc-fila-botones > .acciones {
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    width: auto !important;
+}
+
+.pc-fila-botones > #pc-agregar-medicamento,
+.pc-fila-botones .pc-guardar-receta,
+.pc-fila-botones .pc-volver-receta {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    min-height: 48px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+@media (max-width: 600px) {
+    .pc-fila-botones {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .pc-fila-botones > .acciones,
+    .pc-fila-botones > #pc-agregar-medicamento,
+    .pc-fila-botones .pc-guardar-receta,
+    .pc-fila-botones .pc-volver-receta {
+        width: 100% !important;
+    }
+}
+</style>
+
+
+<style>
+/* PETCARE_V20_QUITAR_MEDICAMENTO */
+
+.pc-receta .pc-quitar-medicamento {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    padding: 10px 16px;
+    border: 1px solid #d6a3a3;
+    border-radius: 8px;
+    background: #fff0f0;
+    color: #a12c2c;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.pc-receta .pc-quitar-medicamento:hover {
+    background: #f8dddd;
+}
+</style>
+
+<div class="pc-receta">
+    <h1>Nueva receta veterinaria</h1>
+    <p class="subtitulo">
+        PetCare &middot; Atenci&oacute;n N.&ordm; {{ atencion.pk }}
+    </p>
+
+    <section class="panel">
+        <h2>Identificaci&oacute;n del paciente</h2>
+        <div class="datos">
+            <div class="dato">
+                <strong>Mascota</strong>
+                <span>{{ mascota.nombre }}</span>
+            </div>
+            <div class="dato">
+                <strong>Especie</strong>
+                <span>{{ mascota.especie }}</span>
+            </div>
+            <div class="dato">
+                <strong>Veterinario</strong>
+                <span>{{ atencion.veterinario }}</span>
+            </div>
+            <div class="dato">
+                <strong>Fecha de atenci&oacute;n</strong>
+                <span>{{ atencion.fecha_atencion|date:"d/m/Y H:i" }}</span>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="panel" id="pc-formulario-receta">
+        <h2>Prescripci&oacute;n veterinaria</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if formulario.non_field_errors %}
+                <div class="aviso">
+                    {{ formulario.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="pc-campos-receta">
+                {% for campo in formulario %}
+                    <div class="pc-campo-receta">
+                        <label for="{{ campo.id_for_label }}">
+                            {{ campo.label }}
+                        </label>
+                        {{ campo }}
+                        {% if campo.errors %}
+                            <div class="pc-error">
+                                {{ campo.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <h2 style="margin-top:28px;">
+                Medicamentos recetados
+            </h2>
+
+            {{ medicamentos.management_form }}
+
+            {% if medicamentos.non_form_errors %}
+                <div class="aviso">
+                    {{ medicamentos.non_form_errors }}
+                </div>
+            {% endif %}
+
+
+            <div id="pc-lista-medicamentos">
+                {% for medicamento in medicamentos %}
+                    <div class="pc-medicamento">
+                        <h3>Medicamento N.&ordm; {{ forloop.counter }}</h3>
+
+                        {% for campo in medicamento.visible_fields %}
+                            <div class="pc-campo-receta" {% if campo.name == "DELETE" %}style="display:none;"{% endif %}>
+                                <label for="{{ campo.id_for_label }}">
+                                    {{ campo.label }}
+                                </label>
+                                {{ campo }}
+                                {% if campo.errors %}
+                                    <div class="pc-error">
+                                        {{ campo.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+    
+                    <button type="button"
+                            class="pc-quitar-medicamento">
+                        Quitar medicamento
+                    </button>
+
+                    {% for oculto in medicamento.hidden_fields %}
+                            {{ oculto }}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <template id="pc-medicamento-vacio">
+                <div class="pc-medicamento">
+                    <h3>Medicamento nuevo</h3>
+                    {% for campo in medicamentos.empty_form.visible_fields %}
+                        <div class="pc-campo-receta">
+                            <label for="{{ campo.id_for_label }}">
+                                {{ campo.label }}
+                            </label>
+                            {{ campo }}
+                        </div>
+                    {% endfor %}
+
+                    <button type="button"
+                            class="pc-quitar-medicamento">
+                        Quitar medicamento
+                    </button>
+
+                    {% for oculto in medicamentos.empty_form.hidden_fields %}
+                        {{ oculto }}
+                    {% endfor %}
+                </div>
+            </template>
+
+            
+            
+
+            <div class="pc-fila-botones" style="display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:12px;width:100%;margin-top:24px;">
+                <button type="button"
+                    id="pc-agregar-medicamento"
+                    class="boton pc-boton-agregar">
+                + Agregar otro medicamento
+            </button>
+
+<div class="acciones">
+                <button type="submit" class="boton pc-guardar-receta" style="display:inline-flex;align-items:center;justify-content:center;background:#17365d;color:#ffffff;border:1px solid #17365d;border-radius:9px;padding:13px 26px;font:700 14px inherit;min-height:48px;cursor:pointer;text-decoration:none;">
+                    Guardar receta veterinaria
+                </button>
+            </div>
+<a class="boton pc-volver-receta" style="display:inline-flex;align-items:center;justify-content:center;background:#e9e1d5;color:#17365d;border:1px solid #d5c6b2;border-radius:9px;padding:13px 26px;font-weight:700;font-size:14px;min-height:48px;text-decoration:none;box-sizing:border-box;"
+           href="{% url 'historial_clinico:detalle_atencion' mascota.pk atencion.pk %}">
+            Volver a la atenci&oacute;n
+        </a>
+</div>
+</form>
+</section>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const boton = document.getElementById("pc-agregar-medicamento");
+    const lista = document.getElementById("pc-lista-medicamentos");
+    const plantilla = document.getElementById("pc-medicamento-vacio");
+    const total = document.getElementById("id_medicamentos-TOTAL_FORMS");
+
+    if (!boton || !lista || !plantilla || !total) {
+        return;
+    }
+
+
+    // PETCARE_V20_QUITAR_MEDICAMENTO
+    lista.addEventListener("click", function (evento) {
+        const quitar = evento.target.closest(
+            ".pc-quitar-medicamento"
+        );
+
+        if (!quitar) {
+            return;
+        }
+
+        const bloque = quitar.closest(".pc-medicamento");
+
+        if (!bloque) {
+            return;
+        }
+
+        const eliminar = bloque.querySelector(
+            'input[type="checkbox"][name$="-DELETE"]'
+        );
+
+        if (eliminar) {
+            eliminar.checked = true;
+            bloque.style.display = "none";
+        }
+
+        // No reducir TOTAL_FORMS:
+        // Django necesita conservar los indices.
+        const visibles = Array.from(
+            lista.querySelectorAll(".pc-medicamento")
+        ).filter(function (elemento) {
+            return elemento.style.display !== "none";
+        });
+
+        visibles.forEach(function (elemento, indice) {
+            const titulo = elemento.querySelector("h3");
+
+            if (titulo) {
+                titulo.textContent = "Medicamento N." + (indice + 1);
+            }
+        });
+    });
+
+    boton.addEventListener("click", function () {
+        const indice = parseInt(total.value, 10);
+
+        const html = plantilla.innerHTML.replace(
+            /__prefix__/g,
+            String(indice)
+        );
+
+        lista.insertAdjacentHTML("beforeend", html);
+        total.value = indice + 1;
+
+        const bloques = lista.querySelectorAll(".pc-medicamento");
+
+        bloques.forEach(function (bloque, posicion) {
+            const titulo = bloque.querySelector("h3");
+            if (titulo) {
+                titulo.textContent = "Medicamento N." + (posicion + 1);
+            }
+        });
+    });
+});
+</script>
+
+<!-- PETCARE_V20_ESTILO_DIRECTO -->
+{% endblock %}

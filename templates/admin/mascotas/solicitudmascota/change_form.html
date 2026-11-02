@@ -1,0 +1,422 @@
+{% extends "admin/change_form.html" %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+/* PETCARE - PASO 160E - FICHA DEFINITIVA */
+
+#content {
+    max-width: none;
+}
+
+#content-main fieldset.module.aligned {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 12px;
+    background: #fffdf8;
+    border: 1px solid #d8e1e9;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+#content-main fieldset.module.aligned > .form-row {
+    box-sizing: border-box;
+    min-width: 0;
+    margin: 0;
+    padding: 10px 12px;
+    background: white;
+    border: 1px solid #e1e7ed;
+    border-radius: 8px;
+}
+
+#content-main fieldset.module.aligned > .form-row > div {
+    min-width: 0;
+}
+
+#content-main fieldset.module.aligned .form-row label {
+    display: block;
+    float: none;
+    width: auto;
+    padding: 0;
+    margin: 0 0 5px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #60758a;
+}
+
+#content-main fieldset.module.aligned .form-row .readonly {
+    margin: 0;
+    padding: 0;
+    color: #17354d;
+    font-size: 13px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+#content-main fieldset.module.aligned > .field-informacion_adicional,
+#content-main fieldset.module.aligned > .field-observacion_revision,
+#content-main fieldset.module.aligned > .field-enlace_revision_administrativa {
+    grid-column: 1 / -1;
+}
+
+#content-main .petcare-seccion {
+    grid-column: 1 / -1;
+    padding: 8px 2px 5px;
+    margin-top: 4px;
+    color: #17354d;
+    font-size: 15px;
+    font-weight: 800;
+    border-bottom: 1px solid #d8e1e9;
+}
+
+#content-main .petcare-estado {
+    display: inline-block;
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+#content-main .petcare-pendiente {
+    background: #fff0bd;
+    color: #755000;
+}
+
+#content-main .petcare-aprobada {
+    background: #d9f3e5;
+    color: #176b48;
+}
+
+#content-main .petcare-rechazada {
+    background: #fbe1e3;
+    color: #a52b32;
+}
+
+#content-main .petcare-aviso {
+    margin: 0 0 10px;
+    padding: 9px 12px;
+    background: #f2f7fc;
+    border-left: 3px solid #176b48;
+    border-radius: 5px;
+    color: #17354d;
+    font-size: 12px;
+}
+
+#content-main .submit-row {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f3f6f8;
+    border: 1px solid #d8e1e9;
+    border-radius: 9px;
+}
+
+@media (max-width: 760px) {
+    #content-main fieldset.module.aligned {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* PETCARE - PASO 160F - TIPOGRAFIA LEGIBLE */
+
+#content-main fieldset.module.aligned .form-row label {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+#content-main fieldset.module.aligned .form-row .readonly {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+#content-main .petcare-seccion {
+    font-size: 18px;
+    line-height: 1.4;
+}
+
+#content-main .petcare-estado {
+    font-size: 14px;
+}
+
+#content-main .petcare-aviso {
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 12px 14px;
+}
+
+#content-main fieldset.module.aligned > .form-row {
+    padding: 11px 13px;
+}
+
+
+/* PETCARE - PASO 160G - ORDEN INFERIOR */
+
+/* Mantener los campos administrativos alineados */
+#content-main fieldset.module.aligned > .field-observacion_revision {
+    grid-column: 1 / -1;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/* Evitar espacios innecesarios en el bloque de revision */
+#content-main fieldset.module.aligned > .field-enlace_revision_administrativa {
+    grid-column: 1 / -1;
+    padding: 12px 14px;
+    background: #f6f9fc;
+}
+
+#content-main .field-enlace_revision_administrativa .readonly {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+#content-main .petcare-aviso {
+    flex: 1 1 350px;
+    margin: 0;
+    padding: 10px 12px;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+#content-main .field-enlace_revision_administrativa .readonly > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    min-height: 38px;
+    box-sizing: border-box;
+    white-space: normal;
+    text-align: center;
+}
+
+/* Acercar el boton Cerrar al contenido */
+#content-main .submit-row {
+    margin-top: 8px;
+    padding: 8px 10px;
+}
+
+/* Evitar espacios sobrantes dentro de las tarjetas */
+#content-main fieldset.module.aligned > .form-row {
+    align-self: stretch;
+}
+
+@media (max-width: 760px) {
+    #content-main .field-enlace_revision_administrativa .readonly {
+        align-items: stretch;
+    }
+
+    #content-main .field-enlace_revision_administrativa .readonly > a {
+        width: 100%;
+    }
+}
+
+
+/* PETCARE - PASO 160H - ALINEACION FINAL */
+
+/* Espacio entre aviso y boton verde */
+#content-main .field-enlace_revision_administrativa .readonly {
+    column-gap: 30px;
+    row-gap: 12px;
+}
+
+/* Reservar espacio para el boton Cerrar */
+#content-main fieldset.module.aligned > .field-enlace_revision_administrativa {
+    padding-right: 115px;
+}
+
+/* Colocar Cerrar a la derecha, junto a la revision */
+#content-main form#solicitudmascota_form {
+    position: relative;
+}
+
+#content-main form#solicitudmascota_form > .submit-row {
+    position: absolute;
+    right: 28px;
+    bottom: 24px;
+    z-index: 2;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+/* Adaptacion para pantallas pequenas */
+@media (max-width: 900px) {
+    #content-main fieldset.module.aligned > .field-enlace_revision_administrativa {
+        padding-right: 14px;
+    }
+
+    #content-main form#solicitudmascota_form > .submit-row {
+        position: static;
+        margin-top: 8px;
+        padding: 8px 10px;
+        border: 1px solid #d8e1e9;
+        background: #f3f6f8;
+    }
+}
+
+
+/* PETCARE - PASO 160I - FRANJA DE ACCIONES */
+
+#content-main fieldset.module.aligned > .field-enlace_revision_administrativa {
+    padding-right: 14px;
+}
+
+#content-main .field-enlace_revision_administrativa .readonly {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+#content-main .petcare-cerrar-inline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    flex: 0 0 auto;
+}
+
+#content-main .petcare-cerrar-inline .submit-row {
+    position: static !important;
+    display: block;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+#content-main .petcare-cerrar-inline .submit-row a,
+#content-main .petcare-cerrar-inline .submit-row input {
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    #content-main .petcare-cerrar-inline {
+        margin-left: 0;
+    }
+}
+
+
+/* PETCARE - PASO 160J - DISTRIBUCION FINAL */
+
+#content-main .field-enlace_revision_administrativa .readonly {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 22px;
+}
+
+#content-main .field-enlace_revision_administrativa .petcare-aviso {
+    flex: 1 1 300px;
+    min-width: 0;
+}
+
+#content-main .field-enlace_revision_administrativa .readonly > a {
+    flex: 0 0 auto;
+}
+
+#content-main .petcare-cerrar-inline {
+    margin-left: auto;
+    padding-left: 20px;
+}
+
+@media (max-width: 900px) {
+    #content-main .petcare-cerrar-inline {
+        margin-left: 0;
+        padding-left: 0;
+    }
+}
+
+</style>
+{% endblock %}
+
+{% block footer %}
+{{ block.super }}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const fieldset = document.querySelector(
+        "#content-main fieldset.module.aligned"
+    );
+    if (!fieldset) return;
+
+    function fila(nombre) {
+        return fieldset.querySelector(".form-row.field-" + nombre);
+    }
+
+    function seccion(texto, antesDe) {
+        if (!antesDe) return;
+        const titulo = document.createElement("div");
+        titulo.className = "petcare-seccion";
+        titulo.textContent = texto;
+        fieldset.insertBefore(titulo, antesDe);
+    }
+
+    const primeraFila = fieldset.querySelector(".form-row");
+    seccion("Datos de la mascota y del tutor", primeraFila);
+    seccion("Seguimiento administrativo", fila("estado"));
+
+    const estado = fila("estado");
+    if (estado) {
+        const valor = estado.querySelector(".readonly");
+        if (valor) {
+            const texto = valor.textContent.trim().toLowerCase();
+            const clases = {
+                "pendiente": "petcare-pendiente",
+                "aprobada": "petcare-aprobada",
+                "rechazada": "petcare-rechazada"
+            };
+            if (clases[texto]) {
+                const etiqueta = document.createElement("span");
+                etiqueta.className = "petcare-estado " + clases[texto];
+                etiqueta.textContent = valor.textContent.trim();
+                valor.replaceChildren(etiqueta);
+            }
+        }
+    }
+
+
+    // PETCARE - PASO 160I
+    const revisionInline = fila("enlace_revision_administrativa");
+    const formulario = document.querySelector(
+        "#content-main form#solicitudmascota_form"
+    );
+
+    if (revisionInline && formulario) {
+        const zonaRevision = revisionInline.querySelector(".readonly");
+        const botonCerrar = Array.from(
+            formulario.querySelectorAll(".submit-row")
+        ).find(function (zona) {
+            const texto = zona.textContent.trim().toLowerCase();
+            return texto.includes("cerrar");
+        });
+
+        if (zonaRevision && botonCerrar) {
+            const contenedor = document.createElement("div");
+            contenedor.className = "petcare-cerrar-inline";
+            contenedor.appendChild(botonCerrar);
+            zonaRevision.appendChild(contenedor);
+        }
+    }
+
+    const revision = fila("enlace_revision_administrativa");
+    if (revision) {
+        const valor = revision.querySelector(".readonly");
+        if (valor && valor.querySelector("a")) {
+            const aviso = document.createElement("p");
+            aviso.className = "petcare-aviso";
+            aviso.textContent =
+                "La aprobaci\u00f3n o el rechazo se realizan "
+                + "exclusivamente desde la revisi\u00f3n "
+                + "administrativa.";
+            valor.insertBefore(aviso, valor.firstChild);
+        }
+    }
+});
+</script>
+
+{% endblock %}

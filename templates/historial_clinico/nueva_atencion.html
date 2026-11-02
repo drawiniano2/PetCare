@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva atención veterinaria | PetCare{% endblock %}
+{% block section_title %}Historial Clínico{% endblock %}
+
+{% block content %}
+<style>
+.pc-atencion {
+    font-family: "Josefin Sans", Arial, sans-serif;
+    color: #17365D;
+    font-size: 18px;
+}
+.pc-atencion h1 {
+    font-size: 30px;
+    margin: 0 0 10px;
+}
+.pc-atencion .pc-descripcion {
+    color: #65748A;
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+.pc-atencion .pc-panel {
+    background: #FFFFFF;
+    border: 1px solid #E9E2D5;
+    border-top: 4px solid #DCAE50;
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 18px rgba(23,54,93,.06);
+}
+.pc-atencion h2 {
+    font-size: 23px;
+    margin: 0 0 20px;
+}
+.pc-atencion .pc-datos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+.pc-atencion .pc-dato {
+    background: #F7F4EF;
+    border-radius: 9px;
+    padding: 15px;
+    line-height: 1.5;
+}
+.pc-atencion .pc-dato strong {
+    display: block;
+    margin-bottom: 5px;
+}
+.pc-atencion .pc-campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+.pc-atencion .pc-grupo {
+    min-width: 0;
+}
+.pc-atencion .pc-grupo label {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.pc-atencion .pc-grupo input,
+.pc-atencion .pc-grupo select,
+.pc-atencion .pc-grupo textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #CDD7E5;
+    border-radius: 9px;
+    background: #FFFFFF;
+    padding: 13px;
+    color: #17365D;
+    font-family: inherit;
+    font-size: 17px;
+    line-height: 1.5;
+}
+.pc-atencion .pc-grupo textarea {
+    min-height: 115px;
+    resize: vertical;
+}
+.pc-atencion .pc-grupo input:focus,
+.pc-atencion .pc-grupo select:focus,
+.pc-atencion .pc-grupo textarea:focus {
+    outline: 2px solid #DCAE50;
+    outline-offset: 1px;
+}
+.pc-atencion .pc-ayuda {
+    font-size: 15px;
+    color: #65748A;
+    margin-top: 7px;
+}
+.pc-atencion .pc-error {
+    color: #A52F2F;
+    font-size: 16px;
+    margin-top: 7px;
+}
+.pc-atencion .pc-acciones {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+.pc-atencion .pc-boton {
+    display: inline-block;
+    border: none;
+    border-radius: 9px;
+    padding: 13px 19px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+.pc-atencion .pc-azul {
+    background: #17365D;
+    color: #FFFFFF;
+}
+.pc-atencion .pc-dorado {
+    background: #DCAE50;
+    color: #17365D;
+}
+.pc-atencion .pc-aviso {
+    background: #F7F4EF;
+    border-left: 3px solid #DCAE50;
+    padding: 15px;
+    border-radius: 7px;
+    margin-bottom: 22px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+@media (max-width: 750px) {
+    .pc-atencion .pc-campos,
+    .pc-atencion .pc-datos {
+        grid-template-columns: 1fr;
+    }
+    .pc-atencion .pc-panel {
+        padding: 16px;
+    }
+}
+
+/* PETCARE TITULO EDICION V19.3.3 */
+.pc-atencion .pc-titulo-edicion {
+    font-family: "Josefin Sans", Arial, sans-serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: #17365D;
+    line-height: 1.3;
+    margin: 0 0 16px;
+}
+@media (max-width: 750px) {
+    .pc-atencion .pc-titulo-edicion {
+        font-size: 27px;
+    }
+}
+
+</style>
+
+<div class="pc-atencion">
+
+    {# PETCARE V19.3.2 #}
+    <h1 class="pc-titulo-edicion">
+        {% if modo_edicion %}
+            Editar atención veterinaria N.° {{ atencion.pk }}
+        {% else %}
+            Nueva atenci?n veterinaria
+        {% endif %}
+    </h1>
+    <p class="pc-descripcion">
+        {% if modo_edicion %}
+            Modifica los datos de la atencion clinica de
+            {{ mascota.nombre }}.
+        {% else %}
+            Registra una consulta, diagnostico o tratamiento en
+            el historial clinico de {{ mascota.nombre }}.
+        {% endif %}
+    </p>
+
+    <section class="pc-panel">
+        <h2>Datos de la mascota</h2>
+
+        <div class="pc-datos">
+            <div class="pc-dato">
+                <strong>Nombre</strong>
+                {{ mascota.nombre }}
+            </div>
+
+            <div class="pc-dato">
+                <strong>Especie</strong>
+                {{ mascota.get_especie_display }}
+            </div>
+
+            <div class="pc-dato">
+                <strong>Raza</strong>
+                {{ mascota.raza|default:"No registrada" }}
+            </div>
+
+            <div class="pc-dato">
+                <strong>Tutor responsable</strong>
+                {{ mascota.tutor.nombre }}
+                {{ mascota.tutor.apellido }}
+            </div>
+        </div>
+    </section>
+
+    <section class="pc-panel">
+        <h2>Registro de atención clínica</h2>
+
+        <div class="pc-aviso">
+            Si seleccionas una cita, debe estar completada y
+            corresponder a esta mascota y al veterinario responsable.
+            También puedes registrar una atención sin cita previa.
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if formulario.non_field_errors %}
+                <div class="pc-error" role="alert">
+                    {{ formulario.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="pc-campos">
+                {% for campo in formulario %}
+                    <div class="pc-grupo">
+                        <label for="{{ campo.id_for_label }}">
+                            {{ campo.label }}
+                        </label>
+
+                        {{ campo }}
+
+                        {% if campo.name == "cita" %}
+                            <div class="pc-ayuda">
+                                Opcional. Solo aparecen citas completadas
+                                que todavía no tienen atención asociada.
+                            </div>
+                        {% endif %}
+
+                        {% if campo.errors %}
+                            <div class="pc-error" role="alert">
+                                {{ campo.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="pc-acciones">
+                <button type="submit" class="pc-boton pc-azul">
+                    {% if modo_edicion %}
+                        Guardar cambios
+                    {% else %}
+                        Guardar atencion veterinaria
+                    {% endif %}
+                </button>
+
+                <a
+                    href="{% if modo_edicion %}{% url 'historial_clinico:detalle_atencion' mascota.pk atencion.pk %}{% else %}{% url 'historial_clinico:detalle' mascota.pk %}{% endif %}"
+                    class="pc-boton pc-dorado">
+                    Volver a la ficha clínica
+                </a>
+            </div>
+        </form>
+    </section>
+
+</div>
+{% endblock %}

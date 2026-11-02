@@ -1,0 +1,461 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Historial m&eacute;dico veterinario | PetCare</title>
+
+<style>
+/* PETCARE_HISTORIAL_UNIFICADO_165R17 */
+:root {
+    --azul:#17354d;
+    --azul-barra:#104766;
+    --celeste:#e5f2ff;
+    --dorado:#d99c1d;
+}
+
+* { box-sizing:border-box; }
+
+body {
+    margin:0;
+    background:#f7f7f5;
+    color:#092c4c;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:15px;
+    line-height:1.5;
+}
+
+.contenedor {
+    width:calc(100% - 32px);
+    max-width:1080px;
+    margin:28px auto;
+    background:white;
+    border:1px solid #cbdff0;
+    border-radius:17px;
+    overflow:hidden;
+    box-shadow:0 8px 22px rgba(20,45,75,.05);
+}
+
+.cabecera {
+    background:var(--celeste);
+    padding:24px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+}
+
+.logo {
+    width:185px;
+    max-width:100%;
+    height:auto;
+    object-fit:contain;
+}
+
+.separador {
+    width:1px;
+    height:62px;
+    background:#b6c9da;
+}
+
+.cabecera h1 {
+    margin:0 0 4px;
+    font-size:32px;
+    line-height:1.2;
+    font-weight:800;
+}
+
+.cabecera p {
+    margin:0;
+    color:#42627e;
+}
+
+.cuerpo { padding:24px 28px; }
+
+.aviso-principal {
+    background:#fff3d8;
+    border:1px solid #f0c86c;
+    border-left:5px solid var(--dorado);
+    border-radius:10px;
+    padding:15px 18px;
+    margin-bottom:20px;
+}
+
+.tutor {
+    background:#e8f3fd;
+    border-radius:9px;
+    padding:12px 15px;
+    margin-bottom:20px;
+}
+
+.tarjeta {
+    margin-bottom:24px;
+}
+
+.seccion {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--azul-barra);
+    color:white;
+    border-radius:9px;
+    padding:12px 17px;
+    margin:0 0 18px;
+    font-size:22px;
+    font-weight:800;
+}
+
+.datos {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+}
+
+.dato {
+    background:#e8f3fd;
+    border:1px solid #d4e5f3;
+    padding:14px;
+    border-radius:9px;
+    overflow-wrap:anywhere;
+}
+
+.dato strong {
+    display:block;
+    color:#176394;
+    margin-bottom:5px;
+}
+
+.registro {
+    background:#fff;
+    border:1px solid #d4e5f3;
+    border-radius:10px;
+    padding:17px;
+    margin-bottom:14px;
+}
+
+.registro h3 {
+    margin-top:0;
+    color:var(--azul);
+}
+
+.aviso {
+    background:#fff3d8;
+    border-left:4px solid var(--dorado);
+    border-radius:9px;
+    padding:14px 16px;
+}
+
+.nota {
+    color:#42627e;
+    font-size:13px;
+    text-align:center;
+    margin:20px 0;
+}
+
+.acciones {
+    display:flex;
+    justify-content:center;
+    margin-top:25px;
+}
+
+.volver {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    background:var(--azul);
+    color:white;
+    padding:14px 24px;
+    border-radius:9px;
+    text-decoration:none;
+    font-weight:700;
+    box-shadow:0 4px 12px #17354d20;
+}
+
+.volver:hover { background:#205680; }
+
+@media(max-width:760px) {
+    .contenedor { margin:14px auto; }
+    .cabecera {
+        padding:20px;
+        flex-wrap:wrap;
+        gap:12px;
+    }
+    .logo { width:150px; }
+    .separador { display:none; }
+    .cabecera h1 { font-size:25px; }
+    .cuerpo { padding:20px; }
+    .datos { grid-template-columns:1fr; }
+    .seccion { font-size:19px; }
+    .volver { width:100%; }
+}
+
+/* PETCARE_DISENO_165R18B */
+.cabecera h1 {
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:-0.4px;
+}
+
+.seccion {
+    font-size:19px;
+    font-weight:600;
+    padding:12px 16px;
+    gap:11px;
+}
+
+.seccion svg {
+    width:22px;
+    height:22px;
+    flex-shrink:0;
+}
+
+.volver {
+    font-size:14px;
+    font-weight:600;
+    box-shadow:none;
+}
+
+.pc-identificacion {
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:17px 19px;
+    background:#e8f3fd;
+    border:1px solid #d4e5f3;
+}
+
+.pc-identificacion-icono {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:52px;
+    height:52px;
+    flex-shrink:0;
+    border-radius:12px;
+    background:white;
+    color:#176394;
+}
+
+.pc-identificacion-icono svg {
+    width:29px;
+    height:29px;
+}
+
+.pc-identificacion-titulo {
+    font-size:19px;
+    font-weight:700;
+    color:#092c4c;
+    margin-bottom:3px;
+}
+
+.pc-identificacion-detalle {
+    font-size:14px;
+    color:#42627e;
+}
+
+.pc-sin-registros {
+    display:flex;
+    align-items:center;
+    background:#f4f7fa;
+    border:1px solid #dce6ef;
+    border-left:3px solid #9eb5c9;
+    color:#42627e;
+    padding:15px 17px;
+}
+
+.pc-acciones-finales {
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.pc-solicitar {
+    background:#174d83;
+}
+
+.pc-solicitar:hover {
+    background:#24649c;
+}
+
+@media(max-width:760px) {
+    .cabecera h1 { font-size:24px; }
+    .seccion { font-size:17px; }
+    .pc-identificacion { align-items:flex-start; }
+    .pc-acciones-finales { flex-direction:column; }
+    .pc-acciones-finales .volver { width:100%; }
+}
+
+</style>
+</head>
+
+<body>
+<main class="contenedor">
+
+<header class="cabecera">
+    <img class="logo"
+         src="{% static 'img/petcare_logo_bauhaus.png' %}"
+         alt="Logo PetCare Clinica Veterinaria">
+
+    <div class="separador"></div>
+
+    <div>
+        <h1>Historial m&eacute;dico veterinario</h1>
+        <p>PetCare | Portal del tutor</p>
+    </div>
+</header>
+
+<div class="cuerpo">
+
+<div class="aviso-principal">
+    <strong>Informaci&oacute;n cl&iacute;nica de consulta.</strong>
+    Los antecedentes, diagn&oacute;sticos y recetas son
+    administrados por la cl&iacute;nica veterinaria.
+</div>
+
+
+<div class="tutor pc-identificacion">
+    <div class="pc-identificacion-icono">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="8" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="17" cy="8" r="1"/><circle cx="20" cy="12" r="1"/><path d="M12 12c-3 0-6 3-6 5a3 3 0 0 0 4 2l2-1 2 1a3 3 0 0 0 4-2c0-2-3-5-6-5Z"/></svg>
+    </div>
+    <div>
+        <div class="pc-identificacion-titulo">{{ mascota.nombre }}</div>
+        <div class="pc-identificacion-detalle">
+            {{ mascota.especie }} &middot;
+            {{ mascota.raza|default:"Raza no registrada" }}
+        </div>
+        <div class="pc-identificacion-detalle">
+            Tutor: {{ tutor.nombre }} {{ tutor.apellido }}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- PETCARE_HISTORIAL_COMPLETO_165R12 -->
+
+<section class="tarjeta dorada">
+<h2 class="seccion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="18" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg><span>Ficha cl&iacute;nica</span></h2>
+{% if ficha %}
+<div class="datos">
+<div class="dato">
+<strong>Antecedentes</strong>
+{{ ficha.antecedentes|default:"Sin antecedentes registrados"|linebreaksbr }}
+</div>
+<div class="dato">
+<strong>Alergias</strong>
+{{ ficha.alergias|default:"Sin informaci?n registrada"|linebreaksbr }}
+</div>
+<div class="dato">
+<strong>Enfermedades previas</strong>
+{{ ficha.enfermedades_previas|default:"Sin informaci?n registrada"|linebreaksbr }}
+</div>
+<div class="dato">
+<strong>Observaciones</strong>
+{{ ficha.observaciones|default:"Sin observaciones"|linebreaksbr }}
+</div>
+</div>
+{% else %}
+<div class="aviso pc-sin-registros">
+Todav&iacute;a no existe una ficha cl&iacute;nica para esta mascota.
+</div>
+{% endif %}
+</section>
+
+<section class="tarjeta">
+<h2 class="seccion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v6a6 6 0 0 0 12 0V3M4 3h4M16 3h4M12 15v2a4 4 0 0 0 8 0v-2"/><circle cx="20" cy="13" r="2"/></svg><span>Atenciones, diagn&oacute;sticos y tratamientos</span></h2>
+{% for atencion in atenciones %}
+<article class="registro">
+<h3>Atenci?n del {{ atencion.fecha_atencion|date:"d/m/Y H:i" }}</h3>
+<p><strong>Motivo de consulta:</strong>
+{{ atencion.motivo_consulta|default:"No registrado"|linebreaksbr }}</p>
+<p><strong>S&iacute;ntomas:</strong>
+{{ atencion.sintomas|default:"No registrados"|linebreaksbr }}</p>
+<p><strong>Diagn&oacute;stico:</strong>
+{{ atencion.diagnostico|default:"No registrado"|linebreaksbr }}</p>
+<p><strong>Tratamiento:</strong>
+{{ atencion.tratamiento|default:"No registrado"|linebreaksbr }}</p>
+<p><strong>Indicaciones:</strong>
+{{ atencion.indicaciones|default:"Sin indicaciones"|linebreaksbr }}</p>
+{% if atencion.observaciones %}
+<p><strong>Observaciones:</strong>
+{{ atencion.observaciones|linebreaksbr }}</p>
+{% endif %}
+</article>
+{% empty %}
+<div class="aviso pc-sin-registros">
+No existen atenciones cl&iacute;nicas registradas.
+</div>
+{% endfor %}
+</section>
+
+<section class="tarjeta dorada">
+<h2 class="seccion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v6h5M9 14h6M9 18h6"/></svg><span>Recetas veterinarias y medicamentos</span></h2>
+{% for receta in recetas %}
+<article class="registro">
+<h3>Receta del {{ receta.fecha_emision|date:"d/m/Y H:i" }}</h3>
+<p><strong>Indicaciones generales:</strong>
+{{ receta.indicaciones_generales|default:"Sin indicaciones"|linebreaksbr }}</p>
+
+{% if receta.observaciones %}
+<p><strong>Observaciones:</strong>
+{{ receta.observaciones|linebreaksbr }}</p>
+{% endif %}
+
+<h4>Medicamentos recetados</h4>
+{% for medicamento in receta.medicamentos.all %}
+<div class="dato" style="margin-bottom:12px;">
+<strong>{{ medicamento.nombre }}</strong>
+<p><b>Presentaci&oacute;n:</b>
+{{ medicamento.presentacion|default:"No indicada" }}</p>
+<p><b>Dosis:</b>
+{{ medicamento.dosis|default:"No indicada" }}</p>
+<p><b>V&iacute;a de administraci&oacute;n:</b>
+{{ medicamento.via_administracion|default:"No indicada" }}</p>
+<p><b>Frecuencia:</b>
+{{ medicamento.frecuencia|default:"No indicada" }}</p>
+<p><b>Duraci&oacute;n:</b>
+{{ medicamento.duracion|default:"No indicada" }}</p>
+{% if medicamento.instrucciones %}
+<p><b>Instrucciones:</b>
+{{ medicamento.instrucciones|linebreaksbr }}</p>
+{% endif %}
+</div>
+{% empty %}
+<p>No se registraron medicamentos en esta receta.</p>
+{% endfor %}
+</article>
+{% empty %}
+<div class="aviso pc-sin-registros">
+No existen recetas veterinarias registradas.
+</div>
+{% endfor %}
+</section>
+
+
+
+<div class="acciones pc-acciones-finales">
+    <a class="volver" href="{% url 'panel_tutor' %}">
+        <span aria-hidden="true">&larr;</span>
+        Volver a Mi espacio
+    </a>
+    <a class="volver pc-solicitar"
+       href="{% url 'solicitar_cita' %}">
+        <span aria-hidden="true">&#43;</span>
+        Solicitar cita veterinaria
+    </a>
+
+</div>
+
+<p class="nota">
+    Informaci&oacute;n de consulta.
+    Los registros cl&iacute;nicos son administrados
+    por la cl&iacute;nica veterinaria.
+</p>
+
+</div>
+</main>
+</body>
+</html>

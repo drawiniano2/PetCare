@@ -1,0 +1,144 @@
+﻿{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ficha de {{ mascota.nombre }} | PetCare{% endblock %}
+{% block section_title %}Gestión de Mascotas{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <h1>Ficha de la mascota</h1>
+    <p>Información general del paciente veterinario.</p>
+</section>
+
+<section class="panel ficha-mascota-v15">
+
+    <div class="mascota-v15-cabecera">
+
+        <div class="mascota-v15-avatar" aria-hidden="true">
+            {% if mascota.especie == "PERRO" %}
+                <img src="{% static 'img/petcare_perro_bauhaus_v15.png' %}"
+                     alt="Ilustración de perro estilo Bauhaus"
+                     class="mascota-v15-imagen">
+            {% elif mascota.especie == "GATO" %}
+                🐈
+            {% else %}
+                🐾
+            {% endif %}
+        </div>
+
+        <div class="mascota-v15-identidad">
+
+            <h2>{{ mascota.nombre }}</h2>
+
+            <p>
+                {{ mascota.get_especie_display }}
+                · {{ mascota.raza|default:"Raza no registrada" }}
+                · {{ mascota.get_sexo_display }}
+            </p>
+
+            {% if mascota.activo %}
+                <span class="estado-cita estado-programada">Activo</span>
+            {% else %}
+                <span class="estado-cita estado-cancelada">Inactivo</span>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <div class="mascota-v15-separador"></div>
+
+    <h3 class="mascota-v15-subtitulo">Datos veterinarios</h3>
+
+    <div class="mascota-v15-grid">
+
+        <div class="mascota-v15-dato">
+            <span>Fecha de nacimiento</span>
+            <strong>
+                {{ mascota.fecha_nacimiento|date:"d/m/Y"|default:"No registrada" }}
+            </strong>
+        </div>
+
+        <div class="mascota-v15-dato">
+            <span>Peso</span>
+            <strong>
+                {% if mascota.peso %}
+                    {{ mascota.peso }} kg
+                {% else %}
+                    No registrado
+                {% endif %}
+            </strong>
+        </div>
+
+        <div class="mascota-v15-dato">
+            <span>Color</span>
+            <strong>{{ mascota.color|default:"No registrado" }}</strong>
+        </div>
+
+        <div class="mascota-v15-dato">
+            <span>Microchip</span>
+            <strong>{{ mascota.microchip|default:"No registrado" }}</strong>
+        </div>
+
+        <div class="mascota-v15-dato">
+            <span>Fecha de registro</span>
+            <strong>{{ mascota.fecha_registro|date:"d/m/Y H:i" }}</strong>
+        </div>
+
+    </div>
+
+    <div class="mascota-v15-separador"></div>
+
+    <h3 class="mascota-v15-subtitulo">Tutor responsable</h3>
+
+    <div class="mascota-v15-tutor">
+
+        <div>
+            <strong>
+                {{ mascota.tutor.nombre }}
+                {{ mascota.tutor.apellido }}
+            </strong>
+
+            <p>{{ mascota.tutor.correo }}</p>
+            <p>{{ mascota.tutor.telefono }}</p>
+        </div>
+
+        {% if perms.tutores.view_tutor %}
+        <a href="{% url 'tutores:detalle' mascota.tutor.pk %}"
+           class="mascota-v15-boton">
+            Ver ficha del tutor
+        </a>
+        {% endif %}
+
+    </div>
+
+    <div class="mascota-v15-separador"></div>
+
+    <h3 class="mascota-v15-subtitulo">Observaciones</h3>
+
+    <p class="mascota-v15-observaciones">
+        {{ mascota.observaciones|default:"No existen observaciones registradas."|linebreaksbr }}
+    </p>
+
+    <div class="mascota-v15-acciones mascota-v16-ficha-acciones">
+
+        {% if perms.mascotas.change_mascota %}
+        <a href="{% url 'mascotas:editar' mascota.pk %}"
+           class="mascota-v16-boton-editar">
+            Editar mascota
+        </a>
+        {% endif %}
+
+        <a href="{% url 'mascotas:lista' %}"
+           class="mascota-v15-boton">
+            Volver al listado
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+

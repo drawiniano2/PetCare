@@ -1,0 +1,139 @@
+﻿{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ficha del tutor | PetCare{% endblock %}
+{% block section_title %}Gestión de Tutores{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <h1>Ficha del tutor</h1>
+    <p>Información registrada del responsable de mascotas.</p>
+</section>
+
+<section class="panel tutor-detalle-panel tutor-v12">
+
+    <div class="tutor-v12-encabezado">
+
+        <div class="tutor-v12-ilustracion">
+            <img
+                src="{% static 'img/petcare_tutor_mascotas.png' %}"
+                alt="Ilustración de una persona acompañada de un perro y un gato"
+            >
+        </div>
+
+        <div class="tutor-v12-identidad">
+            <h2>{{ tutor.nombre }} {{ tutor.apellido }}</h2>
+            <p class="tutor-v12-rut">RUT: {{ tutor.rut }}</p>
+        </div>
+
+        <div class="tutor-v12-estado">
+            {% if tutor.activo %}
+                <span class="estado-cita estado-programada">Activo</span>
+            {% else %}
+                <span class="estado-cita estado-cancelada">Inactivo</span>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="tutor-v12-datos">
+
+        <div class="tutor-v12-dato">
+            <span class="tutor-v12-icono icono-telefono">☎</span>
+            <div>
+                <strong>Teléfono</strong>
+                <p>{{ tutor.telefono }}</p>
+            </div>
+        </div>
+
+        <div class="tutor-v12-dato">
+            <span class="tutor-v12-icono icono-correo">✉</span>
+            <div>
+                <strong>Correo electrónico</strong>
+                <p>{{ tutor.correo }}</p>
+            </div>
+        </div>
+
+        <div class="tutor-v12-dato">
+            <span class="tutor-v12-icono icono-direccion">⌖</span>
+            <div>
+                <strong>Dirección</strong>
+                <p>{{ tutor.direccion|default:"No registrada" }}</p>
+            </div>
+        </div>
+
+        <div class="tutor-v12-dato">
+            <span class="tutor-v12-icono icono-fecha">▦</span>
+            <div>
+                <strong>Fecha de registro</strong>
+                <p>{{ tutor.fecha_registro|date:"d/m/Y H:i" }}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="tutor-form-actions">
+        {% if perms.tutores.change_tutor %}
+        <a href="{% url 'tutores:editar' tutor.pk %}"
+           class="tutor-btn-primary">
+            Editar tutor
+        </a>
+        {% endif %}
+
+        <a href="{% url 'tutores:lista' %}"
+           class="tutor-btn-secondary">
+            Volver al listado
+        </a>
+    </div>
+
+</section>
+
+
+<section class="panel tutor-mascotas-v13">
+    <div class="tutor-mascotas-encabezado">
+        <div>
+            <h2>Mascotas asociadas</h2>
+            <p>Animales registrados bajo la responsabilidad de este tutor.</p>
+        </div>
+        <span class="tutor-mascotas-contador">
+            {{ mascotas|length }} mascota(s)
+        </span>
+    </div>
+
+    <div class="tutor-mascotas-grid">
+        {% for mascota in mascotas %}
+        <article class="tutor-mascota-card">
+            <div class="tutor-mascota-icono" aria-hidden="true">
+                {% if mascota.especie == "PERRO" %}🐕
+                {% elif mascota.especie == "GATO" %}🐈
+                {% else %}🐾{% endif %}
+            </div>
+
+            <div class="tutor-mascota-info">
+                <h3>{{ mascota.nombre }}</h3>
+                <p><strong>Especie:</strong> {{ mascota.get_especie_display }}</p>
+                <p><strong>Raza:</strong> {{ mascota.raza|default:"No registrada" }}</p>
+                <p><strong>Sexo:</strong> {{ mascota.get_sexo_display }}</p>
+                <p><strong>Peso:</strong>
+                    {% if mascota.peso %}{{ mascota.peso }} kg
+                    {% else %}No registrado{% endif %}
+                </p>
+                <p>
+                    {% if mascota.activo %}
+                        <span class="estado-cita estado-programada">Activo</span>
+                    {% else %}
+                        <span class="estado-cita estado-cancelada">Inactivo</span>
+                    {% endif %}
+                </p>
+            </div>
+        </article>
+        {% empty %}
+        <p class="tutor-mascotas-vacio">
+            Este tutor todavía no tiene mascotas registradas.
+        </p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+

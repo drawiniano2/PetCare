@@ -1,0 +1,561 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.petcare-citas {
+    color: #17365D;
+    font-family: 'Josefin Sans', Arial, sans-serif;
+}
+.petcare-citas .pc-titulo {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.petcare-citas .pc-subtitulo {
+    color: #65748A;
+    margin-bottom: 24px;
+}
+.petcare-citas .pc-tarjeta {
+    background: #FFFFFF;
+    border: 1px solid #E9E2D5;
+    border-top: 4px solid #C84B43;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 18px rgba(23,54,93,.06);
+}
+.petcare-citas .pc-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+.petcare-citas .pc-boton {
+    display: inline-block;
+    border: 0;
+    border-radius: 8px;
+    padding: 11px 17px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+.petcare-citas .pc-dorado {
+    background: #DCAE50;
+    color: #17365D;
+}
+.petcare-citas .pc-azul {
+    background: #17365D;
+    color: #FFFFFF;
+}
+.petcare-citas .pc-gris {
+    background: #F0F2F5;
+    color: #17365D;
+}
+.petcare-citas .pc-buscador {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+.petcare-citas input,
+.petcare-citas select,
+.petcare-citas textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #D6DCE5;
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: #17365D;
+    font: inherit;
+}
+.petcare-citas .pc-buscador input {
+    flex: 1;
+    min-width: 200px;
+}
+.petcare-citas .pc-tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+}
+.petcare-citas table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.petcare-citas th {
+    background: #F5F0E7;
+    text-align: left;
+    padding: 13px;
+    font-weight: 700;
+}
+.petcare-citas td {
+    padding: 14px 13px;
+    border-bottom: 1px solid #ECECEC;
+}
+.petcare-citas .pc-estado {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 6px 11px;
+    font-size: 12px;
+    font-weight: 700;
+}
+.petcare-citas .pc-programada {
+    background: #E8F0FA;
+    color: #234D81;
+}
+.petcare-citas .pc-confirmada {
+    background: #E4F3E8;
+    color: #287A45;
+}
+.petcare-citas .pc-completada {
+    background: #EDE9F8;
+    color: #6046A2;
+}
+.petcare-citas .pc-cancelada {
+    background: #FBE8E6;
+    color: #A23D36;
+}
+.petcare-citas .pc-formulario {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+.petcare-citas .pc-campo label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+.petcare-citas .pc-ancho {
+    grid-column: 1 / -1;
+}
+.petcare-citas .pc-error {
+    color: #B63832;
+    margin-top: 6px;
+    font-size: 14px;
+}
+.petcare-citas .pc-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+@media (max-width: 700px) {
+    .petcare-citas .pc-formulario {
+        grid-template-columns: 1fr;
+    }
+    .petcare-citas .pc-tarjeta {
+        padding: 16px;
+    }
+}
+
+/* PETCARE CITAS TIPOGRAFIA V2 */
+.petcare-citas .pc-titulo {
+    font-size: 34px;
+    line-height: 1.25;
+}
+
+.petcare-citas .pc-subtitulo {
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+.petcare-citas .pc-tarjeta {
+    font-size: 17px;
+}
+
+.petcare-citas .pc-buscador input {
+    font-size: 17px;
+}
+
+.petcare-citas .pc-boton {
+    font-size: 16px;
+    line-height: 1.35;
+}
+
+.petcare-citas th {
+    font-size: 17px;
+    padding: 17px 13px;
+}
+
+.petcare-citas td {
+    font-size: 17px;
+    line-height: 1.5;
+    padding: 18px 13px;
+}
+
+.petcare-citas .pc-estado {
+    font-size: 14px;
+    padding: 8px 12px;
+}
+
+.petcare-citas .pc-tarjeta > p {
+    font-size: 17px;
+}
+
+@media (max-width: 700px) {
+    .petcare-citas .pc-titulo {
+        font-size: 28px;
+    }
+}
+
+
+/* PETCARE BOTONES DE ESTADO CITAS V1 */
+.petcare-citas .pc-acciones-fila {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.petcare-citas .pc-acciones-fila form {
+    margin: 0;
+}
+
+.petcare-citas .pc-acciones-fila .pc-boton {
+    font-size: 15px;
+    padding: 10px 13px;
+    white-space: nowrap;
+}
+
+.petcare-citas .pc-confirmar {
+    background: #DCAE50;
+    color: #17365D;
+}
+
+.petcare-citas .pc-completar {
+    background: #287B65;
+    color: #FFFFFF;
+}
+
+.petcare-citas .pc-cancelar {
+    background: #F9E4E1;
+    color: #A83E36;
+}
+
+.petcare-citas .pc-sin-acciones {
+    color: #687487;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* PETCARE TABLA CITAS V3 */
+.petcare-citas .pc-tabla-contenedor {
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 8px;
+}
+
+.petcare-citas table {
+    min-width: 1190px;
+    width: 100%;
+    table-layout: auto;
+}
+
+.petcare-citas th,
+.petcare-citas td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.petcare-citas th:nth-child(3),
+.petcare-citas td:nth-child(3) {
+    min-width: 300px;
+}
+
+.petcare-citas th:last-child,
+.petcare-citas td:last-child {
+    min-width: 310px;
+}
+
+.petcare-citas .pc-acciones-fila {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 9px;
+}
+
+.petcare-citas .pc-acciones-fila .pc-boton {
+    font-size: 15px;
+    padding: 11px 13px;
+}
+
+.petcare-citas td {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+
+/* PETCARE FILTROS Y ARCHIVO CITAS V1 */
+.petcare-citas .pc-pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.petcare-citas .pc-pestana {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 9px;
+    background: #F1EEE8;
+    color: #17365D;
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+    border: 1px solid #E5DDCF;
+}
+
+.petcare-citas .pc-pestana.seleccionada {
+    background: #17365D;
+    color: #FFFFFF;
+    border-color: #17365D;
+    box-shadow: inset 0 -3px 0 #DCAE50;
+}
+
+.petcare-citas .pc-pestana:hover:not(.seleccionada) {
+    background: #E9DFCD;
+}
+
+.petcare-citas .pc-archivar {
+    background: #DCAE50;
+    color: #17365D;
+    font-size: 16px;
+    padding: 11px 15px;
+}
+
+.petcare-citas .pc-form-archivar {
+    display: inline-block;
+    margin: 0 0 0 10px;
+    vertical-align: middle;
+}
+
+.petcare-citas .pc-acciones-fila {
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.petcare-citas .pc-tabla-contenedor {
+    overflow-x: auto;
+}
+
+
+/* PETCARE ETIQUETA ARCHIVADA V2 */
+.petcare-citas .pc-etiqueta-archivada {
+    display: inline-block;
+    padding: 9px 13px;
+    border-radius: 8px;
+    background: #EDF0F4;
+    color: #566579;
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+
+/* PETCARE RESTAURAR CITAS V1 */
+.petcare-citas .pc-form-restaurar {
+    display: inline-block;
+    margin: 0 10px 0 0;
+    vertical-align: middle;
+}
+
+.petcare-citas .pc-restaurar {
+    background: #287B65;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 11px 16px;
+    white-space: nowrap;
+}
+
+.petcare-citas .pc-restaurar:hover {
+    background: #206451;
+}
+
+</style>
+
+<div class="petcare-citas">
+    <div class="pc-cabecera">
+        <div>
+            <h1 class="pc-titulo">Gestión de Citas</h1>
+            <p class="pc-subtitulo">
+                Administración de reservas y atención veterinaria.
+            </p>
+        </div>
+        {% if perms.citas.add_cita %}
+        <a href="{% url 'citas:nueva' %}"
+           class="pc-boton pc-dorado">+ Nueva cita</a>
+        {% endif %}
+    </div>
+
+    <div class="pc-tarjeta">
+        
+        <!-- PETCARE FILTROS Y ARCHIVO CITAS V1 -->
+        <div class="pc-pestanas">
+            <a href="{% url 'citas:lista' %}?filtro=activas"
+               class="pc-pestana {% if filtro == 'activas' %}seleccionada{% endif %}">
+                Activas
+            </a>
+            <a href="{% url 'citas:lista' %}?filtro=completadas"
+               class="pc-pestana {% if filtro == 'completadas' %}seleccionada{% endif %}">
+                Completadas
+            </a>
+            <a href="{% url 'citas:lista' %}?filtro=canceladas"
+               class="pc-pestana {% if filtro == 'canceladas' %}seleccionada{% endif %}">
+                Canceladas
+            </a>
+            <a href="{% url 'citas:lista' %}?filtro=archivadas"
+               class="pc-pestana {% if filtro == 'archivadas' %}seleccionada{% endif %}">
+                Archivadas
+            </a>
+        </div>
+
+        <form method="get" class="pc-buscador">
+            <input type="hidden" name="filtro" value="{{ filtro }}">
+            <input type="search" name="q"
+                   value="{{ busqueda }}"
+                   placeholder="Buscar mascota, tutor o veterinario">
+            <button class="pc-boton pc-azul"
+                    type="submit">Buscar</button>
+            <a href="{% url 'citas:lista' %}"
+               class="pc-boton pc-gris">Limpiar</a>
+        </form>
+
+        <p><strong>Total de citas:</strong> {{ total_citas }}</p>
+
+        <div class="pc-tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mascota</th>
+                        <th>Tutor</th>
+                        <th>Veterinario</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cita in citas %}
+                    <tr>
+                        <td>{{ cita.mascota.nombre }}</td>
+                        <td>{{ cita.mascota.tutor.nombre }}
+                            {{ cita.mascota.tutor.apellido }}</td>
+                        <td>{{ cita.veterinario }}</td>
+                        <td>{{ cita.fecha|date:"d/m/Y" }}</td>
+                        <td>{{ cita.hora_inicio|time:"H:i" }}</td>
+                        <td>
+                            <span class="pc-estado pc-{{ cita.estado|lower }}">
+                                {{ cita.get_estado_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <!-- PETCARE ACCIONES CITAS V1 -->
+                            {% if perms.citas.change_cita %}
+                            <div class="pc-acciones-fila">
+
+                                {% if cita.estado != 'COMPLETADA' and cita.estado != 'CANCELADA' %}
+                                <a class="pc-boton pc-azul"
+                                   href="{% url 'citas:editar' cita.pk %}">
+                                    Editar
+                                </a>
+                                {% endif %}
+
+                                {% if cita.estado == 'PROGRAMADA' %}
+                                <form method="post"
+                                      action="{% url 'citas:cambiar_estado' cita.pk %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="accion" value="confirmar">
+                                    <button type="submit"
+                                            class="pc-boton pc-confirmar">
+                                        Confirmar
+                                    </button>
+                                </form>
+                                {% endif %}
+
+                                {% if cita.estado == 'CONFIRMADA' %}
+                                <form method="post"
+                                      action="{% url 'citas:cambiar_estado' cita.pk %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="accion" value="completar">
+                                    <button type="submit"
+                                            class="pc-boton pc-completar">
+                                        Completar
+                                    </button>
+                                </form>
+                                {% endif %}
+
+                                {% if cita.estado == 'PROGRAMADA' or cita.estado == 'CONFIRMADA' %}
+                                <form method="post"
+                                      action="{% url 'citas:cambiar_estado' cita.pk %}"
+                                      onsubmit="return confirm('?Confirma que desea cancelar esta cita?');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="accion" value="cancelar">
+                                    <button type="submit"
+                                            class="pc-boton pc-cancelar">
+                                        Cancelar
+                                    </button>
+                                </form>
+                                {% endif %}
+
+                                {% if cita.estado == 'COMPLETADA' or cita.estado == 'CANCELADA' %}
+                                <!-- PETCARE ACCIONES LIMPIAS V2 -->
+                            {% if cita.archivada %}
+                                
+                                <!-- PETCARE BOTON RESTAURAR V1 -->
+                                {% if perms.citas.change_cita %}
+                                <form method="post"
+                                      action="{% url 'citas:restaurar' cita.pk %}"
+                                      class="pc-form-restaurar"
+                                      onsubmit="return confirm('?Desea restaurar esta cita?');">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="pc-boton pc-restaurar">
+                                        Restaurar
+                                    </button>
+                                </form>
+                                {% endif %}
+
+                                <span class="pc-etiqueta-archivada">
+                                    Archivada
+                                </span>
+                            {% endif %}
+                                {% endif %}
+                            </div>
+                            {% else %}
+                            ?
+                            {% endif %}
+                        
+                            {% if perms.citas.change_cita %}
+                            {% if not cita.archivada %}
+                            {% if cita.estado == 'COMPLETADA' or cita.estado == 'CANCELADA' %}
+                            <form method="post"
+                                  class="pc-form-archivar"
+                                  action="{% url 'citas:archivar' cita.pk %}"
+                                  onsubmit="return confirm('?Desea archivar esta cita?');">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="pc-boton pc-archivar">
+                                    Archivar
+                                </button>
+                            </form>
+                            {% endif %}
+                            {% endif %}
+                            {% endif %}
+</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" style="text-align:center;padding:28px;">
+                            No se encontraron citas registradas.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

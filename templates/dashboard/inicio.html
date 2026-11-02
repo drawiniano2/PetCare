@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | PetCare{% endblock %}
+
+{% block section_title %}Panel principal{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <h1>Bienvenido a PetCare</h1>
+    <p>Resumen general de la gestión veterinaria.</p>
+</section>
+
+<section class="stats-grid" aria-label="Indicadores generales">
+
+    <article class="stat-card">
+        <div class="stat-label">Tutores registrados</div>
+        <div class="stat-value">{{ total_tutores|default:0 }}</div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-label">Mascotas registradas</div>
+        <div class="stat-value">{{ total_mascotas|default:0 }}</div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-label">Veterinarios</div>
+        <div class="stat-value">{{ total_veterinarios|default:0 }}</div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-label">Citas programadas</div>
+        <div class="stat-value">{{ total_citas_programadas|default:0 }}</div>
+    </article>
+
+</section>
+
+{# PETCARE_PASO_152_SOLICITUDES #}
+{% if puede_ver_solicitudes %}
+<section class="panel" style="margin-bottom:24px;">
+    <h2 class="panel-title">Solicitudes de mascotas</h2>
+
+    <div style="display:flex; align-items:center;
+                justify-content:space-between;
+                flex-wrap:wrap; gap:16px;">
+        <div>
+            <div style="font-size:14px; color:#526779;">
+                Solicitudes pendientes de revision
+            </div>
+            <div style="font-size:32px; font-weight:800;
+                        color:#17354d;">
+                {{ solicitudes_pendientes }}
+            </div>
+        </div>
+
+        <a href="{% url 'admin:mascotas_solicitudmascota_changelist' %}"
+           style="display:inline-block;
+                  padding:12px 18px;
+                  background:#17354d;
+                  color:#ffffff;
+                  border-radius:8px;
+                  text-decoration:none;
+                  font-weight:700;">
+            Ver solicitudes
+        </a>
+    </div>
+</section>
+{% endif %}
+
+<section class="panel">
+    <h2 class="panel-title">Próximas citas veterinarias</h2>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Mascota</th>
+                    <th>Veterinario</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for cita in proximas_citas %}
+                <tr>
+                    <td>{{ cita.fecha|date:"d/m/Y" }}</td>
+                    <td>{{ cita.hora_inicio|time:"H:i" }}</td>
+                    <td>{{ cita.mascota.nombre }}</td>
+                    <td>{{ cita.veterinario }}</td>
+                    <td>{{ cita.motivo }}</td>
+                    <td>
+    <span class="estado-cita
+        {% if cita.get_estado_display == 'Programada' %}estado-programada
+        {% elif cita.get_estado_display == 'Completada' %}estado-completada
+        {% elif cita.get_estado_display == 'Cancelada' %}estado-cancelada
+        {% else %}estado-otro{% endif %}">
+        {{ cita.get_estado_display }}
+    </span>
+</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        No hay próximas citas registradas.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="stats-grid" style="margin-top: 28px;">
+
+    <article class="stat-card">
+        <div class="stat-label">Fichas clínicas</div>
+        <div class="stat-value">{% if total_fichas is not None %}{{ total_fichas }}{% else %}Restringido{% endif %}</div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-label">Atenciones clínicas</div>
+        <div class="stat-value">{% if total_atenciones is not None %}{{ total_atenciones }}{% else %}Restringido{% endif %}</div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-label">Citas completadas</div>
+        <div class="stat-value">{{ total_citas_completadas|default:0 }}</div>
+    </article>
+
+    <article class="stat-card">
+        <div class="stat-label">Citas canceladas</div>
+        <div class="stat-value">{{ total_citas_canceladas|default:0 }}</div>
+    </article>
+
+</section>
+
+{% endblock %}
+

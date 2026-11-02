@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Nuevo veterinario | PetCare{% endblock %}
+{% block section_title %}Gestión de Veterinarios{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <div>
+        <h1>{{ titulo }}</h1>
+        <p>Registro de profesionales de la clínica veterinaria PetCare.</p>
+    </div>
+</div>
+
+<section class="panel veterinarios-v17-formulario veterinarios-v174-formulario">
+
+    <div class="veterinarios-v17-formulario-header">
+        <div class="veterinarios-v17-formulario-icono veterinarios-v174-icono">+</div>
+        <div>
+            <h2 class="veterinarios-v174-titulo">Información del profesional</h2>
+            <p>Complete los antecedentes personales y profesionales.</p>
+        </div>
+    </div>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if formulario.non_field_errors %}
+        <div class="veterinarios-v17-alerta">
+            {{ formulario.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <div class="veterinarios-v17-form-grid">
+
+            {% for campo in formulario %}
+            <div class="veterinarios-v17-campo{% if campo.field.widget.input_type == 'checkbox' %} campo-check{% endif %}">
+
+                {% if campo.field.widget.input_type == 'checkbox' %}
+                    <label class="veterinarios-v17-check">
+                        {{ campo }}
+                        <span>{{ campo.label }}</span>
+                    </label>
+                {% else %}
+                    <label for="{{ campo.id_for_label }}">
+                        {{ campo.label }}
+                        {% if campo.field.required %}
+                            <span class="obligatorio">*</span>
+                        {% endif %}
+                    </label>
+
+                    {{ campo }}
+                {% endif %}
+
+                {% if campo.help_text %}
+                    <small>{{ campo.help_text }}</small>
+                {% endif %}
+
+                {% for error in campo.errors %}
+                    <div class="veterinarios-v17-error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="veterinarios-v17-form-acciones">
+            <a href="{% url 'veterinarios:lista' %}"
+               class="veterinarios-v17-cancelar">
+                Cancelar
+            </a>
+
+            <button type="submit"
+                    class="veterinarios-v17-guardar">
+                Guardar veterinario
+            </button>
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}

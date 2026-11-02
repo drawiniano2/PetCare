@@ -1,0 +1,773 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+
+
+<html lang="es">
+
+
+<head>
+
+
+    <meta charset="UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>Iniciar sesi&oacute;n | PetCare</title>
+
+
+    <link rel="stylesheet" href="{% static 'css/petcare.css' %}">
+
+
+    <style>
+
+
+        .pc-login-page {
+
+
+            min-height: 100vh;
+
+
+            display: flex;
+
+
+            align-items: center;
+
+
+            justify-content: center;
+
+
+            padding: 24px;
+
+
+            background: #f3f6fb;
+
+
+            font-family: Arial, sans-serif;
+
+
+        }
+
+
+        .pc-login-card {
+
+
+            display: grid;
+
+
+            grid-template-columns: 1fr 1fr;
+
+
+            width: min(880px, 100%);
+
+
+            background: white;
+
+
+            border-radius: 20px;
+
+
+            overflow: hidden;
+
+
+            box-shadow: 0 18px 55px rgba(20,45,78,.13);
+
+
+        }
+
+
+        .pc-login-brand {
+
+
+            background: #142d4e;
+
+
+            color: white;
+
+
+            padding: 48px 36px;
+
+
+            display: flex;
+
+
+            flex-direction: column;
+
+
+            align-items: center;
+
+
+            justify-content: center;
+
+
+            text-align: center;
+
+
+            gap: 18px;
+
+
+        }
+
+
+        .pc-login-brand img {
+
+
+            width: min(100%, 300px);
+
+
+            height: auto;
+
+
+            object-fit: contain;
+
+
+        }
+
+
+        .pc-login-brand p {
+
+
+            color: #d4e6ec;
+
+
+            line-height: 1.6;
+
+
+            margin: 0;
+
+
+        }
+
+
+        .pc-login-form {
+
+
+            padding: 48px 42px;
+
+
+            display: flex;
+
+
+            flex-direction: column;
+
+
+            justify-content: center;
+
+
+        }
+
+
+        .pc-login-form h1 {
+
+
+            color: #142d4e;
+
+
+            font-size: 27px;
+
+
+            margin: 0 0 8px;
+
+
+        }
+
+
+        .pc-login-subtitle {
+
+
+            color: #60748b;
+
+
+            margin: 0 0 30px;
+
+
+        }
+
+
+        .pc-login-form label {
+
+
+            display: block;
+
+
+            margin: 0 0 8px;
+
+
+            color: #142d4e;
+
+
+            font-weight: 600;
+
+
+        }
+
+
+        .pc-login-form input {
+
+
+            display: block;
+
+
+            width: 100%;
+
+
+            box-sizing: border-box;
+
+
+            padding: 13px 14px;
+
+
+            border: 1px solid #cbd5e1;
+
+
+            border-radius: 9px;
+
+
+            margin-bottom: 20px;
+
+
+            font: inherit;
+
+
+            background: #fff;
+
+
+            color: #142d4e;
+
+
+        }
+
+
+        .pc-login-form input:focus {
+
+
+            outline: 2px solid #16b8aa;
+
+
+            outline-offset: 1px;
+
+
+        }
+
+
+        .pc-login-button {
+
+
+            width: 100%;
+
+
+            border: 0;
+
+
+            border-radius: 9px;
+
+
+            background: #16b8aa;
+
+
+            color: #fff;
+
+
+            font: inherit;
+
+
+            font-weight: 700;
+
+
+            padding: 14px;
+
+
+            cursor: pointer;
+
+
+        }
+
+
+        .pc-login-button:hover {
+
+
+            background: #10988c;
+
+
+        }
+
+
+        .pc-login-error {
+
+
+            background: #fff0f0;
+
+
+            color: #a12a2a;
+
+
+            border: 1px solid #f0c3c3;
+
+
+            border-radius: 8px;
+
+
+            padding: 12px;
+
+
+            margin-bottom: 20px;
+
+
+        }
+
+
+        @media (max-width: 700px) {
+
+
+            .pc-login-card {
+
+
+                grid-template-columns: 1fr;
+
+
+            }
+
+
+            .pc-login-brand {
+
+
+                padding: 28px 24px;
+
+
+            }
+
+
+            .pc-login-brand img {
+
+
+                max-width: 180px;
+
+
+            }
+
+
+            .pc-login-form {
+
+
+                padding: 32px 24px;
+
+
+            }
+
+
+        }
+
+
+    </style>
+
+
+
+<style>
+.pc-password-wrapper {
+    position: relative;
+    width: 100%;
+}
+.pc-password-wrapper input {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 54px !important;
+}
+.pc-toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #17385d;
+    cursor: pointer;
+}
+.pc-toggle-password:hover {
+    background: rgba(23,56,93,.09);
+}
+.pc-toggle-password:focus-visible {
+    outline: 2px solid #16b8ad;
+    outline-offset: 2px;
+}
+
+.pc-login-register {
+    margin: 22px 0 0;
+    text-align: center;
+    color: #60748b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+.pc-login-register a {
+    color: #147f83;
+    font-weight: 700;
+    text-decoration: none;
+}
+.pc-login-register a:hover {
+    text-decoration: underline;
+}
+</style>
+
+
+<style id="PETCARE_LOGIN_DISENO_132">
+
+/* Identidad visual PetCare */
+html,
+body.pc-login-page {
+    background: #f7f6f2 !important;
+}
+
+body.pc-login-page {
+    min-height: 100vh !important;
+    padding: 28px 18px !important;
+    box-sizing: border-box !important;
+}
+
+/* Tarjeta principal */
+.pc-login-card {
+    width: min(900px, 100%) !important;
+    grid-template-columns: 0.95fr 1.05fr !important;
+    border: 1px solid #cbdced !important;
+    border-radius: 12px !important;
+    background: #ffffff !important;
+    box-shadow: 0 8px 22px rgba(23, 53, 77, 0.07) !important;
+    overflow: hidden !important;
+}
+
+/* Identidad institucional */
+.pc-login-brand {
+    background: #17354d !important;
+    color: #ffffff !important;
+    padding: 42px 32px !important;
+    gap: 20px !important;
+    text-align: center !important;
+}
+
+.pc-login-brand img {
+    display: block !important;
+    width: min(100%, 315px) !important;
+    max-width: 315px !important;
+    height: auto !important;
+    object-fit: contain !important;
+}
+
+.pc-login-brand p {
+    color: #e5eef6 !important;
+    line-height: 1.6 !important;
+}
+
+/* Zona del formulario */
+.pc-login-form {
+    background: #ffffff !important;
+}
+
+.pc-login-form h1 {
+    color: #17354d !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.4px !important;
+}
+
+.pc-login-subtitle {
+    color: #526779 !important;
+}
+
+/* Campos */
+.pc-login-form input[type="text"],
+.pc-login-form input[type="password"] {
+    border: 1px solid #bdcad5 !important;
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+}
+
+.pc-login-form input:focus {
+    border-color: #2866a5 !important;
+    outline: 2px solid rgba(40, 102, 165, 0.14) !important;
+    outline-offset: 1px !important;
+}
+
+/* Boton principal sin biseles */
+.pc-login-button {
+    background: #17354d !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transform: none !important;
+}
+
+.pc-login-button:hover {
+    background: #244d6d !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.pc-login-button:focus-visible {
+    outline: 3px solid #e5aa20 !important;
+    outline-offset: 3px !important;
+}
+
+/* Mantener visible el control de contrasena */
+.pc-toggle-password {
+    box-shadow: none !important;
+}
+
+/* Enlace al registro */
+.pc-login-register a {
+    color: #2866a5 !important;
+}
+
+@media (max-width: 700px) {
+    .pc-login-card {
+        grid-template-columns: 1fr !important;
+    }
+
+    .pc-login-brand {
+        padding: 28px 22px !important;
+    }
+
+    .pc-login-brand img {
+        width: min(100%, 205px) !important;
+    }
+
+    .pc-login-form {
+        padding: 30px 24px !important;
+    }
+}
+
+@media (max-width: 420px) {
+    body.pc-login-page {
+        padding: 14px 10px !important;
+    }
+
+    .pc-login-form {
+        padding: 24px 18px !important;
+    }
+}
+</style>
+
+</head>
+
+
+<body class="pc-login-page">
+
+
+    <div class="pc-login-card">
+
+
+        <section class="pc-login-brand">
+
+
+            <img src="{% static 'img/petcare_logo_bauhaus.png' %}"
+
+
+                 alt="PetCare Clínica Veterinaria">
+
+
+            <p>Sistema de Gesti&oacute;n Veterinaria</p>
+
+
+        </section>
+
+
+
+
+
+        <main class="pc-login-form">
+
+
+            <h1>Iniciar sesi&oacute;n</h1>
+
+
+            <p class="pc-login-subtitle">
+
+
+                Ingresa con tu cuenta autorizada de PetCare.
+
+
+            </p>
+
+
+
+
+
+            {% if form.errors %}
+
+
+                <div class="pc-login-error" role="alert">
+
+
+                    Usuario o contrase&ntilde;a incorrectos.
+
+
+                    Verifica tus datos e inténtalo nuevamente.
+
+
+                </div>
+
+
+            {% endif %}
+
+
+
+
+
+            {% if next and user.is_authenticated %}
+
+
+                <div class="pc-login-error" role="alert">
+
+
+                    Tu cuenta no tiene acceso a la página solicitada.
+
+
+                </div>
+
+
+            {% endif %}
+
+
+
+
+
+            <form method="post" action="{% url 'petcare_login' %}">
+
+
+                {% csrf_token %}
+
+
+
+
+
+                <label for="id_username">Usuario</label>
+
+
+                <input type="text" name="username" id="id_username"
+
+
+                       autocomplete="username" required autofocus
+
+
+                       value="{{ form.username.value|default_if_none:'' }}">
+
+
+
+
+
+                <label for="id_password">Contrase&ntilde;a</label>
+
+
+                <div class="pc-password-wrapper">
+                    <input type="password" name="password"
+                           id="id_password"
+                           autocomplete="current-password"
+                           required>
+                    <button type="button"
+                            class="pc-toggle-password"
+                            id="pc-toggle-password"
+                            aria-label="Mostrar contrasena"
+                            aria-pressed="false"
+                            title="Ver contrasena">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="20" height="20"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round"
+                             aria-hidden="true">
+                            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                </div>
+
+
+
+
+
+                <input type="hidden" name="next" value="{{ next }}">
+
+
+
+
+
+                <button class="pc-login-button" type="submit">
+
+
+                    Ingresar a PetCare
+
+
+                </button>
+
+
+            </form>
+
+            <p class="pc-login-register">
+                ¿No tienes cuenta?
+                <a href="{% url 'registro_tutor' %}">
+                    Crear cuenta de tutor
+                </a>
+            </p>
+
+
+        </main>
+
+
+    </div>
+
+
+
+<script>
+(function () {
+    "use strict";
+
+    const campo = document.getElementById("id_password");
+    const boton = document.getElementById("pc-toggle-password");
+
+    if (!campo || !boton) return;
+
+    boton.addEventListener("click", function () {
+        const mostrar = campo.type === "password";
+
+        campo.type = mostrar ? "text" : "password";
+
+        boton.setAttribute(
+            "aria-pressed", String(mostrar)
+        );
+
+        boton.setAttribute(
+            "aria-label",
+            mostrar ? "Ocultar contrasena" : "Mostrar contrasena"
+        );
+
+        boton.title = mostrar
+            ? "Ocultar contrasena"
+            : "Ver contrasena";
+
+        boton.style.color = mostrar
+            ? "#0a9d92"
+            : "#17385d";
+    });
+})();
+</script>
+
+</body>
+
+
+</html>
+
+

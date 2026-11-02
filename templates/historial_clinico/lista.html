@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}Historial Cl&iacute;nico | PetCare{% endblock %}
+{% block section_title %}Historial Cl&iacute;nico{% endblock %}
+
+{% block content %}
+<style>
+.pc-historial {
+    font-family: "Josefin Sans", Arial, sans-serif;
+    color: #17365D;
+    font-size: 17px;
+}
+.pc-historial h1 {
+    font-size: 30px;
+    margin: 0 0 8px;
+}
+.pc-historial .pc-descripcion {
+    color: #65748A;
+    margin-bottom: 24px;
+}
+.pc-historial .pc-panel {
+    background: #FFFFFF;
+    border: 1px solid #E9E2D5;
+    border-top: 4px solid #DCAE50;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 18px rgba(23,54,93,.06);
+}
+.pc-historial .pc-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+.pc-historial .pc-cabecera h2 {
+    font-size: 23px;
+    margin: 0;
+}
+.pc-historial .pc-buscador {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+.pc-historial .pc-buscador input {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px;
+    border: 1px solid #D6DCE5;
+    border-radius: 8px;
+    font: inherit;
+    color: #17365D;
+}
+.pc-historial .pc-boton {
+    display: inline-block;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 17px;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+.pc-historial .pc-azul {
+    background: #17365D;
+    color: #FFFFFF;
+}
+.pc-historial .pc-dorado {
+    background: #DCAE50;
+    color: #17365D;
+}
+.pc-historial .pc-gris {
+    background: #F0F2F5;
+    color: #17365D;
+}
+.pc-historial .pc-tabla {
+    width: 100%;
+    overflow-x: auto;
+}
+.pc-historial table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.pc-historial th {
+    background: #F5F0E7;
+    text-align: left;
+    padding: 14px;
+    font-weight: 700;
+}
+.pc-historial td {
+    padding: 15px 14px;
+    border-bottom: 1px solid #ECECEC;
+    vertical-align: middle;
+}
+.pc-historial .pc-etiqueta {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 7px 12px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.pc-historial .pc-con-ficha {
+    background: #E4F3E8;
+    color: #287B65;
+}
+.pc-historial .pc-sin-ficha {
+    background: #FFF2DA;
+    color: #91651B;
+}
+.pc-historial .pc-vacio {
+    text-align: center;
+    padding: 28px;
+    color: #65748A;
+}
+@media (max-width: 700px) {
+    .pc-historial .pc-panel {
+        padding: 15px;
+    }
+    .pc-historial table {
+        min-width: 620px;
+    }
+}
+</style>
+
+<div class="pc-historial">
+
+    <h1>Historial Cl&iacute;nico</h1>
+    <p class="pc-descripcion">
+        Consulta de fichas y antecedentes veterinarios de las mascotas.
+    </p>
+
+    <section class="pc-panel">
+
+        <div class="pc-cabecera">
+            <h2>Mascotas registradas: {{ total_mascotas }}</h2>
+        </div>
+
+        <form method="get" class="pc-buscador">
+            <input
+                type="search"
+                name="q"
+                value="{{ busqueda }}"
+                placeholder="Buscar por mascota o tutor"
+                aria-label="Buscar historial clínico"
+            >
+            <button type="submit" class="pc-boton pc-azul">
+                Buscar
+            </button>
+            <a href="{% url 'historial_clinico:lista' %}"
+               class="pc-boton pc-gris">
+                Limpiar
+            </a>
+        </form>
+
+        <div class="pc-tabla">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mascota</th>
+                        <th>Especie</th>
+                        <th>Tutor</th>
+                        <th>Ficha cl&iacute;nica</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mascota in mascotas %}
+                    <tr>
+                        <td><strong>{{ mascota.nombre }}</strong></td>
+                        <td>{{ mascota.get_especie_display }}</td>
+                        <td>
+                            {{ mascota.tutor.nombre }}
+                            {{ mascota.tutor.apellido }}
+                        </td>
+                        <td>
+                            {% if mascota.ficha_clinica %}
+                                <span class="pc-etiqueta pc-con-ficha">
+                                    Con ficha
+                                </span>
+                            {% else %}
+                                <span class="pc-etiqueta pc-sin-ficha">
+                                    Sin ficha
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a
+                                href="{% url 'historial_clinico:detalle' mascota.pk %}"
+                                class="pc-boton pc-dorado">
+                                Ver historial
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="pc-vacio">
+                            No se encontraron mascotas.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+</div>
+{% endblock %}

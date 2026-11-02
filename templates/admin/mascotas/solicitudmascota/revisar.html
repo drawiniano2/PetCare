@@ -1,0 +1,413 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<style>
+    .pc-review {
+        max-width: 1050px;
+        margin: 12px auto 35px;
+        color: #17354d;
+        font-family: inherit;
+    }
+
+    .pc-review * {
+        box-sizing: border-box;
+    }
+
+    .pc-header {
+        background: #17354d;
+        color: #fff;
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .pc-header h1 {
+        color: #fff !important;
+        font-size: 23px;
+        margin: 0 0 6px;
+        font-weight: 700;
+    }
+
+    .pc-header p {
+        color: #e0e9f0;
+        margin: 0;
+        font-size: 13px;
+    }
+
+    .pc-status {
+        display: inline-block;
+        padding: 8px 14px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 700;
+        background: #fff0bd;
+        color: #755000;
+    }
+
+    .pc-card {
+        background: #fffdf8;
+        border: 1px solid #d8e1e9;
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+    }
+
+    .pc-card h2 {
+        color: #17354d;
+        font-size: 17px;
+        font-weight: 700;
+        margin: 0 0 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e1e6eb;
+    }
+
+    .pc-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px 25px;
+    }
+
+    .pc-field {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .pc-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: #65798b;
+        margin-bottom: 4px;
+    }
+
+    .pc-value {
+        display: block;
+        font-size: 14px;
+        color: #17354d;
+    }
+
+    .pc-extra {
+        margin-top: 18px;
+        padding: 14px 16px;
+        border-radius: 8px;
+        background: #f3f6f8;
+    }
+
+    .pc-extra h3 {
+        font-size: 13px;
+        font-weight: 700;
+        color: #17354d;
+        margin: 0 0 8px;
+    }
+
+    .pc-extra p {
+        margin: 0;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    .pc-warning {
+        padding: 13px 15px;
+        margin-bottom: 15px;
+        background: #fff4e3;
+        border-left: 4px solid #d28a25;
+        color: #704800;
+        border-radius: 5px;
+    }
+
+    .pc-error {
+        background: #fff0ed;
+        border-left: 4px solid #b42318;
+        color: #8b241d;
+        padding: 14px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+    }
+
+    .pc-form-label {
+        display: block;
+        font-weight: 700;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .pc-textarea {
+        display: block;
+        width: 100%;
+        min-height: 90px;
+        padding: 12px;
+        border: 1px solid #bdcbd7;
+        border-radius: 8px;
+        background: #fff;
+        color: #17354d;
+        font: inherit;
+        resize: vertical;
+    }
+
+    .pc-textarea:focus {
+        outline: 2px solid #5b9ec5;
+        outline-offset: 1px;
+    }
+
+    .pc-confirm {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        margin: 17px 0;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .pc-confirm input {
+        margin-top: 2px;
+        flex-shrink: 0;
+    }
+
+    .pc-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .pc-review .pc-btn {
+        display: inline-block;
+        border: 0;
+        border-radius: 8px;
+        padding: 12px 20px;
+        color: #fff !important;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .pc-review .pc-approve {
+        background: #176b48;
+    }
+
+    .pc-review .pc-reject {
+        background: #a52b32;
+    }
+
+    .pc-review .pc-btn:hover {
+        filter: brightness(0.9);
+    }
+
+    .pc-footer {
+        margin-top: 18px;
+    }
+
+    .pc-footer a {
+        color: #245d84;
+        font-weight: 600;
+    }
+
+    .pc-notice {
+        padding: 15px;
+        background: #f3f6f8;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    @media (max-width: 650px) {
+        .pc-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .pc-header,
+        .pc-card {
+            padding: 16px;
+        }
+
+        .pc-actions {
+            flex-direction: column;
+        }
+
+        .pc-review .pc-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="pc-review">
+
+    <header class="pc-header">
+        <div>
+            <h1>Revisión de solicitud</h1>
+            <p>
+                Solicitud N.º {{ solicitud.pk }} ?
+                {{ solicitud.get_tipo_display }}
+            </p>
+        </div>
+
+        <span class="pc-status">
+            {{ solicitud.get_estado_display }}
+        </span>
+    </header>
+
+    <section class="pc-card">
+        <h2>Antecedentes de la solicitud</h2>
+
+        <div class="pc-grid">
+
+            <div class="pc-field">
+                <span class="pc-label">Mascota</span>
+                <span class="pc-value">{{ solicitud.nombre }}</span>
+            </div>
+
+            <div class="pc-field">
+                <span class="pc-label">Tutor</span>
+                <span class="pc-value">{{ solicitud.tutor }}</span>
+            </div>
+
+            <div class="pc-field">
+                <span class="pc-label">Tipo de solicitud</span>
+                <span class="pc-value">
+                    {{ solicitud.get_tipo_display }}
+                </span>
+            </div>
+
+            <div class="pc-field">
+                <span class="pc-label">Fecha de solicitud</span>
+                <span class="pc-value">
+                    {{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}
+                </span>
+            </div>
+
+            <div class="pc-field">
+                <span class="pc-label">Especie</span>
+                <span class="pc-value">
+                    {{ solicitud.get_especie_display }}
+                </span>
+            </div>
+
+            <div class="pc-field">
+                <span class="pc-label">Raza</span>
+                <span class="pc-value">
+                    {{ solicitud.raza|default:"No informada" }}
+                </span>
+            </div>
+
+            <div class="pc-field">
+                <span class="pc-label">Sexo</span>
+                <span class="pc-value">
+                    {{ solicitud.get_sexo_display }}
+                </span>
+            </div>
+
+            <div class="pc-field">
+                <span class="pc-label">Microchip</span>
+                <span class="pc-value">
+                    {{ solicitud.microchip|default:"No informado" }}
+                </span>
+            </div>
+
+        </div>
+
+        <div class="pc-extra">
+            <h3>Información adicional</h3>
+            <p>
+                {{ solicitud.informacion_adicional|default:"Sin observaciones"|linebreaksbr }}
+            </p>
+        </div>
+    </section>
+
+    {% if error_revision %}
+    <div class="pc-error" role="alert">
+        {{ error_revision }}
+    </div>
+    {% endif %}
+
+    {% if puede_decidir and solicitud.estado == "PENDIENTE" %}
+
+    <section class="pc-card">
+        <h2>Decisión administrativa</h2>
+
+        {% if not puede_aprobar %}
+        <div class="pc-warning">
+            La vinculaci?n de mascotas existentes requiere
+            verificar titularidad antes de aprobar.
+        </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <label class="pc-form-label" for="motivo">
+                Observación administrativa
+                (obligatoria para rechazar)
+            </label>
+
+            <textarea
+                class="pc-textarea"
+                id="motivo"
+                name="motivo"
+                rows="3"
+            >{{ motivo }}</textarea>
+
+            <label class="pc-confirm">
+                <input
+                    type="checkbox"
+                    name="confirmar"
+                    value="si"
+                    required
+                >
+                <span>
+                    Confirmo que revisé los antecedentes
+                    de esta solicitud.
+                </span>
+            </label>
+
+            <div class="pc-actions">
+                {% if puede_aprobar %}
+                <button
+                    class="pc-btn pc-approve"
+                    type="submit"
+                    name="accion"
+                    value="aprobar"
+                >
+                    Aprobar solicitud
+                </button>
+                {% endif %}
+
+                {% if puede_rechazar %}
+                <button
+                    class="pc-btn pc-reject"
+                    type="submit"
+                    name="accion"
+                    value="rechazar"
+                >
+                    Rechazar solicitud
+                </button>
+                {% endif %}
+            </div>
+        </form>
+    </section>
+
+    {% elif not puede_decidir %}
+
+    <div class="pc-notice">
+        Su cuenta tiene permiso de consulta.
+    </div>
+
+    {% else %}
+
+    <div class="pc-notice">
+        Esta solicitud ya fue revisada.
+    </div>
+
+    {% endif %}
+
+    <div class="pc-footer">
+        <a href="{% url 'admin:mascotas_solicitudmascota_changelist' %}">
+            ← Volver al listado de solicitudes
+        </a>
+    </div>
+
+</div>
+{% endblock %}

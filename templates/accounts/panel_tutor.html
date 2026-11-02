@@ -1,0 +1,1314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi espacio | PetCare</title>
+    <link rel="stylesheet" href="{% static 'css/petcare.css' %}">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #17354d;
+            background: #f5f5f1;
+        }
+        .contenedor {
+            max-width: 1100px;
+            margin: auto;
+            padding: 24px;
+        }
+        .cabecera {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .marca img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+        }
+        .marca h1 { margin: 0; font-size: 30px; }
+        .marca p { margin: 5px 0; color: #617384; }
+        .salir {
+            border: 0;
+            background: #17354d;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .bienvenida {
+            background: #17354d;
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            border-left: 9px solid #e4b343;
+        }
+        .bienvenida h2 { margin: 8px 0; }
+        .bienvenida p { color: #dbe8f0; }
+        .tarjetas {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+        .tarjeta {
+            background: white;
+            border-radius: 14px;
+            padding: 24px;
+            border-top: 6px solid #2563a6;
+            box-shadow: 0 4px 16px rgba(0,0,0,.06);
+        }
+        .tarjeta.mascotas { border-top-color: #d15a3c; }
+        .tarjeta h3 { margin-top: 0; font-size: 23px; }
+        .dato { margin: 12px 0; overflow-wrap: anywhere; }
+        .dato strong { display: block; margin-bottom: 4px; }
+        .mascota {
+            padding: 14px;
+            margin: 12px 0;
+            background: #f3f6f8;
+            border-radius: 9px;
+        }
+        .mascota strong { font-size: 18px; }
+        .mascota p { margin: 7px 0 0; }
+        .vacio { color: #617384; line-height: 1.6; }
+        .pie {
+            margin-top: 32px;
+            color: #617384;
+            text-align: center;
+            font-size: 13px;
+        }
+        @media (max-width: 700px) {
+            .tarjetas { grid-template-columns: 1fr; }
+            .cabecera { flex-wrap: wrap; }
+            .marca img { width: 65px; height: 65px; }
+            .contenedor { padding: 15px; }
+        }
+    </style>
+
+<style>
+/* PETCARE_PASO_100_CABECERA */
+
+/* Ajuste del encabezado del Portal del Tutor */
+header:has(img[src*="petcare_logo"]) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 110px;
+}
+
+header img[src*="petcare_logo"] {
+    width: 175px !important;
+    max-width: 175px !important;
+    height: auto !important;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+@media (max-width: 650px) {
+    header:has(img[src*="petcare_logo"]) {
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    header img[src*="petcare_logo"] {
+        width: 135px !important;
+        max-width: 135px !important;
+    }
+}
+</style>
+
+
+<style>
+/* PETCARE_PASO_101_CABECERA_FINAL */
+
+.pc-tutor-titulo {
+    margin: 0;
+    font-size: 23px;
+    font-weight: 700;
+    color: #17354d;
+    line-height: 1.25;
+}
+
+@media (max-width: 700px) {
+    .pc-tutor-titulo {
+        font-size: 19px;
+    }
+}
+</style>
+
+
+<style id="petcare-bauhaus-116">
+.bauhaus-solicitud-116 {
+    margin: 18px 0 22px;
+    padding: 16px;
+    background: #f5f0e4;
+    border-left: 6px solid #e5aa20;
+    border-bottom: 3px solid #17354d;
+    border-radius: 4px;
+}
+.bauhaus-link-116 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 13px 16px;
+    background: #17354d;
+    color: white !important;
+    text-decoration: none;
+    font-weight: 800;
+    border: 2px solid #17354d;
+    border-radius: 3px;
+    transition: background .2s, transform .2s;
+}
+.bauhaus-link-116:hover {
+    background: #005e80;
+    transform: translateY(-2px);
+}
+.bauhaus-icono-116 {
+    display: inline-grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    background: #e5aa20;
+    color: #17354d;
+    font-size: 22px;
+    font-weight: 900;
+    border-radius: 50%;
+}
+.bauhaus-solicitud-116 small {
+    display: block;
+    margin-top: 12px;
+    color: #42566b;
+    line-height: 1.5;
+}
+</style>
+
+<!-- PETCARE_CORRECCION_118 -->
+
+<style id="petcare-estilos-solicitudes-119">
+.pc-solicitudes-119 {
+    max-width: 950px;
+    margin: 24px auto;
+    padding: 24px;
+    background: #fff;
+    border-top: 5px solid #e5aa20;
+    border-radius: 10px;
+    box-shadow: 0 5px 18px #17354d12;
+    color: #17354d;
+    font-family: Arial, sans-serif;
+}
+.pc-solicitudes-119 h2 {
+    margin: 0 0 12px;
+    font-size: 22px;
+}
+.pc-solicitudes-ayuda-119 {
+    color: #53687a;
+    margin-bottom: 20px;
+}
+.pc-solicitudes-lista-119 {
+    display: grid;
+    gap: 12px;
+}
+.pc-solicitud-119 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    border: 1px solid #dce4eb;
+    border-left: 5px solid #17354d;
+    padding: 15px;
+    border-radius: 5px;
+}
+.pc-solicitud-119 p {
+    margin: 6px 0;
+}
+.pc-solicitud-119 small {
+    color: #66788a;
+}
+.pc-estado-119 {
+    display: inline-block;
+    padding: 8px 13px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: bold;
+}
+.pc-pendiente-119 {
+    background: #fff0c8;
+    color: #765000;
+}
+.pc-aprobada-119 {
+    background: #e2f3e8;
+    color: #176039;
+}
+.pc-rechazada-119 {
+    background: #fce6e3;
+    color: #a42f28;
+}
+.pc-solicitudes-vacio-119 {
+    padding: 14px;
+    background: #f5f3ec;
+    border-left: 4px solid #e5aa20;
+}
+</style>
+
+
+<style id="PETCARE_UNIFORMIDAD_120">
+/* Mantener las tarjetas originales y ampliar solicitudes. */
+.pc-solicitudes-119 {
+    width: 100%;
+    max-width: none;
+    margin: 24px 0 0;
+    box-sizing: border-box;
+    border-top: 5px solid #e5aa20;
+}
+
+/* Respetar la anchura del contenedor principal. */
+main > .pc-solicitudes-119 {
+    grid-column: 1 / -1;
+}
+
+.bauhaus-solicitud-116 {
+    margin: 20px 0 16px;
+    padding: 16px;
+    border-left: 5px solid #e5aa20;
+    background: #f7f3e9;
+}
+
+.bauhaus-link-116 {
+    min-height: 52px;
+    line-height: 1.35;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+}
+
+.pc-solicitudes-119 h2 {
+    color: #17354d;
+    font-weight: 800;
+}
+
+.pc-solicitudes-vacio-119 {
+    border-left: 4px solid #e5aa20;
+}
+
+@media (max-width: 650px) {
+    .pc-solicitudes-119 {
+        padding: 20px 16px;
+    }
+    .bauhaus-link-116 {
+        padding: 12px;
+        font-size: 14px;
+    }
+}
+</style>
+
+
+<style id="PETCARE_ICONOS_121">
+.pc-icono-121 {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    margin-right: 7px;
+}
+.bauhaus-icono-116 {
+    background: transparent;
+    width: auto;
+    height: auto;
+}
+.bauhaus-icono-116 .pc-icono-121 {
+    margin-right: 0;
+}
+.boton .pc-icono-121 {
+    margin-right: 2px;
+}
+</style>
+
+
+<style id="PETCARE_UNIFORMIDAD_122">
+
+:root {
+    --pc-azul: #17354d;
+    --pc-dorado: #e5aa20;
+    --pc-rojo: #df6045;
+    --pc-fondo: #f5f4ef;
+    --pc-texto: #17354d;
+}
+
+body {
+    background: var(--pc-fondo);
+    color: var(--pc-texto);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.pc-icono-121 {
+    vertical-align: middle;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+}
+
+.pc-solicitudes-119 {
+    width: 100%;
+    max-width: none;
+    margin: 24px 0 0;
+    border-top: 5px solid var(--pc-dorado);
+    box-sizing: border-box;
+}
+
+.pc-solicitudes-119 h2,
+.pc-solicitudes-119 p {
+    color: var(--pc-texto);
+}
+
+.bauhaus-link-116 {
+    background: var(--pc-azul);
+    color: #ffffff;
+}
+
+.bauhaus-solicitud-116 {
+    border-left-color: var(--pc-dorado);
+}
+
+@media (max-width: 650px) {
+    .pc-solicitudes-119 {
+        padding: 18px;
+    }
+}
+</style>
+
+
+<style id="PETCARE_BAUHAUS_123">
+:root {
+    --pc-rojo-123: #d94f3d;
+    --pc-azul-123: #17354d;
+    --pc-dorado-123: #e5aa20;
+}
+
+.pc-solicitudes-119 {
+    border-top: 5px solid var(--pc-dorado-123);
+    border-radius: 12px;
+    box-shadow: 0 5px 18px #17354d12;
+}
+
+.pc-solicitud-119 {
+    border-left-color: var(--pc-rojo-123);
+}
+
+.pc-rechazada-119 {
+    color: #a42f28;
+    background: #fce6e3;
+}
+
+.bauhaus-solicitud-116 {
+    border-left-color: var(--pc-dorado-123);
+}
+
+.bauhaus-link-116 {
+    transition: background .2s ease, transform .2s ease;
+}
+
+.bauhaus-link-116:hover {
+    background: #244b68;
+    transform: translateY(-1px);
+}
+</style>
+
+
+<style id="PETCARE_PORTAL_UNIFORME_129">
+
+/* PetCare: acabado visual compatible con el formulario. */
+body {
+    background: #f7f6f2 !important;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Tarjetas: menos relieve, contornos suaves. */
+.card, .tarjeta,
+.pc-solicitudes-119 {
+    box-shadow: 0 4px 14px rgba(23, 53, 77, 0.055) !important;
+}
+
+/* Solicitudes: mantener su identidad amarilla. */
+.pc-solicitudes-119 {
+    border-radius: 10px !important;
+}
+
+/* Iconos y encabezados consistentes. */
+.pc-icono-121 {
+    vertical-align: middle;
+}
+
+h1, h2, h3 {
+    letter-spacing: -0.3px;
+}
+
+/* Boton de solicitud: acabado plano, sin bisel. */
+.bauhaus-link-116 {
+    box-shadow: none !important;
+    border-radius: 5px !important;
+    transition: background-color .15s ease;
+}
+
+.bauhaus-link-116:hover {
+    background-color: #244962 !important;
+}
+
+/* Recuadro del boton: tono mas discreto. */
+.bauhaus-solicitud-116 {
+    background: #f8f6f0 !important;
+    border-radius: 5px !important;
+}
+
+/* Campos y textos secundarios. */
+small, .texto-secundario {
+    line-height: 1.5;
+}
+
+@media (max-width: 650px) {
+    h1 {
+        line-height: 1.2;
+    }
+    .bauhaus-link-116 {
+        min-height: 46px;
+    }
+}
+</style>
+
+
+<style id="PETCARE_CABECERA_130B">
+
+/* Encabezado uniforme PetCare */
+header.cabecera {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 20px !important;
+
+    padding: 18px 24px !important;
+    margin-bottom: 22px !important;
+
+    background: #f2f7fc !important;
+    border: 1px solid #d5e3f0 !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+}
+
+/* Logo y titulo */
+header.cabecera .marca {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 17px !important;
+    min-width: 0 !important;
+}
+
+header.cabecera .marca img {
+    display: block !important;
+    width: 165px !important;
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+header.cabecera .pc-tutor-titulo {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 29px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.4px !important;
+    color: #17354d !important;
+}
+
+/* Formulario de salida */
+header.cabecera form {
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+/* Boton plano, sin biseles */
+header.cabecera .salir {
+    background: #17354d !important;
+    color: #ffffff !important;
+    border: 1px solid #17354d !important;
+    border-radius: 7px !important;
+    box-shadow: none !important;
+    outline-offset: 3px !important;
+    text-shadow: none !important;
+}
+
+header.cabecera .salir:hover {
+    background: #244b69 !important;
+    border-color: #244b69 !important;
+}
+
+/* Adaptacion a pantallas pequenas */
+@media (max-width: 650px) {
+    header.cabecera {
+        padding: 15px !important;
+        gap: 14px !important;
+        flex-wrap: wrap !important;
+    }
+
+    header.cabecera .marca {
+        gap: 11px !important;
+    }
+
+    header.cabecera .marca img {
+        width: 115px !important;
+    }
+
+    header.cabecera .pc-tutor-titulo {
+        font-size: 22px !important;
+    }
+}
+
+</style>
+
+
+<style id="PETCARE_PORTAL_COMPACTO_161E">
+/* PETCARE - PASO 161E - PORTAL DEL TUTOR */
+
+/* Cabecera */
+header.cabecera {
+    padding: 12px 20px !important;
+    margin-bottom: 14px !important;
+}
+
+header.cabecera .marca img {
+    width: 145px !important;
+}
+
+header.cabecera .pc-tutor-titulo {
+    font-size: 26px !important;
+}
+
+/* Bienvenida compacta */
+.bienvenida {
+    padding: 20px 26px !important;
+    margin-bottom: 16px !important;
+    min-height: 0 !important;
+}
+
+.bienvenida h2 {
+    font-size: 25px !important;
+    margin: 6px 0 8px !important;
+}
+
+.bienvenida p {
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+}
+
+/* Tarjetas independientes, sin estiramiento vertical */
+main.tarjetas {
+    align-items: start !important;
+}
+
+main.tarjetas > .tarjeta {
+    height: auto !important;
+    min-height: 0 !important;
+    align-self: start !important;
+    box-sizing: border-box;
+    padding: 20px 22px !important;
+}
+
+main.tarjetas > .tarjeta h3 {
+    font-size: 21px !important;
+    margin-top: 0 !important;
+    margin-bottom: 16px !important;
+}
+
+/* Datos personales en dos columnas */
+main.tarjetas > .tarjeta:not(.mascotas) {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+    row-gap: 12px;
+}
+
+main.tarjetas > .tarjeta:not(.mascotas) > h3 {
+    grid-column: 1 / -1;
+}
+
+main.tarjetas > .tarjeta:not(.mascotas) > .dato {
+    min-width: 0;
+    margin: 0 !important;
+    padding: 9px 11px !important;
+    border: 1px solid #e4e9ee;
+    border-radius: 7px;
+    background: #fffdf9;
+    font-size: 15px !important;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+main.tarjetas > .tarjeta:not(.mascotas) > .dato strong {
+    display: block;
+    font-size: 14px !important;
+    margin-bottom: 4px;
+}
+
+/* Tarjeta de mascotas */
+main.tarjetas > .tarjeta.mascotas {
+    display: block !important;
+}
+
+main.tarjetas .bauhaus-solicitud-116 {
+    margin-bottom: 12px !important;
+}
+
+main.tarjetas .bauhaus-link-116 {
+    font-size: 15px !important;
+    line-height: 1.4;
+}
+
+main.tarjetas .vacio {
+    margin: 10px 0 0 !important;
+    font-size: 15px !important;
+    line-height: 1.5;
+}
+
+/* Solicitudes */
+.pc-solicitudes-119 {
+    padding: 20px 22px !important;
+    margin-top: 16px !important;
+}
+
+.pc-solicitudes-119 h2 {
+    font-size: 21px !important;
+    margin-top: 0 !important;
+}
+
+.pc-solicitudes-ayuda-119 {
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+}
+
+.pc-solicitud-119 {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 20px !important;
+    padding: 15px 17px !important;
+}
+
+.pc-solicitud-119 strong {
+    font-size: 16px !important;
+}
+
+.pc-solicitud-119 p {
+    font-size: 15px !important;
+}
+
+.pc-solicitud-119 small {
+    font-size: 13px !important;
+}
+
+.pc-estado-119 {
+    font-size: 14px !important;
+    flex-shrink: 0;
+}
+
+/* Pantallas medianas y pequenas */
+@media (max-width: 760px) {
+    header.cabecera {
+        padding: 12px !important;
+    }
+
+    header.cabecera .marca img {
+        width: 115px !important;
+    }
+
+    header.cabecera .pc-tutor-titulo {
+        font-size: 21px !important;
+    }
+
+    main.tarjetas > .tarjeta:not(.mascotas) {
+        grid-template-columns: 1fr;
+    }
+
+    .pc-solicitud-119 {
+        flex-wrap: wrap !important;
+    }
+}
+</style>
+
+</head>
+<body>
+    <div class="contenedor">
+        <header class="cabecera">
+            <div class="marca">
+                <img
+                    src="{% static 'img/petcare_logo_bauhaus.png' %}"
+                    alt="Logo PetCare"
+                >
+                <div>
+                    <h1 class="pc-tutor-titulo">Portal del tutor</h1>
+                </div>
+            </div>
+            <form method="post" action="{% url 'petcare_logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="salir">
+                    Cerrar sesi&oacute;n
+                </button>
+            </form>
+        </header>
+
+        <section class="bienvenida">
+            <small>MI ESPACIO PETCARE</small>
+            <h2>Bienvenido, {{ tutor.nombre }}</h2>
+            <p>
+                Consulta tu informaci&oacute;n personal
+                y las mascotas asociadas a tu cuenta.
+            </p>
+        </section>
+
+        <main class="tarjetas">
+            <section class="tarjeta">
+                <h3><svg class="pc-icono-121" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#2866a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg> Mis datos</h3>
+                <div class="dato">
+                    <strong>Nombre completo</strong>
+                    {{ tutor.nombre }} {{ tutor.apellido }}
+                </div>
+                <div class="dato">
+                    <strong>RUT</strong>
+                    {{ tutor.rut }}
+                </div>
+                <div class="dato">
+                    <strong>Tel&eacute;fono</strong>
+                    {{ tutor.telefono }}
+                </div>
+                <div class="dato">
+                    <strong>Correo electr&oacute;nico</strong>
+                    {{ tutor.correo }}
+                </div>
+                <div class="dato">
+                    <strong>Direcci&oacute;n</strong>
+                    {{ tutor.direccion|default:"No registrada" }}
+                </div>
+            </section>
+
+            <section class="tarjeta mascotas">
+                <h3><svg class="pc-icono-121" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#d6a020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="16" rx="5" ry="3.5"/><circle cx="5" cy="10" r="1"/><circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="19" cy="10" r="1"/></svg> Mis mascotas ({{ total_mascotas }})</h3>
+<div class="bauhaus-solicitud-116">
+    <a class="bauhaus-link-116"
+       href="{% url 'solicitar_mascota' %}">
+        <span class="bauhaus-icono-116"><svg class="pc-icono-121" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#e5aa20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 7v10M7 12h10"/></svg></span>
+        Solicitar registro o vinculaci&oacute;n
+        <span aria-hidden="true">&rarr;</span>
+    </a>
+    <small>
+        La cl&iacute;nica revisar&aacute; tu solicitud antes de aprobarla.
+    </small>
+</div>
+
+
+                {% for mascota in mascotas %}
+                    <article class="mascota">
+                        <strong>{{ mascota.nombre }}</strong>
+      
+
+                        <p>
+                            Especie: {{ mascota.especie }}
+                        </p>
+                        <p>
+                            Raza: {{ mascota.raza|default:"No registrada" }}
+                        </p>
+<!-- PETCARE_BOTONES_165R15B -->
+<a href="{% url 'historial_mascota_tutor' mascota.pk %}"
+   style="display:flex;align-items:center;justify-content:center;
+          gap:12px;width:100%;margin-top:16px;
+          padding:15px 18px;border-radius:10px;
+          background:#174d83;color:#ffffff;
+          font-size:15px;font-weight:700;
+          text-decoration:none;box-shadow:0 4px 12px #17354d26;">
+  <span aria-hidden="true" style="font-size:20px;">&#128203;</span>
+  <span>Ver historial m&eacute;dico</span>
+  <span aria-hidden="true" style="font-size:19px;">&rarr;</span>
+</a>
+
+                    </article>
+                {% empty %}
+                    <p class="vacio">
+                        Todav&iacute;a no tienes mascotas
+                        vinculadas a tu cuenta.
+                    </p>
+                {% endfor %}
+            </section>
+        
+<!-- PETCARE_SOLICITUDES_119 -->
+<section class="pc-solicitudes-119">
+    <h2><svg class="pc-icono-121" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#2866a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="18" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg> Mis solicitudes de mascotas</h2>
+    <p class="pc-solicitudes-ayuda-119">
+        Consulta el avance de tus solicitudes.
+        La cl&iacute;nica revisar&aacute; cada caso.
+    </p>
+
+    {% if solicitudes_mascotas %}
+        <div class="pc-solicitudes-lista-119">
+            {% for solicitud in solicitudes_mascotas %}
+                <article class="pc-solicitud-119">
+                    <div>
+                        <strong>{{ solicitud.nombre }}</strong>
+                        <p>{{ solicitud.get_tipo_display }}</p>
+                        <small>
+                            {{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}
+                        </small>
+                    </div>
+                    <span class="pc-estado-119
+                        {% if solicitud.estado == 'APROBADA' %}pc-aprobada-119
+                        {% elif solicitud.estado == 'RECHAZADA' %}pc-rechazada-119
+                        {% else %}pc-pendiente-119{% endif %}">
+                        {{ solicitud.get_estado_display }}
+                    </span>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="pc-solicitudes-vacio-119">
+            Todav&iacute;a no has enviado solicitudes.
+        </p>
+    {% endif %}
+</section>
+
+
+
+<!-- PETCARE_SOLICITUDES_CITAS_165Q3 -->
+<section class="pc-solicitudes-citas-165q3">
+
+    <div class="pc-sc-encabezado">
+        <div>
+            <h2>Mis solicitudes de citas</h2>
+            <p>
+                Revisa tus solicitudes y su estado.
+                La cl&iacute;nica confirmar&aacute; la disponibilidad.
+            </p>
+        </div>
+
+        <a class="pc-sc-nueva"
+           href="{% url 'solicitar_cita' %}">
+            <span aria-hidden="true">+</span>
+            Solicitar cita veterinaria
+        </a>
+    </div>
+
+    {% for solicitud in solicitudes_citas %}
+    <article class="pc-sc-registro">
+
+        <div class="pc-sc-datos">
+            <strong>{{ solicitud.mascota.nombre }}</strong>
+
+            <p>
+                Fecha preferida:
+                {{ solicitud.fecha_preferida|date:"d/m/Y" }}
+                &nbsp; | &nbsp;
+                Hora:
+                {{ solicitud.hora_preferida|time:"H:i" }}
+            </p>
+
+            <p>
+                Motivo: {{ solicitud.motivo }}
+            </p>
+
+            <small>
+                Solicitada:
+                {{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}
+            </small>
+
+            {% if solicitud.observaciones_clinica %}
+            <p class="pc-sc-observacion">
+                Respuesta de la cl&iacute;nica:
+                {{ solicitud.observaciones_clinica }}
+            </p>
+            {% endif %}
+
+        </div>
+
+        <span class="pc-sc-estado
+            {% if solicitud.estado == 'APROBADA' %}pc-sc-aprobada
+            {% elif solicitud.estado == 'RECHAZADA' %}pc-sc-rechazada
+            {% elif solicitud.estado == 'CANCELADA' %}pc-sc-cancelada
+            {% else %}pc-sc-pendiente{% endif %}">
+            {{ solicitud.get_estado_display }}
+        </span>
+
+        <!-- PETCARE_ACCIONES_SOLICITUD_165R29 -->
+        {% if solicitud.estado == 'PENDIENTE' and not solicitud.cita_id %}
+        <div class="pc-sc-acciones-165r29">
+
+            <a class="pc-sc-editar-165r29"
+               href="{% url 'editar_solicitud_cita' solicitud.pk %}">
+                &#9998; Editar solicitud
+            </a>
+
+            <form method="post"
+                  action="{% url 'cancelar_solicitud_cita' solicitud.pk %}"
+                  class="pc-sc-form-cancelar-165r29"
+                  onsubmit="return confirm('?Confirmas que deseas cancelar esta solicitud de cita? Esta acci?n no se puede deshacer desde Mi espacio.');">
+                {% csrf_token %}
+
+                <button type="submit"
+                        class="pc-sc-cancelar-165r29">
+                    &#10005; Cancelar solicitud
+                </button>
+            </form>
+
+        </div>
+        {% endif %}
+
+    </article>
+
+    {% empty %}
+
+    <div class="pc-sc-vacio">
+        Todav&iacute;a no has enviado solicitudes de citas.
+        Puedes realizar tu primera solicitud desde el bot&oacute;n superior.
+    </div>
+
+    {% endfor %}
+
+</section>
+
+<style id="PETCARE_SOLICITUDES_CITAS_165Q3_ESTILO">
+
+.pc-solicitudes-citas-165q3 {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid #d5e3ef;
+    border-top: 5px solid #d7a52e;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 18px;
+    box-shadow: 0 4px 14px rgba(23,53,77,.055);
+}
+
+.pc-sc-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.pc-sc-encabezado h2 {
+    color: #17354d;
+    font-size: 23px;
+    margin: 0 0 8px;
+}
+
+.pc-sc-encabezado p {
+    color: #52677b;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.pc-sc-nueva {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #17354d;
+    color: #ffffff !important;
+    padding: 13px 17px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.pc-sc-nueva:hover {
+    background: #20557a;
+}
+
+.pc-sc-nueva span {
+    color: #efc15b;
+    font-size: 23px;
+    line-height: 1;
+}
+
+.pc-sc-registro {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px;
+    margin-top: 12px;
+    background: #f7fafd;
+    border: 1px solid #e0eaf2;
+    border-left: 4px solid #2866a5;
+    border-radius: 9px;
+}
+
+.pc-sc-datos {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.pc-sc-datos strong {
+    color: #17354d;
+    font-size: 17px;
+}
+
+.pc-sc-datos p {
+    color: #42576b;
+    margin: 8px 0;
+    line-height: 1.5;
+}
+
+.pc-sc-datos small {
+    color: #64778a;
+}
+
+.pc-sc-observacion {
+    padding: 10px 12px;
+    background: #e9f3fc;
+    border-radius: 6px;
+}
+
+.pc-sc-estado {
+    display: inline-block;
+    flex-shrink: 0;
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.pc-sc-pendiente {
+    background: #fff2cf;
+    color: #805a0b;
+}
+
+.pc-sc-aprobada {
+    background: #e4f4e9;
+    color: #21633c;
+}
+
+.pc-sc-rechazada {
+    background: #f9e8e8;
+    color: #8c3434;
+}
+
+.pc-sc-cancelada {
+    background: #edf0f4;
+    color: #596473;
+}
+
+.pc-sc-vacio {
+    padding: 18px;
+    background: #f0f6fc;
+    color: #40576d;
+    border-radius: 8px;
+    line-height: 1.5;
+}
+
+@media (max-width: 650px) {
+    .pc-solicitudes-citas-165q3 {
+        padding: 18px;
+    }
+
+    .pc-sc-encabezado {
+        align-items: stretch;
+    }
+
+    .pc-sc-nueva {
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .pc-sc-registro {
+        flex-direction: column;
+    }
+}
+
+</style>
+
+
+<!-- PETCARE_CITAS_TUTOR_164F -->
+<section class="pc-citas-tutor-164f">
+    <h2>Mis citas veterinarias</h2>
+    <p>Consulta las citas registradas para tus mascotas.</p>
+
+    {% for cita in citas_tutor %}
+        <article class="pc-cita-164f">
+            <div>
+                <strong>{{ cita.mascota.nombre }}</strong>
+                <p>
+                    {{ cita.fecha|date:"d/m/Y" }}
+                    a las {{ cita.hora_inicio|time:"H:i" }}
+                </p>
+                <p>Veterinario: {{ cita.veterinario }}</p>
+                <p>Motivo: {{ cita.motivo }}</p>
+            </div>
+            <span>{{ cita.get_estado_display }}</span>
+        </article>
+    {% empty %}
+        <p class="pc-citas-vacio-164f">
+            Todavia no hay citas registradas para tus mascotas.
+        </p>
+    {% endfor %}
+</section>
+
+<style id="PETCARE_CITAS_TUTOR_164F_ESTILO">
+.pc-citas-tutor-164f {
+    grid-column: 1 / -1;
+    background: #fffdf8;
+    border: 1px solid #e8e0d3;
+    border-top: 4px solid #2866a5;
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 18px;
+}
+.pc-citas-tutor-164f h2 {
+    color: #183452;
+    margin: 0 0 10px;
+}
+.pc-citas-tutor-164f > p {
+    color: #526273;
+}
+.pc-cita-164f {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 16px;
+    margin-top: 12px;
+    background: #f5f8fc;
+    border: 1px solid #e0e8f0;
+    border-radius: 12px;
+}
+.pc-cita-164f strong {
+    color: #183452;
+}
+.pc-cita-164f p {
+    margin: 6px 0;
+}
+.pc-cita-164f span {
+    color: #2866a5;
+    font-weight: 700;
+}
+.pc-citas-vacio-164f {
+    padding: 14px;
+    background: #f5f8fc;
+    border-radius: 10px;
+}
+@media (max-width: 650px) {
+    .pc-cita-164f {
+        flex-direction: column;
+    }
+}
+</style>
+
+</main>
+
+        <footer class="pie">
+            PetCare | Gesti&oacute;n veterinaria
+        </footer>
+    </div>
+
+<!-- PETCARE_ESTILOS_ACCIONES_165R29 -->
+<style>
+.pc-sc-acciones-165r29 {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    margin-top: 15px;
+    padding-top: 14px;
+    border-top: 1px solid #dce7f1;
+}
+
+.pc-sc-editar-165r29,
+.pc-sc-cancelar-165r29 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.pc-sc-editar-165r29 {
+    background: #17354d;
+    color: #ffffff !important;
+    border: 1px solid #17354d;
+}
+
+.pc-sc-editar-165r29:hover {
+    background: #245b82;
+}
+
+.pc-sc-form-cancelar-165r29 {
+    margin: 0;
+}
+
+.pc-sc-cancelar-165r29 {
+    background: #ffffff;
+    color: #b73540;
+    border: 1px solid #b73540;
+}
+
+.pc-sc-cancelar-165r29:hover {
+    background: #fff0f1;
+}
+
+.pc-sc-editar-165r29:focus-visible,
+.pc-sc-cancelar-165r29:focus-visible {
+    outline: 3px solid #d99c1d;
+    outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    .pc-sc-acciones-165r29 {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pc-sc-editar-165r29,
+    .pc-sc-form-cancelar-165r29,
+    .pc-sc-cancelar-165r29 {
+        width: 100%;
+    }
+}
+</style>
+
+</body>
+</html>

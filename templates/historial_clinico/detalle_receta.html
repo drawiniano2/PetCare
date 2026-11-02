@@ -1,0 +1,1330 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- PETCARE V20 - DOCUMENTO INDIVIDUAL DE RECETA -->
+
+<div class="pc-receta-pagina">
+
+    <div class="pc-receta-acciones">
+        <a href="{% url 'historial_clinico:detalle_atencion' mascota.pk atencion.pk %}"
+           class="pc-receta-volver">
+            Volver a la atenci&oacute;n
+        </a>
+
+        <button type="button"
+                class="pc-receta-imprimir"
+                onclick="window.print()">
+            Imprimir receta / PDF
+        </button>
+    </div>
+
+    <article class="pc-receta-documento">
+
+        <header class="pc-receta-documento-header">
+            <img src="{% static 'img/petcare_logo_bauhaus.png' %}"
+                 alt="PetCare"
+                 class="pc-receta-logo">
+
+            <div>
+                <h1>RECETA VETERINARIA</h1>
+                <p>PetCare - Cl&iacute;nica Veterinaria</p>
+                <span>Documento cl&iacute;nico</span>
+            </div>
+        </header>
+
+        <div class="pc-receta-identificador">
+            <strong>Receta N.&ordm; {{ receta.pk }}</strong>
+            <span>
+                Fecha de emisi&oacute;n:
+                {{ receta.fecha_emision|date:"d/m/Y H:i" }}
+            </span>
+        </div>
+
+        <section class="pc-receta-bloque">
+            <h2>Identificaci&oacute;n del paciente</h2>
+
+            <div class="pc-receta-grid">
+                <div>
+                    <strong>Nombre</strong>
+                    <p>{{ mascota.nombre }}</p>
+                </div>
+
+                <div>
+                    <strong>Especie</strong>
+                    <p>{{ mascota.especie }}</p>
+                </div>
+
+                <div>
+                    <strong>Raza</strong>
+                    <p>{{ mascota.raza|default:"Sin registrar" }}</p>
+                </div>
+
+                <div>
+                    <strong>Tutor responsable</strong>
+                    <p>{{ mascota.tutor }}</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="pc-receta-bloque">
+            <h2>Profesional responsable</h2>
+
+            <div class="pc-receta-grid">
+                <div>
+                    <strong>Veterinario</strong>
+                    <p>{{ atencion.veterinario }}</p>
+                </div>
+
+                <div>
+                    <strong>Atenci&oacute;n cl&iacute;nica</strong>
+                    <p>N.&ordm; {{ atencion.pk }}</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="pc-receta-bloque">
+            <h2>Medicamentos prescritos</h2>
+
+            {% for medicamento in receta.medicamentos.all %}
+            <div class="pc-receta-medicamento">
+                <h3>
+                    {{ forloop.counter }}.
+                    {{ medicamento.nombre }}
+                </h3>
+
+                <div class="pc-receta-grid">
+                    <div>
+                        <strong>Presentaci&oacute;n</strong>
+                        <p>{{ medicamento.presentacion|default:"Sin registrar" }}</p>
+                    </div>
+
+                    <div>
+                        <strong>Dosis</strong>
+                        <p>{{ medicamento.dosis }}</p>
+                    </div>
+
+                    <div>
+                        <strong>V&iacute;a de administraci&oacute;n</strong>
+                        <p>{{ medicamento.via_administracion }}</p>
+                    </div>
+
+                    <div>
+                        <strong>Frecuencia</strong>
+                        <p>{{ medicamento.frecuencia }}</p>
+                    </div>
+
+                    <div>
+                        <strong>Duraci&oacute;n</strong>
+                        <p>{{ medicamento.duracion }}</p>
+                    </div>
+                </div>
+
+                {% if medicamento.instrucciones %}
+                <div class="pc-receta-texto">
+                    <strong>Instrucciones espec&iacute;ficas</strong>
+                    <p>{{ medicamento.instrucciones|linebreaksbr }}</p>
+                </div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p>Sin medicamentos registrados.</p>
+            {% endfor %}
+        </section>
+
+        {% if receta.indicaciones_generales %}
+        <section class="pc-receta-bloque">
+            <h2>Indicaciones generales</h2>
+            <p>{{ receta.indicaciones_generales|linebreaksbr }}</p>
+        </section>
+        {% endif %}
+
+        {% if receta.observaciones %}
+        <section class="pc-receta-bloque">
+            <h2>Observaciones</h2>
+            <p>{{ receta.observaciones|linebreaksbr }}</p>
+        </section>
+        {% endif %}
+
+        <div class="pc-receta-firma">
+            <div class="pc-receta-linea-firma"></div>
+            <strong>{{ atencion.veterinario }}</strong>
+            <span>Firma y timbre profesional</span>
+        </div>
+
+        <footer class="pc-receta-pie">
+            PetCare - Sistema de Gesti&oacute;n Veterinaria
+            <span>Receta N.&ordm; {{ receta.pk }}</span>
+        </footer>
+
+    </article>
+</div>
+
+
+
+
+
+
+
+
+
+<style>
+/* PETCARE_V21_RECETA_DISENO_UNIFICADO */
+
+.pc-receta-pagina {
+    max-width: 960px;
+    margin: 24px auto 50px;
+}
+
+.pc-receta-acciones {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.pc-receta-volver,
+.pc-receta-imprimir {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 9px;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.pc-receta-volver {
+    background: #efe8dd;
+    color: #17365d;
+}
+
+.pc-receta-imprimir {
+    background: #17365d;
+    color: white;
+}
+
+.pc-receta-documento {
+    box-sizing: border-box;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #e3e7ed;
+    border-radius: 14px;
+    padding: 36px 42px;
+    box-shadow: 0 8px 28px rgba(20,45,75,.08);
+    color: #24364c;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.pc-receta-documento-header {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    align-items: center;
+    gap: 28px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #e4b343;
+}
+
+.pc-receta-logo {
+    display: block;
+    width: 100%;
+    max-width: 190px;
+    height: auto;
+    object-fit: contain;
+}
+
+.pc-receta-documento-header h1 {
+    margin: 0;
+    color: #142d4e;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: .3px;
+}
+
+.pc-receta-documento-header p {
+    margin: 8px 0 4px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.pc-receta-documento-header span {
+    color: #65748a;
+    font-size: 14px;
+}
+
+.pc-receta-identificador {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 20px 0 24px;
+    padding: 14px 16px;
+    background: #f3f6fb;
+    border-radius: 8px;
+}
+
+.pc-receta-identificador strong {
+    color: #142d4e;
+}
+
+.pc-receta-bloque {
+    margin-top: 22px;
+}
+
+.pc-receta-bloque h2 {
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dce3eb;
+    color: #142d4e;
+    font-size: 19px;
+}
+
+.pc-receta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+}
+
+.pc-receta-grid strong,
+.pc-receta-texto strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #516178;
+    font-size: 14px;
+}
+
+.pc-receta-grid p,
+.pc-receta-texto p {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.pc-receta-medicamento {
+    margin: 14px 0;
+    padding: 17px;
+    border: 1px solid #e4d3b7;
+    border-radius: 9px;
+    background: #fffaf2;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.pc-receta-medicamento h3 {
+    margin: 0 0 12px;
+    color: #142d4e;
+    font-size: 17px;
+}
+
+.pc-receta-texto {
+    margin-top: 15px;
+}
+
+.pc-receta-firma {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 270px;
+    max-width: 100%;
+    margin: 65px 0 24px auto;
+    text-align: center;
+    break-inside: avoid;
+}
+
+.pc-receta-linea-firma {
+    width: 100%;
+    border-top: 1px solid #142d4e;
+    margin-bottom: 9px;
+}
+
+.pc-receta-firma span {
+    margin-top: 5px;
+    color: #65748a;
+    font-size: 13px;
+}
+
+.pc-receta-pie {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #dce3eb;
+    color: #65748a;
+    font-size: 13px;
+}
+
+@media (max-width: 640px) {
+    .pc-receta-documento {
+        padding: 22px 18px;
+    }
+
+    .pc-receta-documento-header {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .pc-receta-logo {
+        max-width: 170px;
+    }
+
+    .pc-receta-documento-header h1 {
+        font-size: 23px;
+    }
+
+    .pc-receta-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+/* PETCARE_V21_A4_AJUSTE_75 */
+
+/* Ajustes visuales en pantalla */
+.pc-receta-documento-header {
+    grid-template-columns: 175px minmax(0, 1fr);
+    gap: 34px;
+}
+
+.pc-receta-logo {
+    max-width: 175px;
+}
+
+.pc-receta-documento-header h1 {
+    font-size: 29px;
+}
+
+.pc-receta-firma {
+    margin-top: 42px;
+    margin-bottom: 18px;
+    width: 225px;
+}
+
+/* Ajustes exclusivos para impresi?n */
+
+
+
+
+/* PETCARE_V21_A4_CORRECCION_76 */
+
+/* CABECERA EN PANTALLA */
+
+.pc-receta-documento-header {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 35px;
+}
+
+.pc-receta-documento-header > div {
+    min-width: 0;
+    text-align: right;
+}
+
+.pc-receta-documento-header h1 {
+    font-size: 30px;
+    letter-spacing: 0;
+}
+
+.pc-receta-logo {
+    width: 190px;
+    max-width: 100%;
+}
+
+.pc-receta-firma {
+    width: 205px;
+    margin-top: 30px;
+}
+
+/* IMPRESION A4 */
+
+
+
+
+@media screen and (max-width: 640px) {
+    .pc-receta-documento-header {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .pc-receta-documento-header > div {
+        text-align: left;
+    }
+}
+
+
+/* PETCARE_V21_A4_CORRECCION_77 */
+
+/* Pantalla: logotipo ligeramente mayor */
+@media screen {
+    .pc-receta-documento-header {
+        grid-template-columns: 210px minmax(0, 1fr);
+        column-gap: 28px;
+    }
+
+    .pc-receta-logo {
+        width: 210px;
+        max-width: 100%;
+    }
+
+    .pc-receta-documento-header h1 {
+        font-size: 30px;
+    }
+
+    @media (max-width: 640px) {
+        .pc-receta-documento-header {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+/* Impresi?n: conservar el flujo completo del documento */
+
+
+
+
+/* PETCARE_V21_A4_AJUSTE_78 */
+
+/* LOGOTIPO +10% EN PANTALLA */
+@media screen and (min-width: 641px) {
+
+    .pc-receta-documento-header {
+        grid-template-columns: 231px minmax(0, 1fr);
+        column-gap: 20px;
+    }
+
+    .pc-receta-logo {
+        width: 231px;
+        max-width: 100%;
+    }
+}
+
+/* AJUSTE FINO PARA IMPRESION A4 */
+
+
+
+
+/* PETCARE_V21_A4_AJUSTE_79 */
+
+
+
+
+
+/* PETCARE_V21_A4_AJUSTE_80 */
+
+
+
+
+
+/* PETCARE_V21_A4_AJUSTE_81 */
+
+
+
+
+
+/* PETCARE_V21_A4_AISLAMIENTO_85 */
+
+
+
+
+
+/* PETCARE_V21_A4_AJUSTE_86 */
+/* Separacion superior de seguridad para impresion */
+
+
+
+
+
+
+/* PETCARE_V21_A4_CONSOLIDACION_90 */
+@media print {
+
+    @page {
+        size: A4 portrait;
+        margin: 12mm;
+    }
+
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        overflow: visible !important;
+        height: auto !important;
+    }
+
+    body * {
+        visibility: hidden !important;
+    }
+
+    .pc-receta-documento,
+    .pc-receta-documento * {
+        visibility: visible !important;
+    }
+
+    .pc-receta-acciones,
+    aside, nav, .sidebar, .pc-sidebar {
+        display: none !important;
+    }
+
+    .pc-receta-pagina {
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .pc-receta-documento {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        font-size: 11pt !important;
+        line-height: 1.35 !important;
+    }
+
+    .pc-receta-documento-header {
+        grid-template-columns: 42mm minmax(0, 1fr) !important;
+        gap: 8mm !important;
+        padding-bottom: 5mm !important;
+    }
+
+    .pc-receta-logo {
+        width: 42mm !important;
+        max-width: 42mm !important;
+    }
+
+    .pc-receta-documento-header h1 {
+        font-size: 19pt !important;
+    }
+
+    .pc-receta-documento-header p {
+        font-size: 11pt !important;
+    }
+
+    .pc-receta-documento-header span {
+        font-size: 10pt !important;
+    }
+
+    .pc-receta-identificador {
+        margin: 5mm 0 !important;
+        padding: 3mm !important;
+    }
+
+    .pc-receta-bloque {
+        margin-top: 5mm !important;
+    }
+
+    .pc-receta-bloque h2 {
+        font-size: 13pt !important;
+        margin-bottom: 3mm !important;
+    }
+
+    .pc-receta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 3mm 6mm !important;
+    }
+
+    .pc-receta-grid strong,
+    .pc-receta-texto strong {
+        font-size: 10pt !important;
+    }
+
+    .pc-receta-medicamento {
+        margin: 3mm 0 !important;
+        padding: 4mm !important;
+    }
+
+    .pc-receta-medicamento h3 {
+        font-size: 12pt !important;
+    }
+
+    .pc-receta-firma {
+        margin-top: 15mm !important;
+        margin-bottom: 6mm !important;
+    }
+
+    .pc-receta-pie {
+        font-size: 9pt !important;
+    }
+
+    .pc-receta-documento p {
+        orphans: 2;
+        widows: 2;
+    }
+
+
+
+    @page {
+        size: A4 portrait;
+        margin: 10mm;
+    }
+
+    .pc-receta-documento {
+        position: static !important;
+        width: 100% !important;
+        font-size: 11pt !important;
+        line-height: 1.28 !important;
+    }
+
+    .pc-receta-documento-header {
+        display: grid !important;
+        grid-template-columns: 35mm minmax(0, 1fr) !important;
+        gap: 7mm !important;
+        padding-bottom: 3mm !important;
+        align-items: center !important;
+    }
+
+    .pc-receta-logo {
+        width: 35mm !important;
+        max-width: 35mm !important;
+    }
+
+    .pc-receta-documento-header h1 {
+        font-size: 18pt !important;
+        line-height: 1.15 !important;
+    }
+
+    .pc-receta-documento-header p {
+        margin: 2mm 0 1mm !important;
+        font-size: 11pt !important;
+    }
+
+    .pc-receta-identificador {
+        margin: 3mm 0 !important;
+        padding: 2.5mm 3mm !important;
+    }
+
+    .pc-receta-bloque {
+        margin-top: 3mm !important;
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+    }
+
+    .pc-receta-bloque h2 {
+        margin-bottom: 2mm !important;
+        padding-bottom: 1.5mm !important;
+        font-size: 12.5pt !important;
+        break-after: avoid !important;
+    }
+
+    .pc-receta-grid {
+        gap: 2mm 5mm !important;
+    }
+
+    .pc-receta-grid strong,
+    .pc-receta-texto strong {
+        font-size: 10pt !important;
+        margin-bottom: 1mm !important;
+    }
+
+    .pc-receta-medicamento {
+        margin: 2mm 0 !important;
+        padding: 3mm !important;
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+    }
+
+    .pc-receta-medicamento h3 {
+        margin-bottom: 2mm !important;
+        font-size: 12pt !important;
+        break-after: avoid !important;
+    }
+
+    .pc-receta-texto {
+        margin-top: 2mm !important;
+    }
+
+    .pc-receta-firma {
+        width: 48mm !important;
+        margin: 7mm 0 4mm auto !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .pc-receta-linea-firma {
+        margin-bottom: 2mm !important;
+    }
+
+    .pc-receta-firma span {
+        font-size: 9pt !important;
+    }
+
+    .pc-receta-pie {
+        margin-top: 3mm !important;
+        padding-top: 2mm !important;
+        font-size: 9pt !important;
+    }
+
+
+
+    @page {
+        size: A4 portrait;
+        margin: 10mm;
+    }
+
+    html,
+    body {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+
+    /*
+       Ocultar los elementos hermanos del documento
+       sin reservar espacio para ellos.
+    */
+
+    body * {
+        visibility: hidden !important;
+    }
+
+    .pc-receta-documento,
+    .pc-receta-documento * {
+        visibility: visible !important;
+    }
+
+    .pc-receta-pagina {
+        position: static !important;
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    .pc-receta-acciones {
+        display: none !important;
+    }
+
+    .pc-receta-documento {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        font-size: 11pt !important;
+        line-height: 1.25 !important;
+    }
+
+    .pc-receta-documento-header {
+        grid-template-columns: 42mm minmax(0, 1fr) !important;
+        column-gap: 8mm !important;
+        padding-bottom: 3mm !important;
+    }
+
+    .pc-receta-documento-header > div {
+        text-align: right !important;
+    }
+
+    .pc-receta-logo {
+        width: 42mm !important;
+        max-width: 42mm !important;
+    }
+
+    .pc-receta-documento-header h1 {
+        font-size: 18pt !important;
+    }
+
+    .pc-receta-identificador {
+        margin: 3mm 0 !important;
+    }
+
+    .pc-receta-bloque {
+        margin-top: 3mm !important;
+        break-inside: auto !important;
+    }
+
+    .pc-receta-medicamento {
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+    }
+
+    .pc-receta-firma {
+        width: 43mm !important;
+        margin: 5mm 0 3mm auto !important;
+    }
+
+    .pc-receta-pie {
+        margin-top: 3mm !important;
+    }
+
+
+
+    .pc-receta-documento {
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        height: auto !important;
+        overflow: visible !important;
+        break-after: auto !important;
+    }
+
+    .pc-receta-pagina {
+        position: static !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .pc-receta-documento-header {
+        grid-template-columns: 45mm minmax(0, 1fr) !important;
+        gap: 7mm !important;
+    }
+
+    .pc-receta-logo {
+        width: 45mm !important;
+        max-width: 45mm !important;
+    }
+
+    .pc-receta-documento-header h1 {
+        font-size: 19pt !important;
+    }
+
+    .pc-receta-documento {
+        font-size: 11pt !important;
+        line-height: 1.3 !important;
+    }
+
+    .pc-receta-firma {
+        width: 45mm !important;
+        margin: 6mm 0 4mm auto !important;
+        break-inside: avoid !important;
+    }
+
+    .pc-receta-pie {
+        break-inside: avoid !important;
+    }
+
+
+
+    @page {
+        size: A4 portrait;
+        margin: 8mm 10mm;
+    }
+
+    .pc-receta-documento {
+        position: static !important;
+        font-size: 10.5pt !important;
+        line-height: 1.2 !important;
+        overflow: visible !important;
+    }
+
+    .pc-receta-documento-header {
+        grid-template-columns: 49.5mm minmax(0, 1fr) !important;
+        column-gap: 5mm !important;
+        padding-bottom: 2mm !important;
+    }
+
+    .pc-receta-logo {
+        width: 49.5mm !important;
+        max-width: 49.5mm !important;
+    }
+
+    .pc-receta-documento-header h1 {
+        font-size: 18pt !important;
+        line-height: 1.1 !important;
+    }
+
+    .pc-receta-documento-header p {
+        margin: 1mm 0 !important;
+        font-size: 10pt !important;
+    }
+
+    .pc-receta-identificador {
+        margin: 2mm 0 !important;
+        padding: 2mm 3mm !important;
+    }
+
+    .pc-receta-bloque {
+        margin-top: 2.5mm !important;
+    }
+
+    .pc-receta-bloque h2 {
+        font-size: 11.5pt !important;
+        margin-bottom: 1.5mm !important;
+        padding-bottom: 1mm !important;
+    }
+
+    .pc-receta-grid {
+        gap: 1.5mm 4mm !important;
+    }
+
+    .pc-receta-grid strong,
+    .pc-receta-texto strong {
+        font-size: 9.5pt !important;
+        margin-bottom: 0.5mm !important;
+    }
+
+    .pc-receta-grid p,
+    .pc-receta-texto p {
+        margin: 0 !important;
+        font-size: 10.5pt !important;
+        line-height: 1.2 !important;
+    }
+
+    .pc-receta-medicamento {
+        margin: 1.5mm 0 !important;
+        padding: 2.5mm !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .pc-receta-medicamento h3 {
+        font-size: 11.5pt !important;
+        margin-bottom: 1.5mm !important;
+    }
+
+    .pc-receta-texto {
+        margin-top: 1.5mm !important;
+    }
+
+    .pc-receta-firma {
+        width: 45mm !important;
+        margin: 4mm 0 2mm auto !important;
+        font-size: 9.5pt !important;
+        line-height: 1.15 !important;
+        break-inside: avoid !important;
+    }
+
+    .pc-receta-firma strong {
+        font-size: 9.5pt !important;
+    }
+
+    .pc-receta-firma span {
+        font-size: 8.5pt !important;
+    }
+
+    .pc-receta-pie {
+        margin-top: 2mm !important;
+        padding-top: 1.5mm !important;
+        font-size: 8.5pt !important;
+    }
+
+
+
+    @page {
+        size: A4 portrait;
+        margin: 5mm 10mm 6mm 10mm;
+    }
+
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    .pc-receta-pagina {
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+    }
+
+    .pc-receta-documento {
+        position: static !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 10pt !important;
+        line-height: 1.15 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+    }
+
+    .pc-receta-documento-header {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 1.5mm !important;
+    }
+
+    .pc-receta-logo {
+        width: 49.5mm !important;
+        max-width: 49.5mm !important;
+    }
+
+    .pc-receta-documento-header h1 {
+        font-size: 17pt !important;
+        line-height: 1.1 !important;
+    }
+
+    .pc-receta-documento-header p {
+        font-size: 9.5pt !important;
+        margin: 0.5mm 0 !important;
+    }
+
+    .pc-receta-identificador {
+        margin: 1.5mm 0 !important;
+        padding: 1.5mm 2.5mm !important;
+    }
+
+    .pc-receta-bloque {
+        margin-top: 2mm !important;
+    }
+
+    .pc-receta-bloque h2 {
+        font-size: 11pt !important;
+        margin-bottom: 1mm !important;
+        padding-bottom: 0.8mm !important;
+    }
+
+    .pc-receta-grid {
+        gap: 1mm 4mm !important;
+    }
+
+    .pc-receta-grid strong,
+    .pc-receta-texto strong {
+        font-size: 9pt !important;
+        margin-bottom: 0.3mm !important;
+    }
+
+    .pc-receta-grid p,
+    .pc-receta-texto p {
+        font-size: 10pt !important;
+        line-height: 1.15 !important;
+        margin: 0 !important;
+    }
+
+    .pc-receta-medicamento {
+        margin: 1mm 0 !important;
+        padding: 2mm !important;
+        break-inside: avoid !important;
+    }
+
+    .pc-receta-medicamento h3 {
+        font-size: 11pt !important;
+        margin-bottom: 1mm !important;
+    }
+
+    .pc-receta-texto {
+        margin-top: 1mm !important;
+    }
+
+    .pc-receta-firma {
+        width: 45mm !important;
+        margin: 3mm 0 1.5mm auto !important;
+        line-height: 1.1 !important;
+        break-inside: avoid !important;
+    }
+
+    .pc-receta-firma strong {
+        font-size: 9pt !important;
+    }
+
+    .pc-receta-firma span {
+        font-size: 8pt !important;
+    }
+
+    .pc-receta-pie {
+        margin-top: 1.5mm !important;
+        padding-top: 1mm !important;
+        font-size: 8pt !important;
+        break-inside: avoid !important;
+    }
+
+
+
+    @page {
+        size: A4 portrait;
+        margin: 0mm 10mm 5mm 10mm;
+    }
+
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+    }
+
+    .pc-receta-pagina {
+        position: static !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        transform: none !important;
+    }
+
+    .pc-receta-documento {
+        position: static !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        transform: none !important;
+        overflow: visible !important;
+        font-size: 9.8pt !important;
+        line-height: 1.12 !important;
+    }
+
+    .pc-receta-documento-header {
+        margin: 0 !important;
+        padding: 0 0 1mm 0 !important;
+    }
+
+    .pc-receta-identificador {
+        margin: 1mm 0 !important;
+        padding: 1mm 2mm !important;
+    }
+
+    .pc-receta-bloque {
+        margin-top: 1.5mm !important;
+    }
+
+    .pc-receta-bloque h2 {
+        margin-bottom: 0.8mm !important;
+        padding-bottom: 0.6mm !important;
+        font-size: 10.5pt !important;
+    }
+
+    .pc-receta-grid {
+        gap: 0.8mm 4mm !important;
+    }
+
+    .pc-receta-medicamento {
+        margin: 0.8mm 0 !important;
+        padding: 1.8mm !important;
+    }
+
+    .pc-receta-texto {
+        margin-top: 0.8mm !important;
+    }
+
+    .pc-receta-firma {
+        width: 45mm !important;
+        margin: 2mm 0 1mm auto !important;
+        padding: 0 !important;
+        break-inside: avoid !important;
+    }
+
+    .pc-receta-pie {
+        margin-top: 1mm !important;
+        padding-top: 0.8mm !important;
+        break-inside: avoid !important;
+    }
+
+
+
+    @page {
+        size: A4 portrait;
+        margin: 0 10mm 5mm 10mm;
+    }
+
+    .pc-receta-pagina {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+    }
+
+    .pc-receta-documento {
+        position: static !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        box-sizing: border-box !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        transform: none !important;
+    }
+
+    .pc-receta-documento-header {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+
+
+    @page {
+        size: A4 portrait;
+        margin: 5mm 10mm 5mm 10mm;
+    }
+
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+    }
+
+    .sidebar,
+    .topbar,
+    .pc-receta-acciones {
+        display: none !important;
+    }
+
+    .main-area,
+    main.content,
+    .content,
+    .pc-receta-pagina {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: none !important;
+        min-height: 0 !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        transform: none !important;
+    }
+
+    .pc-receta-documento {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: 190mm !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        transform: none !important;
+        overflow: visible !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .pc-receta-documento-header {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .pc-receta-firma,
+    .pc-receta-pie {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+
+    @page {
+        size: A4 portrait;
+        margin: 15mm 10mm 5mm 10mm;
+    }
+
+}
+</style>
+
+{% endblock %}

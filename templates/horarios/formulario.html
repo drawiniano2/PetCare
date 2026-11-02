@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}{{ titulo }} | PetCare{% endblock %}
+{% block section_title %}Gestión de Horarios{% endblock %}
+
+{% block content %}
+
+<style>
+.horarios-v183 {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 12px;
+}
+
+.horarios-v183 h1 {
+    color: #17365D;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 32px;
+    margin: 0 0 12px;
+    display: table;
+}
+
+.horarios-v183 h1::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #C94B3F;
+    margin-top: 10px;
+}
+
+.horarios-v183 .descripcion {
+    color: #526174;
+    margin-bottom: 25px;
+}
+
+.horarios-v183 .tarjeta {
+    background: #FFFFFF;
+    border: 1px solid #E6E2DB;
+    border-top: 5px solid #C94B3F;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 18px rgba(23, 54, 93, .07);
+}
+
+.horarios-v183 h2 {
+    color: #17365D;
+    font-family: 'Josefin Sans', sans-serif;
+    margin-top: 0;
+}
+
+.horarios-v183 .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 25px;
+}
+
+.horarios-v183 .campo label {
+    display: block;
+    font-weight: 600;
+    color: #17365D;
+    margin-bottom: 9px;
+}
+
+.horarios-v183 .campo input:not([type="checkbox"]),
+.horarios-v183 .campo select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px;
+    border: 1px solid #CCD5DE;
+    border-radius: 9px;
+    background: #FFFFFF;
+    font: inherit;
+    color: #34445A;
+}
+
+.horarios-v183 .campo input:focus,
+.horarios-v183 .campo select:focus {
+    outline: 2px solid #D7AC54;
+    outline-offset: 1px;
+}
+
+.horarios-v183 .campo-check {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 20px;
+}
+
+.horarios-v183 .campo-check label {
+    margin: 0;
+}
+
+.horarios-v183 .campo-check input {
+    width: 19px;
+    height: 19px;
+    accent-color: #17365D;
+}
+
+.horarios-v183 .error {
+    color: #B33F35;
+    font-size: 13px;
+    margin-top: 7px;
+}
+
+.horarios-v183 .acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.horarios-v183 .btn {
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 9px;
+    font-weight: 700;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+
+.horarios-v183 .btn-cancelar {
+    background: #17365D;
+    color: #FFFFFF;
+}
+
+.horarios-v183 .btn-guardar {
+    background: #D9AA50;
+    color: #17365D;
+}
+
+@media (max-width: 650px) {
+    .horarios-v183 .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .horarios-v183 .tarjeta {
+        padding: 18px;
+    }
+}
+</style>
+
+<section class="horarios-v183">
+
+    <h1>{{ titulo }}</h1>
+
+    <p class="descripcion">
+        Configure los días y horas de atención del equipo veterinario.
+    </p>
+
+    <div class="tarjeta">
+
+        <h2>Información del horario</h2>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if formulario.non_field_errors %}
+                <div class="error" role="alert">
+                    {{ formulario.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-grid">
+
+                {% for campo in formulario %}
+                <div class="campo">
+
+                    {% if campo.field.widget.input_type == 'checkbox' %}
+
+                        <div class="campo-check">
+                            {{ campo }}
+                            <label for="{{ campo.id_for_label }}">
+                                {{ campo.label }}
+                            </label>
+                        </div>
+
+                    {% else %}
+
+                        <label for="{{ campo.id_for_label }}">
+                            {{ campo.label }}
+                            {% if campo.field.required %}*{% endif %}
+                        </label>
+
+                        {{ campo }}
+
+                    {% endif %}
+
+                    {% for error in campo.errors %}
+                        <div class="error" role="alert">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="acciones">
+                <a href="{% url 'horarios:lista' %}"
+                   class="btn btn-cancelar">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="btn btn-guardar">
+                    Guardar horario
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Veterinarios | PetCare{% endblock %}
+{% block section_title %}Gestión de Veterinarios{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <div>
+        <h1>Gestión de Veterinarios</h1>
+        <p>Consulta y administración del equipo profesional de PetCare.</p>
+    </div>
+</div>
+
+<section class="panel veterinarios-v17">
+
+    <div class="veterinarios-v17-encabezado">
+        <div>
+            <h2>Equipo veterinario</h2>
+            <p>{{ total_veterinarios }} profesionales encontrados</p>
+        </div>
+
+        {% if perms.veterinarios.add_veterinario %}
+        <a href="{% url 'veterinarios:nuevo' %}"
+           class="veterinarios-v17-boton-nuevo">
+            + Nuevo veterinario
+        </a>
+        {% endif %}
+    </div>
+
+    <form method="get" class="veterinarios-v17-buscador">
+        <input
+            type="search"
+            name="q"
+            value="{{ busqueda }}"
+            placeholder="Buscar por nombre, RUT, especialidad o registro"
+            aria-label="Buscar veterinarios"
+        >
+
+        <button type="submit">Buscar</button>
+
+        {% if busqueda %}
+            <a href="{% url 'veterinarios:lista' %}">Limpiar</a>
+        {% endif %}
+    </form>
+
+    <div class="veterinarios-v17-tabla">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Profesional</th>
+                    <th>RUT</th>
+                    <th>Especialidad</th>
+                    <th>Registro</th>
+                    <th>Contacto</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for veterinario in veterinarios %}
+                    <tr>
+                        <td>
+                            <strong>
+                                {{ veterinario.nombre }}
+                                {{ veterinario.apellido }}
+                            </strong>
+                        </td>
+
+                        <td>{{ veterinario.rut }}</td>
+
+                        <td>{{ veterinario.especialidad }}</td>
+
+                        <td>{{ veterinario.numero_registro }}</td>
+
+                        <td>
+                            {{ veterinario.correo }}
+                            <div class="veterinarios-v17-telefono">
+                                {{ veterinario.telefono }}
+                            </div>
+                        </td>
+
+                        <td>
+                            {% if veterinario.activo %}
+                                <span class="veterinarios-v17-estado activo">
+                                    Activo
+                                </span>
+                            {% else %}
+                                <span class="veterinarios-v17-estado inactivo">
+                                    Inactivo
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <div class="veterinarios-v173-acciones">
+                                <a href="{% url 'veterinarios:detalle' veterinario.pk %}"
+                                   class="veterinarios-v173-ver">
+                                    Ver ficha
+                                </a>
+
+                                {% if perms.veterinarios.change_veterinario %}
+                                <a href="{% url 'veterinarios:editar' veterinario.pk %}"
+                                   class="veterinarios-v173-editar">
+                                    Editar
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+
+                {% empty %}
+                    <tr>
+                        <td colspan="7" class="veterinarios-v17-vacio">
+                            {% if busqueda %}
+                                No se encontraron profesionales con ese criterio.
+                            {% else %}
+                                Todavía no hay veterinarios registrados.
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+{% endblock %}
