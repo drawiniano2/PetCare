@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import (
+﻿from django.contrib.auth.decorators import (
     login_required,
     permission_required,
 )
@@ -8,7 +8,7 @@ from django.shortcuts import render
 from .models import Horario
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("horarios.view_horario", raise_exception=True)
 def lista_horarios(request):
     busqueda = request.GET.get("q", "").strip()
@@ -44,7 +44,7 @@ from django.shortcuts import get_object_or_404, redirect
 from .forms import HorarioForm
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("horarios.add_horario", raise_exception=True)
 def crear_horario(request):
 
@@ -69,7 +69,7 @@ def crear_horario(request):
     )
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("horarios.change_horario", raise_exception=True)
 def editar_horario(request, pk):
 
@@ -105,7 +105,7 @@ from django.contrib import messages
 from django.core.exceptions import ValidationError
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("horarios.change_horario", raise_exception=True)
 @require_POST
 def cambiar_estado_horario(request, pk):

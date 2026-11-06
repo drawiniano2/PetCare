@@ -25,9 +25,9 @@ class CitaForm(forms.ModelForm):
                 format="%Y-%m-%d",
                 attrs={"type": "date"},
             ),
-            "hora_inicio": forms.TimeInput(
-                format="%H:%M",
-                attrs={"type": "time"},
+            "hora_inicio": forms.Select(
+                attrs={"data-disponibilidad": "horas"},
+                choices=[("", "Seleccione veterinario y fecha")],
             ),
             "duracion_minutos": forms.NumberInput(
                 attrs={"min": 1, "step": 1},
@@ -72,6 +72,74 @@ class CitaForm(forms.ModelForm):
         self.fields["observaciones"].label = "Observaciones"
 
         self.fields["observaciones"].required = False
+
+
+        # PETCARE_HORA_INICIAL_165R231F
+        if not self.is_bound and self.instance.pk:
+            if self.instance.hora_inicio:
+                self.initial["hora_inicio"] = (
+                    self.instance.hora_inicio.strftime("%H:%M")
+                )
+
+
+        # PETCARE_FORMATO_SELECT_165R231I
+        from datetime import time as tipo_hora
+        from types import MethodType
+
+        campo_hora = self.fields["hora_inicio"]
+
+        def preparar_hora(campo, valor):
+            if isinstance(valor, tipo_hora):
+                return valor.strftime("%H:%M")
+            return valor
+
+        campo_hora.prepare_value = MethodType(
+            preparar_hora,
+            campo_hora
+        )
+
+        # PETCARE_HORAS_DINAMICAS_165R230Y
+        from datetime import date
+        from .disponibilidad import obtener_horas_disponibles
+
+        datos = self.data if self.is_bound else self.initial
+
+        veterinario_id = datos.get("veterinario")
+        fecha_texto = datos.get("fecha")
+        duracion = datos.get("duracion_minutos", 30)
+
+        if not self.is_bound and self.instance.pk:
+            veterinario_id = self.instance.veterinario_id
+            fecha_texto = self.instance.fecha
+            duracion = self.instance.duracion_minutos
+
+        opciones = [("", "Seleccione una hora disponible")]
+
+        try:
+            if isinstance(fecha_texto, date):
+                fecha = fecha_texto
+            else:
+                fecha = date.fromisoformat(str(fecha_texto))
+
+            horas = obtener_horas_disponibles(
+                veterinario_id,
+                fecha,
+                duracion,
+                excluir_cita_id=self.instance.pk,
+            )
+
+            opciones.extend((hora, hora) for hora in horas)
+
+            if not self.is_bound and self.instance.pk:
+                actual = self.instance.hora_inicio.strftime("%H:%M")
+                if actual not in horas:
+                    opciones.append((actual, actual + " (hora actual)"))
+
+        except (ValueError, TypeError):
+            pass
+
+        self.fields["hora_inicio"].widget.choices = opciones
+
 
 
 # PETCARE_SOLICITUD_CITA_FORM_165J

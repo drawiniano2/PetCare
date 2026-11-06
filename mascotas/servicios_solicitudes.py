@@ -145,3 +145,117 @@ def aprobar_mascota_nueva(solicitud_id, usuario, observacion=""):
     )
 
     return solicitud, mascota
+
+
+@transaction.atomic
+def aprobar_vinculacion_mascota(
+    solicitud_id,
+    usuario,
+    mascota_id,
+    observacion,
+    titularidad_verificada=False,
+    tutor_actual_id_confirmado=None,
+):
+    verificar_revisor(usuario)
+
+    if not titularidad_verificada:
+        raise ValidationError(
+            "Debe confirmar la verificacion de titularidad."
+        )
+
+    observacion = (observacion or "").strip()
+
+    if not observacion:
+        raise ValidationError(
+            "Debe registrar el antecedente que autoriza la transferencia."
+        )
+
+    solicitud = SolicitudMascota.objects.select_for_update().get(
+        pk=solicitud_id
+    )
+
+    validar_solicitud_pendiente(solicitud)
+
+    if solicitud.tipo != SolicitudMascota.Tipo.VINCULAR:
+        raise ValidationError(
+            "La solicitud no corresponde a una vinculacion."
+        )
+
+    try:
+        mascota = Mascota.objects.select_for_update().get(
+            pk=mascota_id
+        )
+    except (Mascota.DoesNotExist, ValueError, TypeError):
+        raise ValidationError(
+            "La mascota seleccionada no existe."
+        )
+
+    if not mascota.activo:
+        raise ValidationError(
+            "La mascota seleccionada no esta activa."
+        )
+
+    if mascota.tutor_id == solicitud.tutor_id:
+        raise ValidationError(
+            "La mascota ya pertenece al tutor solicitante."
+        )
+
+    if mascota.nombre.strip().casefold() != solicitud.nombre.strip().casefold():
+        raise ValidationError(
+            "El nombre de la mascota no coincide."
+        )
+
+    if mascota.especie != solicitud.especie:
+        raise ValidationError(
+            "La especie de la mascota no coincide."
+        )
+
+    if mascota.sexo != solicitud.sexo:
+        raise ValidationError(
+            "El sexo de la mascota no coincide."
+        )
+
+    microchip_solicitud = normalizar_microchip(solicitud.microchip)
+    microchip_mascota = normalizar_microchip(mascota.microchip)
+
+    if microchip_solicitud:
+        if (
+            not microchip_mascota
+            or microchip_solicitud.casefold() != microchip_mascota.casefold()
+        ):
+            raise ValidationError(
+                "El microchip no coincide con la mascota existente."
+            )
+
+    tutor_anterior_id = mascota.tutor_id
+
+    if str(tutor_actual_id_confirmado or "").strip() != str(tutor_anterior_id):
+        raise ValidationError(
+            "El ID del tutor actual no coincide. "
+            "Verifique los antecedentes antes de transferir."
+        )
+
+    mascota.tutor = solicitud.tutor
+    mascota.full_clean()
+    mascota.save(update_fields=["tutor"])
+
+    solicitud.estado = SolicitudMascota.Estado.APROBADA
+    solicitud.revisado_por = usuario
+    solicitud.fecha_revision = timezone.now()
+    solicitud.observacion_revision = (
+        f"Transferencia autorizada. Mascota ID: {mascota.pk}. "
+        f"Tutor anterior ID: {tutor_anterior_id}. "
+        f"Tutor nuevo ID: {solicitud.tutor_id}. "
+        f"Antecedente: {observacion}"
+    )
+
+    solicitud.save(
+        update_fields=[
+            "estado",
+            "revisado_por",
+            "fecha_revision",
+            "observacion_revision",
+        ]
+    )
+
+    return solicitud, mascota

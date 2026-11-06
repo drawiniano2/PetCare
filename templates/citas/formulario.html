@@ -241,4 +241,108 @@
         </form>
     </div>
 </div>
+
+<!-- PETCARE_SELECTOR_HORAS_165R231B -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const veterinario = document.getElementById("id_veterinario");
+    const fecha = document.getElementById("id_fecha");
+    const duracion = document.getElementById("id_duracion_minutos");
+    const horas = document.getElementById("id_hora_inicio");
+
+    if (!veterinario || !fecha || !duracion || !horas) return;
+
+    const url = "{% url 'citas:disponibilidad' %}";
+    const citaId = "{% if modo_edicion %}{{ cita.pk }}{% endif %}";
+
+    const mensaje = document.createElement("div");
+    mensaje.className = "pc-error";
+    mensaje.style.color = "#087F72";
+    mensaje.setAttribute("role", "status");
+    mensaje.style.marginTop = "8px";
+    horas.insertAdjacentElement("afterend", mensaje);
+
+    let consultaActual = 0;
+
+    function establecerOpciones(opciones, seleccion) {
+        horas.innerHTML = "";
+        const inicial = new Option("Seleccione una hora disponible", "");
+        horas.add(inicial);
+
+        opciones.forEach(function (hora) {
+            horas.add(new Option(hora, hora));
+        });
+
+        if (opciones.includes(seleccion)) {
+            horas.value = seleccion;
+        }
+    }
+
+    async function actualizarHoras() {
+        const consulta = ++consultaActual;
+        const seleccion = horas.value;
+
+        mensaje.textContent = "";
+        horas.disabled = true;
+
+        if (!veterinario.value || !fecha.value || !duracion.value) {
+            establecerOpciones([], "");
+            mensaje.textContent = "Seleccione veterinario, fecha y duración.";
+            return;
+        }
+
+        const parametros = new URLSearchParams({
+            veterinario: veterinario.value,
+            fecha: fecha.value,
+            duracion: duracion.value
+        });
+
+        if (citaId) parametros.set("cita_id", citaId);
+
+        try {
+            mensaje.style.color = "#087F72";
+            mensaje.textContent = "Consultando horarios disponibles...";
+
+            const respuesta = await fetch(url + "?" + parametros.toString(), {
+                credentials: "same-origin",
+                headers: {"Accept": "application/json"}
+            });
+
+            const datos = await respuesta.json();
+
+            if (consulta !== consultaActual) return;
+
+            if (!respuesta.ok) {
+                establecerOpciones([], "");
+                mensaje.style.color = "#C62828";
+                mensaje.textContent = datos.error || "No se pudieron consultar las horas.";
+                return;
+            }
+
+            establecerOpciones(datos.horas || [], seleccion);
+
+            if (datos.total === 0) {
+                mensaje.textContent = "No existen horas disponibles para esta fecha.";
+            } else {
+                mensaje.textContent = datos.total + " horarios disponibles.";
+            }
+
+            horas.disabled = false;
+
+        } catch (error) {
+            if (consulta !== consultaActual) return;
+            establecerOpciones([], "");
+            mensaje.style.color = "#C62828";
+            mensaje.textContent = "No se pudo conectar con el servidor.";
+        }
+    }
+
+    veterinario.addEventListener("change", actualizarHoras);
+    fecha.addEventListener("change", actualizarHoras);
+    duracion.addEventListener("change", actualizarHoras);
+
+    actualizarHoras();
+});
+</script>
+
 {% endblock %}

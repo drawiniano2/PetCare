@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Solicitudes de mascotas | PetCare{% endblock %}
+{% block section_title %}Solicitudes de mascotas{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <h1>Solicitudes de mascotas</h1>
+    <p>Consulta y seguimiento de las solicitudes registradas por los tutores.</p>
+</section>
+
+<section class="panel">
+
+    <form method="get"
+          style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+
+        <input type="search"
+               name="q"
+               value="{{ busqueda }}"
+               placeholder="Buscar mascota, tutor, RUT o microchip"
+               style="flex:1;min-width:230px;padding:11px;border:1px solid #ccd7e2;border-radius:8px;">
+
+        <select name="estado"
+                style="padding:11px;border:1px solid #ccd7e2;border-radius:8px;">
+            <option value="">Todos los estados</option>
+            <option value="PENDIENTE" {% if estado == "PENDIENTE" %}selected{% endif %}>Pendientes</option>
+            <option value="APROBADA" {% if estado == "APROBADA" %}selected{% endif %}>Aprobadas</option>
+            <option value="RECHAZADA" {% if estado == "RECHAZADA" %}selected{% endif %}>Rechazadas</option>
+        </select>
+
+        <button type="submit"
+                style="background:#17354d;color:white;border:0;border-radius:8px;padding:11px 18px;font-weight:700;cursor:pointer;">
+            Buscar
+        </button>
+
+        <a href="{% url 'mascotas:solicitudes_lista' %}"
+           style="padding:11px 18px;border:1px solid #ccd7e2;border-radius:8px;text-decoration:none;">
+            Limpiar
+        </a>
+    </form>
+
+    <p style="margin-bottom:14px;color:#526779;">
+        Total de resultados: <strong>{{ total }}</strong>
+    </p>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Mascota</th>
+                    <th>Tutor</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for solicitud in solicitudes %}
+                <tr>
+                    <td>{{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}</td>
+                    <td><strong>{{ solicitud.nombre }}</strong></td>
+                    <td>{{ solicitud.tutor }}</td>
+                    <td>{{ solicitud.get_tipo_display }}</td>
+                    <td>{{ solicitud.get_estado_display }}</td>
+                    <td>
+                        <a href="{% url 'mascotas:solicitudes_revisar' solicitud.pk %}"
+                           style="color:#17354d;font-weight:700;text-decoration:none;">
+                            Revisar
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No se encontraron solicitudes.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if solicitudes.has_other_pages %}
+    <div style="display:flex;gap:12px;justify-content:center;align-items:center;margin-top:20px;">
+        {% if solicitudes.has_previous %}
+        <a href="?page={{ solicitudes.previous_page_number }}&amp;estado={{ estado|urlencode }}&amp;q={{ busqueda|urlencode }}">Anterior</a>
+        {% endif %}
+
+        <span>Página {{ solicitudes.number }} de {{ solicitudes.paginator.num_pages }}</span>
+
+        {% if solicitudes.has_next %}
+        <a href="?page={{ solicitudes.next_page_number }}&amp;estado={{ estado|urlencode }}&amp;q={{ busqueda|urlencode }}">Siguiente</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

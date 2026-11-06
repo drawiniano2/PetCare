@@ -99,3 +99,6 @@ recortar_tutor_v12.py
 # Pruebas auxiliares pendientes de revision
 /accounts/test_solicitudes_165r32.py
 /citas/test_concurrencia.py
+
+# Credenciales privadas de PostgreSQL AWS
+.petcare_db_password

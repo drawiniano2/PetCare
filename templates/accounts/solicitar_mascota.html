@@ -1200,5 +1200,136 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+
+<!-- PETCARE_AVISO_VINCULACION_2026 -->
+<style>
+#petcare-aviso-vinculacion {
+    display: none;
+    margin: 16px 0;
+    padding: 18px 22px;
+    background: #e4f8f5;
+    border-left: 5px solid #16b8aa;
+    border-radius: 10px;
+    color: #142d4e;
+    line-height: 1.6;
+}
+#petcare-aviso-vinculacion strong {
+    font-size: 17px;
+}
+#petcare-aviso-vinculacion p {
+    margin: 8px 0;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const selector = document.querySelector(
+        'select[name="tipo"]'
+    );
+
+    if (!selector) return;
+
+    const aviso = document.createElement("div");
+    aviso.id = "petcare-aviso-vinculacion";
+
+    aviso.innerHTML = `
+        <strong>Solicitud de vinculación de mascota</strong>
+        <p>
+            Esta opción permite solicitar la asociación de una
+            mascota que ya está registrada en PetCare.
+        </p>
+        <p>
+            La clínica verificará la identidad de la mascota,
+            el tutor responsable actual y los antecedentes
+            que autorizan el cambio.
+        </p>
+        <p>
+            La solicitud no realiza ninguna transferencia automática.
+            En Información adicional puede explicar su relación
+            con la mascota y aportar antecedentes para la revisión.
+        </p>
+    `;
+
+    const campo = selector.closest(
+        ".form-group, .field, .campo, .form-field"
+    );
+
+    if (campo) {
+        campo.insertAdjacentElement("afterend", aviso);
+    } else {
+        selector.insertAdjacentElement("afterend", aviso);
+    }
+
+    function actualizarAviso() {
+        aviso.style.display =
+            selector.value.toUpperCase() === "VINCULAR"
+                ? "block"
+                : "none";
+    }
+
+    selector.addEventListener("change", actualizarAviso);
+    actualizarAviso();
+});
+</script>
+
+
+<!-- PETCARE_AJUSTE_ANCHO_AVISO_2026 -->
+<style>
+#petcare-aviso-vinculacion {
+    grid-column: 1 / -1 !important;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 12px 0 18px;
+}
+
+@media (max-width: 768px) {
+    #petcare-aviso-vinculacion {
+        grid-column: 1 / -1 !important;
+        padding: 15px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const aviso = document.getElementById(
+        "petcare-aviso-vinculacion"
+    );
+
+    const selector = document.querySelector(
+        'select[name="tipo"]'
+    );
+
+    if (!aviso || !selector) return;
+
+    const contenedor = selector.closest(
+        ".form-grid, .fields-grid, .pc-grid, .grid"
+    );
+
+    if (contenedor) {
+        const campos = Array.from(contenedor.children);
+
+        const campoTipo = campos.find(
+            elemento => elemento.contains(selector)
+        );
+
+        if (campoTipo) {
+            const indice = campos.indexOf(campoTipo);
+            const siguiente = campos[indice + 1];
+
+            if (siguiente) {
+                siguiente.insertAdjacentElement(
+                    "afterend", aviso
+                );
+            } else {
+                contenedor.appendChild(aviso);
+            }
+        }
+    }
+
+    aviso.style.gridColumn = "1 / -1";
+});
+</script>
+
 </body>
 </html>

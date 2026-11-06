@@ -879,6 +879,14 @@ main.tarjetas .vacio {
                         <small>
                             {{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}
                         </small>
+                        {% if solicitud.estado == 'RECHAZADA' and solicitud.observacion_revision %}
+                        <div style="margin-top:12px;padding:12px 14px;background:#fff1ef;border-left:4px solid #c73d36;border-radius:6px;">
+                            <strong style="color:#a52d28;">Motivo del rechazo</strong>
+                            <p style="margin:6px 0 0;color:#71332f;">
+                                {{ solicitud.observacion_revision|linebreaksbr }}
+                            </p>
+                        </div>
+                        {% endif %}
                     </div>
                     <span class="pc-estado-119
                         {% if solicitud.estado == 'APROBADA' %}pc-aprobada-119
