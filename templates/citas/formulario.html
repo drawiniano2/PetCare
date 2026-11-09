@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block section_title %}{% if modo_edicion %}Editar cita{% else %}Nueva cita{% endif %}{% endblock %}
 {% block content %}
 
 <style>
@@ -198,15 +199,418 @@
     }
 }
 
+
+/* PETCARE 165R.357.9.138 - FORMULARIO BAUHAUS */
+
+.petcare-citas .pc-navegacion {
+    margin: 0 0 18px;
+}
+
+.petcare-citas .pc-volver-bauhaus {
+    background: #19375E;
+    color: #FFFFFF;
+    border: 2px solid #19375E;
+}
+
+.petcare-citas .pc-volver-bauhaus:hover {
+    background: #244C7B;
+    transform: translateY(-2px);
+}
+
+.petcare-citas .pc-guardar-bauhaus {
+    background: #168A80;
+    color: #FFFFFF;
+    border: 2px solid #168A80;
+}
+
+.petcare-citas .pc-guardar-bauhaus:hover {
+    background: #116E66;
+    transform: translateY(-2px);
+}
+
+.petcare-citas .pc-cancelar-bauhaus {
+    background: #FCEDEC;
+    color: #C73532;
+    border: 2px solid #C73532;
+}
+
+.petcare-citas .pc-cancelar-bauhaus:hover {
+    background: #C73532;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+}
+
+.petcare-citas .pc-volver-bauhaus,
+.petcare-citas .pc-guardar-bauhaus,
+.petcare-citas .pc-cancelar-bauhaus {
+    transition: background .2s, color .2s, transform .2s;
+}
+
+.petcare-citas .pc-tarjeta {
+    border-top: 4px solid #E2AE4B;
+    padding: 22px;
+}
+
+.petcare-citas .pc-formulario {
+    gap: 18px 22px;
+}
+
+.petcare-citas .pc-campo label {
+    font-size: 16px;
+    margin-bottom: 7px;
+}
+
+.petcare-citas .pc-formulario input,
+.petcare-citas .pc-formulario select,
+.petcare-citas .pc-formulario textarea {
+    font-size: 16px;
+    padding: 11px 13px;
+}
+
+.petcare-citas .pc-formulario textarea {
+    min-height: 82px;
+}
+
+.petcare-citas .pc-acciones {
+    margin-top: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .petcare-citas .pc-volver-bauhaus,
+    .petcare-citas .pc-guardar-bauhaus,
+    .petcare-citas .pc-cancelar-bauhaus {
+        transition: none;
+        transform: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.139 - COMPACTACION FINAL */
+
+.petcare-citas .pc-volver-bauhaus {
+    background: #17354B;
+    border-color: #17354B;
+    color: #FFFFFF;
+}
+
+.petcare-citas .pc-volver-bauhaus:hover {
+    background: #244C63;
+    border-color: #244C63;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(23,53,75,.16);
+}
+
+.petcare-citas .pc-navegacion {
+    margin-top: 12px;
+    margin-bottom: 14px;
+}
+
+.petcare-citas .pc-tarjeta {
+    padding: 18px 22px;
+}
+
+.petcare-citas .pc-formulario {
+    gap: 13px 20px;
+}
+
+.petcare-citas .pc-campo label {
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.petcare-citas .pc-formulario input,
+.petcare-citas .pc-formulario select {
+    min-height: 44px;
+    padding: 9px 12px;
+}
+
+.petcare-citas .pc-formulario textarea {
+    min-height: 72px;
+    padding: 10px 12px;
+}
+
+.petcare-citas .pc-acciones {
+    margin-top: 16px;
+    gap: 12px;
+}
+
+@media (max-width: 700px) {
+    .petcare-citas .pc-tarjeta {
+        padding: 16px;
+    }
+}
+
+
+/* PETCARE 165R.357.9.219 - FORMULARIO COMPACTO */
+
+.pc-citas-compacto {
+    display: block;
+}
+
+.pc-citas-compacto .pc-grupo-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 16px 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e4eaf2;
+    color: #19375E;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.pc-citas-compacto .pc-grupo-titulo:first-child {
+    margin-top: 0;
+}
+
+.pc-citas-compacto .pc-grupo-titulo span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    background: #19375E;
+    color: white;
+    font-size: 13px;
+}
+
+.pc-citas-compacto .pc-grupo-campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 20px;
+}
+
+.pc-citas-compacto .pc-campo {
+    min-width: 0;
+    margin: 0;
+}
+
+.pc-citas-compacto .pc-campo[hidden] {
+    display: none !important;
+}
+
+.pc-citas-compacto .pc-campo.pc-ancho {
+    grid-column: 1 / -1;
+}
+
+.pc-citas-compacto textarea {
+    min-height: 62px;
+    height: 72px;
+    resize: vertical;
+}
+
+.pc-citas-compacto label {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.pc-citas-compacto input,
+.pc-citas-compacto select,
+.pc-citas-compacto textarea {
+    font-size: 15px;
+}
+
+@media (max-width: 760px) {
+    .pc-citas-compacto .pc-grupo-campos {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* PETCARE 165R.357.9.220 - TARJETAS BAUHAUS */
+
+/* Anular la distribución horizontal heredada */
+.pc-formulario.pc-citas-compacto {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    width: 100%;
+}
+
+/* Encabezados de cada sección */
+.pc-formulario.pc-citas-compacto .pc-grupo-titulo {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 16px 0 0 !important;
+    padding: 12px 16px !important;
+    border: none !important;
+    border-radius: 10px 10px 0 0;
+    font-size: 17px !important;
+    font-weight: 700;
+    color: #FFFFFF !important;
+    background: #19375E;
+}
+
+/* Programación: verde petróleo */
+.pc-formulario.pc-citas-compacto
+.pc-grupo-titulo:nth-of-type(3) {
+    background: #168A80;
+}
+
+/* Información adicional: amarillo mostaza */
+.pc-formulario.pc-citas-compacto
+.pc-grupo-titulo:nth-of-type(5) {
+    background: #E2AE4B;
+    color: #19375E !important;
+}
+
+/* Numeración */
+.pc-formulario.pc-citas-compacto .pc-grupo-titulo span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    background: rgba(255,255,255,.20);
+    color: inherit;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+/* Campos dentro de cada tarjeta */
+.pc-formulario.pc-citas-compacto .pc-grupo-campos {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 13px 20px !important;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 12px !important;
+    padding: 17px 18px !important;
+    border: 1px solid #DCE4ED;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    background: #FFFFFF;
+}
+
+/* Campos y etiquetas */
+.pc-formulario.pc-citas-compacto .pc-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    margin: 0 !important;
+}
+
+.pc-formulario.pc-citas-compacto .pc-campo[hidden] {
+    display: none !important;
+}
+
+.pc-formulario.pc-citas-compacto .pc-campo label {
+    font-size: 15px !important;
+    font-weight: 700;
+    color: #19375E;
+    margin: 0;
+}
+
+.pc-formulario.pc-citas-compacto .pc-campo input,
+.pc-formulario.pc-citas-compacto .pc-campo select,
+.pc-formulario.pc-citas-compacto .pc-campo textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 15px !important;
+}
+
+/* Motivo y observaciones a todo el ancho */
+.pc-formulario.pc-citas-compacto .pc-campo.pc-ancho {
+    grid-column: 1 / -1;
+}
+
+.pc-formulario.pc-citas-compacto textarea {
+    min-height: 65px !important;
+    height: 72px !important;
+    resize: vertical;
+}
+
+/* Primera sección sin espacio superior excesivo */
+.pc-formulario.pc-citas-compacto
+.pc-grupo-titulo:first-child {
+    margin-top: 0 !important;
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 760px) {
+    .pc-formulario.pc-citas-compacto .pc-grupo-campos {
+        grid-template-columns: 1fr !important;
+        padding: 14px !important;
+    }
+}
+
+
+/* PETCARE 165R.357.9.221 - AJUSTE FINAL */
+
+/* Encabezado más compacto */
+.pc-citas-compacto {
+    margin-top: 0 !important;
+}
+
+/* Tarjetas más equilibradas */
+.pc-formulario.pc-citas-compacto .pc-grupo-titulo {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+.pc-formulario.pc-citas-compacto .pc-grupo-campos {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+}
+
+/* Ayuda de duración */
+.pc-ayuda-duracion {
+    display: block;
+    margin-top: 5px;
+    color: #168A80;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Mensajes y errores */
+.pc-formulario.pc-citas-compacto .pc-error {
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+/* Botones */
+.pc-acciones {
+    gap: 12px !important;
+}
+
+.pc-acciones .pc-boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    font-size: 15px;
+}
+
+/* Mantener tamaño legible */
+.pc-formulario.pc-citas-compacto input,
+.pc-formulario.pc-citas-compacto select,
+.pc-formulario.pc-citas-compacto textarea {
+    font-size: 15px !important;
+}
+
 </style>
 
 <div class="petcare-citas">
-    <h1 class="pc-titulo">{{ titulo }}</h1>
-    <p class="pc-subtitulo">
-        Complete los datos de la atención veterinaria.
-    </p>
+    {# PETCARE 165R.355.11 - BAUHAUS LOTE 2 #}
+{% if modo_edicion %}
+{% include "components/encabezado_bauhaus.html" with titulo="Editar cita" subtitulo="Actualice los datos de la cita programada." %}
+{% else %}
+{% include "components/encabezado_bauhaus.html" with titulo="Nueva cita" subtitulo="Complete los datos para programar una atención." %}
+{% endif %}
 
-    <div class="pc-tarjeta">
+    <div class="pc-navegacion"><a class="pc-boton pc-volver-bauhaus" href="{% url 'citas:lista' %}"><span aria-hidden="true">←</span> Volver a citas</a></div>
+<div class="pc-tarjeta">
         <form method="post" novalidate>
             {% csrf_token %}
 
@@ -216,29 +620,308 @@
             </div>
             {% endif %}
 
-            <div class="pc-formulario">
-                {% for campo in formulario %}
-                <div class="pc-campo {% if campo.name == 'motivo' or campo.name == 'observaciones' %}pc-ancho{% endif %}">
-                    <label for="{{ campo.id_for_label }}">
-                        {{ campo.label }}
-                    </label>
-                    {{ campo }}
-                    {% for error in campo.errors %}
-                    <div class="pc-error" role="alert">{{ error }}</div>
-                    {% endfor %}
-                </div>
+            <!-- PETCARE 165R.357.9.219 - FORMULARIO COMPACTO -->
+<div class="pc-formulario pc-citas-compacto">
+
+    <div class="pc-grupo-titulo">
+        <span>01</span> Datos de la atención
+    </div>
+
+    <div class="pc-grupo-campos">
+        {% for campo in formulario %}
+            {% if campo.name == "mascota" or campo.name == "servicio" %}
+            <div class="pc-campo">
+                <label for="{{ campo.id_for_label }}">{{ campo.label }}{% if campo.name == "observaciones" %} (opcional){% endif %}</label>
+                {{ campo }}
+                {% for error in campo.errors %}
+                <div class="pc-error" role="alert">{{ error }}</div>
                 {% endfor %}
             </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 
-            <div class="pc-acciones">
+    <div class="pc-grupo-titulo">
+        <span>02</span> Programación
+    </div>
+
+    <div class="pc-grupo-campos">
+        {% for campo in formulario %}
+            {% if campo.name == "veterinario" or campo.name == "personal_servicio" or campo.name == "fecha" or campo.name == "hora_inicio" or campo.name == "duracion_minutos" %}
+            <div class="pc-campo"
+                {% if campo.name == "veterinario" %}data-profesional="MEDICO"{% endif %}
+                {% if campo.name == "personal_servicio" %}data-profesional="ESTETICA"{% endif %}>
+                <label for="{{ campo.id_for_label }}">{{ campo.label }}{% if campo.name == "observaciones" %} (opcional){% endif %}</label>
+                {{ campo }}
+                {% for error in campo.errors %}
+                <div class="pc-error" role="alert">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="pc-grupo-titulo">
+        <span>03</span> Información adicional
+    </div>
+
+    <div class="pc-grupo-campos">
+        {% for campo in formulario %}
+            {% if campo.name == "motivo" or campo.name == "observaciones" %}
+            <div class="pc-campo pc-ancho">
+                <label for="{{ campo.id_for_label }}">{{ campo.label }}{% if campo.name == "observaciones" %} (opcional){% endif %}</label>
+                {{ campo }}
+                {% for error in campo.errors %}
+                <div class="pc-error" role="alert">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+</div>
+
+<div class="pc-acciones">
                 <button type="submit"
-                        class="pc-boton pc-dorado">
+                        class="pc-boton pc-guardar-bauhaus">
                     {% if modo_edicion %}Guardar cambios{% else %}Guardar cita{% endif %}
                 </button>
                 <a href="{% url 'citas:lista' %}"
-                   class="pc-boton pc-gris">Cancelar</a>
+                   class="pc-boton pc-cancelar-bauhaus">Cancelar</a>
             </div>
         </form>
     </div>
 </div>
+
+<!-- PETCARE 165R.357.9.216B - INTERFAZ DUAL -->
+<!-- PETCARE 165R.357.9.218 - DURACION Y CATEGORIA -->
+<script type="application/json" id="pc-categorias-servicio">
+{
+{% for item in formulario.fields.servicio.queryset %}
+"{{ item.pk }}": {
+    "categoria": "{{ item.categoria }}",
+    "duracion": {{ item.duracion_minutos }}
+}{% if not forloop.last %},{% endif %}
+{% endfor %}
+}
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const servicio = document.getElementById("id_servicio");
+    const veterinario = document.getElementById("id_veterinario");
+    const personal = document.getElementById("id_personal_servicio");
+    const fecha = document.getElementById("id_fecha");
+    const duracion = document.getElementById("id_duracion_minutos");
+    const horas = document.getElementById("id_hora_inicio");
+
+    if (!servicio || !veterinario || !personal ||
+        !fecha || !duracion || !horas) return;
+
+    const url = "{% url 'citas:disponibilidad' %}";
+    const citaId = "{% if modo_edicion %}{{ cita.pk }}{% endif %}";
+
+    const campoMedico = document.querySelector(
+        '[data-profesional="MEDICO"]'
+    );
+    const campoEstetica = document.querySelector(
+        '[data-profesional="ESTETICA"]'
+    );
+
+    const mensaje = document.createElement("div");
+    mensaje.className = "pc-error";
+    mensaje.setAttribute("role", "status");
+    mensaje.style.color = "#168A80";
+    horas.insertAdjacentElement("afterend", mensaje);
+
+    // PETCARE 165R.357.9.221 - AJUSTE FINAL
+    const ayudaDuracion = document.createElement("small");
+    ayudaDuracion.className = "pc-ayuda-duracion";
+    duracion.insertAdjacentElement("afterend", ayudaDuracion);
+
+    function mostrarDuracion() {
+        const minutos = Number(duracion.value);
+
+        if (!Number.isFinite(minutos) || minutos <= 0) {
+            ayudaDuracion.textContent = "";
+            return;
+        }
+
+        if (minutos >= 60) {
+            const horas = Math.floor(minutos / 60);
+            const resto = minutos % 60;
+            ayudaDuracion.textContent =
+                horas + (horas === 1 ? " hora" : " horas") +
+                (resto ? " y " + resto + " minutos" : "");
+        } else {
+            ayudaDuracion.textContent = minutos + " minutos";
+        }
+    }
+
+    mostrarDuracion();
+
+    let consultaActual = 0;
+
+    // PETCARE 165R.357.9.255 - SELECTOR INICIAL
+    function categoriaActual() {
+        const opcion = servicio.options[servicio.selectedIndex];
+
+        if (!opcion || !opcion.value) return "";
+
+        const datos = document.getElementById(
+            "pc-categorias-servicio"
+        );
+        const categorias = JSON.parse(datos.textContent);
+        const item = categorias[opcion.value];
+        return item ? item.categoria : "MEDICO";
+    }
+
+    function actualizarProfesionales() {
+        const tipo = categoriaActual();
+
+        if (campoMedico) {
+            campoMedico.hidden = tipo !== "MEDICO";
+        }
+
+        if (campoEstetica) {
+            campoEstetica.hidden = tipo !== "ESTETICA";
+        }
+
+        veterinario.disabled = tipo !== "MEDICO";
+        personal.disabled = tipo !== "ESTETICA";
+
+        return tipo;
+    }
+
+    function establecerOpciones(opciones, seleccion) {
+        horas.innerHTML = "";
+        horas.add(new Option("Seleccione una hora disponible", ""));
+
+        opciones.forEach(function (hora) {
+            horas.add(new Option(hora, hora));
+        });
+
+        if (opciones.includes(seleccion)) {
+            horas.value = seleccion;
+        }
+    }
+
+    async function actualizarHoras() {
+        const consulta = ++consultaActual;
+        const seleccion = horas.value;
+        const tipo = actualizarProfesionales();
+
+        mensaje.textContent = "";
+        horas.disabled = true;
+
+        const profesional = tipo === "ESTETICA"
+            ? personal.value
+            : veterinario.value;
+
+        if (!tipo || !profesional || !fecha.value || !duracion.value) {
+            establecerOpciones([], "");
+            mensaje.style.color = "#718096";
+
+            if (tipo === "ESTETICA" &&
+                personal.options.length <= 1) {
+                mensaje.textContent =
+                    "No hay personal de estética registrado. " +
+                    "Registre personal y horarios para habilitar reservas.";
+            } else if (!profesional) {
+                mensaje.textContent = "";
+            } else {
+                mensaje.textContent =
+                    "Seleccione fecha y duración para consultar horarios.";
+            }
+            return;
+        }
+
+        const parametros = new URLSearchParams({
+            tipo: tipo,
+            fecha: fecha.value,
+            duracion: duracion.value
+        });
+
+        if (tipo === "ESTETICA") {
+            parametros.set("personal_servicio", profesional);
+        } else {
+            parametros.set("veterinario", profesional);
+        }
+
+        if (citaId) parametros.set("cita_id", citaId);
+
+        try {
+            mensaje.style.color = "#168A80";
+            mensaje.textContent = "Consultando horarios...";
+
+            const respuesta = await fetch(
+                url + "?" + parametros.toString(),
+                {
+                    credentials: "same-origin",
+                    headers: {"Accept": "application/json"}
+                }
+            );
+
+            const datos = await respuesta.json();
+
+            if (consulta !== consultaActual) return;
+
+            if (!respuesta.ok) {
+                establecerOpciones([], "");
+                mensaje.style.color = "#C73532";
+                mensaje.textContent =
+                    datos.error || "Error al consultar horarios.";
+                return;
+            }
+
+            establecerOpciones(datos.horas || [], seleccion);
+
+            mensaje.textContent = datos.total
+                ? datos.total + " horarios disponibles."
+                : "No existen horas disponibles.";
+
+            horas.disabled = false;
+
+        } catch (error) {
+            if (consulta !== consultaActual) return;
+
+            establecerOpciones([], "");
+            mensaje.style.color = "#C73532";
+            mensaje.textContent =
+                "No se pudo conectar con el servidor.";
+        }
+    }
+
+    // PETCARE 165R.357.9.217 - CAMBIO SEGURO DE SERVICIO
+    servicio.addEventListener("change", function () {
+        veterinario.value = "";
+        personal.value = "";
+        horas.value = "";
+
+        const datos = document.getElementById(
+            "pc-categorias-servicio"
+        );
+
+        const categorias = JSON.parse(datos.textContent);
+        const seleccionado = categorias[servicio.value];
+
+        if (seleccionado && seleccionado.duracion) {
+            duracion.value = seleccionado.duracion;
+        }
+
+        mostrarDuracion();
+        actualizarHoras();
+    });
+
+    veterinario.addEventListener("change", actualizarHoras);
+    personal.addEventListener("change", actualizarHoras);
+    fecha.addEventListener("change", actualizarHoras);
+    duracion.addEventListener("change", function () {
+        mostrarDuracion();
+        actualizarHoras();
+    });
+
+    actualizarHoras();
+});
+</script>
+
 {% endblock %}

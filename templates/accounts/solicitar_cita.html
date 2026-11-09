@@ -304,6 +304,33 @@ textarea {
                 </div>
             </div>
 
+            <!-- PETCARE 165R.352.73 - VETERINARIO VISIBLE -->
+            <div class="campo">
+                <label for="{{ formulario.veterinario_preferido.id_for_label }}">
+                    <span class="icono" aria-hidden="true">
+                        <svg width="22" height="22"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <circle cx="12" cy="7" r="4"/>
+                            <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
+                            <path d="M19 8h4M21 6v4"/>
+                        </svg>
+                    </span>
+                    Veterinario preferido
+                    <span class="obligatorio">*</span>
+                </label>
+
+                {{ formulario.veterinario_preferido }}
+
+                <div class="errores">
+                    {{ formulario.veterinario_preferido.errors }}
+                </div>
+            </div>
+
             <div class="columnas">
                 <div class="campo">
                     <label for="{{ formulario.fecha_preferida.id_for_label }}">
@@ -323,7 +350,21 @@ textarea {
                         Hora preferida
                         <span class="obligatorio">*</span>
                     </label>
-                    {{ formulario.hora_preferida }}
+                    <!-- PETCARE 165R.352.75 - HORARIOS DINAMICOS -->
+                        <select
+                            id="id_hora_preferida"
+                            name="hora_preferida"
+                            required
+                            data-hora-anterior="{{ formulario.hora_preferida.value|default_if_none:'' }}"
+                        >
+                            <option value="">Seleccione veterinario y fecha</option>
+                        </select>
+                        <div id="estado-disponibilidad"
+                             role="status"
+                             aria-live="polite"
+                             style="font-size:14px;margin-top:7px;color:#42627e;">
+                            Los horarios aparecerán automáticamente.
+                        </div>
                     <div class="errores">
                         {{ formulario.hora_preferida.errors }}
                     </div>
@@ -367,5 +408,89 @@ textarea {
 <footer class="pie">
     PetCare | Gesti&oacute;n veterinaria
 </footer>
+
+<script>
+/* PETCARE 165R.352.75 - HORARIOS DINAMICOS */
+document.addEventListener("DOMContentLoaded", function () {
+    const veterinario = document.getElementById("id_veterinario_preferido");
+    const fecha = document.getElementById("id_fecha_preferida");
+    const hora = document.getElementById("id_hora_preferida");
+    const estado = document.getElementById("estado-disponibilidad");
+
+    if (!veterinario || !fecha || !hora || !estado) return;
+
+    const endpoint = "{% url 'disponibilidad_tutor' %}";
+    const horaAnterior = hora.dataset.horaAnterior || "";
+    let consultaActual = 0;
+
+    async function cargarHorarios() {
+        const numeroConsulta = ++consultaActual;
+
+        hora.innerHTML = "";
+        hora.add(new Option("Seleccione un horario", ""));
+        hora.disabled = true;
+
+        if (!veterinario.value || !fecha.value) {
+            estado.textContent = "Seleccione veterinario y fecha.";
+            return;
+        }
+
+        estado.textContent = "Consultando horarios disponibles...";
+
+        const parametros = new URLSearchParams({
+            veterinario: veterinario.value,
+            fecha: fecha.value
+        });
+
+        try {
+            const respuesta = await fetch(
+                endpoint + "?" + parametros.toString(),
+                { credentials: "same-origin" }
+            );
+
+            const datos = await respuesta.json();
+
+            if (numeroConsulta !== consultaActual) return;
+
+            if (!respuesta.ok) {
+                throw new Error(datos.error || "Error de disponibilidad.");
+            }
+
+            if (!Array.isArray(datos.horas) || datos.horas.length === 0) {
+                estado.textContent =
+                    "No hay horarios disponibles para esta fecha.";
+                return;
+            }
+
+            datos.horas.forEach(function (valor) {
+                hora.add(new Option(valor, valor));
+            });
+
+            hora.disabled = false;
+
+            if (
+                horaAnterior &&
+                datos.horas.includes(horaAnterior)
+            ) {
+                hora.value = horaAnterior;
+            }
+
+            estado.textContent =
+                datos.horas.length + " horario(s) disponible(s).";
+
+        } catch (error) {
+            if (numeroConsulta !== consultaActual) return;
+            estado.textContent =
+                "No fue posible consultar los horarios. Intente nuevamente.";
+        }
+    }
+
+    veterinario.addEventListener("change", cargarHorarios);
+    fecha.addEventListener("change", cargarHorarios);
+
+    cargarHorarios();
+});
+</script>
+
 </body>
 </html>

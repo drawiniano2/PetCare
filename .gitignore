@@ -99,3 +99,12 @@ recortar_tutor_v12.py
 # Pruebas auxiliares pendientes de revision
 /accounts/test_solicitudes_165r32.py
 /citas/test_concurrencia.py
+
+
+# PETCARE 165R.357.9.278 - SEGURIDAD RESPALDO
+
+# Credencial local de PostgreSQL
+.petcare_db_password
+
+# Respaldos generados durante el desarrollo
+*.bak_*

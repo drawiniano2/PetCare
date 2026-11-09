@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block section_title %}{{ titulo }}{% endblock %}
+{% block content %}
+<!-- PETCARE 165R.357.9.223 - FORMULARIO -->
+<style>
+.pc-estetica-form {
+    max-width: 950px;
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    border-top: 4px solid #E2AE4B;
+}
+.pc-estetica-form h2 { color: #19375E; }
+.pc-estetica-form .campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 22px;
+}
+.pc-estetica-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 15px;
+    font-weight: 700;
+}
+.pc-estetica-form input:not([type="checkbox"]) {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px;
+    font-size: 15px;
+    border: 1px solid #d7e1eb;
+    border-radius: 7px;
+}
+.pc-estetica-form .error { color: #C73532; }
+.pc-estetica-form .acciones {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+.pc-estetica-form .boton {
+    padding: 11px 17px;
+    border: none;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+.pc-estetica-form .guardar {
+    background: #168A80;
+    color: white;
+}
+.pc-estetica-form .volver {
+    background: #19375E;
+    color: white;
+}
+@media (max-width: 760px) {
+    .pc-estetica-form .campos {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<div class="pc-estetica-form">
+    <h2>{{ titulo }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ formulario.non_field_errors }}
+        <div class="campos">
+            {% for campo in formulario %}
+            <div>
+                <label for="{{ campo.id_for_label }}">
+                    {{ campo.label }}
+                </label>
+                {{ campo }}
+                {% for error in campo.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="acciones">
+            <button type="submit" class="boton guardar">
+                Guardar
+            </button>
+            <a class="boton volver"
+               href="{% url 'citas:personal_estetica' %}">
+                Volver
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

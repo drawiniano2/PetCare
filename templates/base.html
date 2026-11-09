@@ -1,3 +1,4 @@
+<!-- PETCARE 165R.357.9.242 - MENU CITAS -->
 {% load static %}
 
 
@@ -19,7 +20,7 @@
     <title>{% block title %}PetCare{% endblock %}</title>
 
 
-    <link rel="stylesheet" href="{% static 'css/petcare.css' %}">
+    <link rel="stylesheet" href="{% static 'css/petcare.css' %}?v=165R3579122">
 
 
 </head>
@@ -40,7 +41,7 @@
             <div class="brand">
 
 
-    <a href="/" class="brand-logo-link" aria-label="PetCare - Inicio">
+    <a href="{% url 'dashboard' %}" class="brand-logo-link" aria-label="PetCare - Inicio">
 
 
         <img src="{% static 'img/petcare_logo_bauhaus.png' %}"
@@ -70,7 +71,16 @@
             <nav class="sidebar-nav" aria-label="Menú principal">
 
 
-                <a href="/" class="nav-link{% if request.resolver_match.url_name == 'dashboard' %} active{% endif %}"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/><path d="M9 21v-8h6v8"/></svg></span><span>Panel principal</span></a>
+                <a href="{% url 'dashboard' %}" class="nav-link{% if request.resolver_match.url_name == 'dashboard' %} active{% endif %}"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/><path d="M9 21v-8h6v8"/></svg></span><span>Panel principal</span></a>
+
+                {% if request.user.is_staff and perms.accounts.view_solicitudacceso %}
+                <!-- PETCARE 165R.354.1 - ACCESOS -->
+                <a href="{% url 'solicitudes_acceso_lista' %}"
+                   class="nav-link petcare-submenu{% if request.resolver_match.url_name == 'solicitudes_acceso_lista' or request.resolver_match.url_name == 'solicitudes_acceso_revisar' or request.resolver_match.url_name == 'solicitudes_acceso_activar' %} active{% endif %}">
+                    <span class="nav-icon">🔐</span>
+                    <span>Solicitudes de acceso</span>
+                </a>
+                {% endif %}
 
 
                 {% if perms.tutores.view_tutor %}
@@ -85,16 +95,16 @@
                 {% if perms.mascotas.view_mascota %}
 
 
-                <a href="{% url 'mascotas:lista' %}" class="nav-link{% if request.resolver_match.namespace == 'mascotas' %} active{% endif %}"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="17" r="4"/><circle cx="5" cy="9" r="1.5"/><circle cx="10" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="20" cy="9" r="1.5"/></svg></span><span>Mascotas</span></a>
+                <a href="{% url 'mascotas:lista' %}" class="nav-link{% if request.resolver_match.namespace == 'mascotas' and request.resolver_match.url_name != 'solicitudes_lista' and request.resolver_match.url_name != 'solicitudes_revisar' %} active{% endif %}"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="17" r="4"/><circle cx="5" cy="9" r="1.5"/><circle cx="10" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="20" cy="9" r="1.5"/></svg></span><span>Mascotas</span></a>
 
 
                 {% endif %}
 
 
                 {# PETCARE_PASO_152_SOLICITUDES #}
-                {% if user.is_active and user.is_staff and perms.mascotas.view_solicitudmascota %}
-                <a href="{% url 'admin:mascotas_solicitudmascota_changelist' %}"
-                   class="nav-link">
+                {% if user.is_active and perms.mascotas.view_solicitudmascota %}
+                <a href="{% url 'mascotas:solicitudes_lista' %}"
+                   class="nav-link petcare-submenu{% if request.resolver_match.namespace == 'mascotas' and request.resolver_match.url_name == 'solicitudes_lista' or request.resolver_match.namespace == 'mascotas' and request.resolver_match.url_name == 'solicitudes_revisar' %} active{% endif %}">
                     <span class="nav-icon">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              width="20" height="20"
@@ -117,6 +127,42 @@
 
 
                 <a href="{% url 'veterinarios:lista' %}" class="nav-link{% if request.resolver_match.namespace == 'veterinarios' %} active{% endif %}"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6Z"/></svg></span><span>Veterinarios</span></a>
+                <!-- PETCARE 165R.357.9.227 - MENU DESPLEGABLE -->
+{% if perms.citas.view_personalservicio or perms.citas.view_horariopersonalservicio or perms.citas.view_servicio %}
+<details class="pc-menu-estetica"
+    {% if request.resolver_match.url_name == 'personal_estetica' or request.resolver_match.url_name == 'personal_estetica_nuevo' or request.resolver_match.url_name == 'personal_estetica_editar' or request.resolver_match.url_name == 'horarios_estetica' or request.resolver_match.url_name == 'horarios_estetica_nuevo' or request.resolver_match.url_name == 'horarios_estetica_editar' or request.resolver_match.url_name == 'catalogo_servicios' or request.resolver_match.url_name == 'catalogo_servicios_nuevo' or request.resolver_match.url_name == 'catalogo_servicios_editar' %}open{% endif %}>
+    <summary class="nav-link">
+        <span class="nav-icon">✂</span>
+        <span>Servicios y estética</span>
+        <span aria-hidden="true" style="margin-left:auto">▾</span>
+    </summary>
+
+    <div class="pc-menu-estetica-sub">
+        {% if perms.citas.view_personalservicio %}
+        <a href="{% url 'citas:personal_estetica' %}"
+           class="nav-link{% if request.resolver_match.url_name == 'personal_estetica' or request.resolver_match.url_name == 'personal_estetica_nuevo' or request.resolver_match.url_name == 'personal_estetica_editar' %} active{% endif %}">
+            Personal de estética
+        </a>
+        {% endif %}
+
+        {% if perms.citas.view_horariopersonalservicio %}
+        <a href="{% url 'citas:horarios_estetica' %}"
+           class="nav-link{% if request.resolver_match.url_name == 'horarios_estetica' or request.resolver_match.url_name == 'horarios_estetica_nuevo' or request.resolver_match.url_name == 'horarios_estetica_editar' %} active{% endif %}">
+            Horarios de estética
+        </a>
+        {% endif %}
+
+        <!-- PETCARE 165R.357.9.233B - CATALOGO -->
+        {% if perms.citas.view_servicio %}
+        <a href="{% url 'citas:catalogo_servicios' %}"
+           class="nav-link{% if request.resolver_match.url_name == 'catalogo_servicios' or request.resolver_match.url_name == 'catalogo_servicios_nuevo' or request.resolver_match.url_name == 'catalogo_servicios_editar' %} active{% endif %}">
+            Catálogo de servicios
+        </a>
+        {% endif %}
+    </div>
+</details>
+{% endif %}
+
 
 
                 {% endif %}
@@ -125,7 +171,7 @@
                 {% if perms.horarios.view_horario %}
 
 
-                <a href="{% url 'horarios:lista' %}" class="nav-link{% if request.resolver_match.namespace == 'horarios' %} active{% endif %}"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg></span><span>Horarios</span></a>
+                <a href="{% url 'horarios:lista' %}" class="nav-link{% if request.resolver_match.namespace == 'horarios' %} active{% endif %}"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg></span><span>Horarios veterinarios</span></a>
 
 
                 {% endif %}
@@ -134,7 +180,15 @@
                 {% if perms.citas.view_cita %}
 
 
-                <a href="{% url 'citas:lista' %}" class="nav-link{% if request.resolver_match.namespace == 'citas' %} active{% endif %}"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg></span><span>Citas</span></a>
+                <a href="{% url 'citas:lista' %}" class="nav-link{% if request.resolver_match.namespace == 'citas' and request.resolver_match.url_name == 'lista' or request.resolver_match.namespace == 'citas' and request.resolver_match.url_name == 'disponibilidad' or request.resolver_match.namespace == 'citas' and request.resolver_match.url_name == 'nueva' or request.resolver_match.namespace == 'citas' and request.resolver_match.url_name == 'editar' or request.resolver_match.namespace == 'citas' and request.resolver_match.url_name == 'cambiar_estado' or request.resolver_match.namespace == 'citas' and request.resolver_match.url_name == 'archivar' or request.resolver_match.namespace == 'citas' and request.resolver_match.url_name == 'restaurar' %} active{% endif %}"><span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg></span><span>Citas</span></a>
+                {% if request.user.is_staff and perms.citas.view_solicitudcita %}
+                <!-- PETCARE 165R.353.2 - SOLICITUDES CITAS -->
+                <a href="{% url 'citas:solicitudes_lista' %}"
+                   class="nav-link petcare-submenu{% if request.resolver_match.namespace == 'citas' and request.resolver_match.url_name == 'solicitudes_lista' or request.resolver_match.namespace == 'citas' and request.resolver_match.url_name == 'solicitudes_detalle' %} active{% endif %}">
+                    <span class="nav-icon">📋</span>
+                    <span>Solicitudes de citas</span>
+                </a>
+                {% endif %}
 
 
                 {% endif %}
@@ -147,6 +201,26 @@
 
 
                 {% endif %}
+
+                {% if perms.recordatorios.view_vacuna and perms.recordatorios.view_controlveterinario %}
+
+                <a href="{% url 'recordatorios_lista' %}"
+                   class="nav-link{% if request.resolver_match.url_name == 'recordatorios_lista' or request.resolver_match.url_name == 'recordatorios_vacuna_crear' or request.resolver_match.url_name == 'recordatorios_vacuna_editar' or request.resolver_match.url_name == 'recordatorios_control_crear' or request.resolver_match.url_name == 'recordatorios_control_editar' %} active{% endif %}">
+                    <span class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="20" height="20" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round"
+                             stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 3 20 7v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V7l8-4Z"/>
+                            <path d="M12 8v8M8 12h8"/>
+                        </svg>
+                    </span>
+                    <span>Vacunas y controles</span>
+                </a>
+
+                {% endif %}
+
 
 
             </nav>
@@ -307,6 +381,30 @@
 
     </div>
 
+
+
+<!-- PETCARE 165R.357.9.227 - ESTILO SUBMENU -->
+<style>
+.pc-menu-estetica {
+    width: 100%;
+}
+.pc-menu-estetica summary {
+    cursor: pointer;
+    list-style: none;
+}
+.pc-menu-estetica summary::-webkit-details-marker {
+    display: none;
+}
+.pc-menu-estetica-sub {
+    margin: 4px 0 8px 22px;
+    padding-left: 12px;
+    border-left: 2px solid #168A80;
+}
+.pc-menu-estetica-sub .nav-link {
+    font-size: 14px;
+    padding: 9px 11px;
+}
+</style>
 
 </body>
 

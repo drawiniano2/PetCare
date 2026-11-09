@@ -1,14 +1,178 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}{{ titulo }} | PetCare{% endblock %}
 {% block section_title %}Gestión de Mascotas{% endblock %}
 
 {% block content %}
 
-<section class="page-heading">
-    <h1>{{ titulo }}</h1>
-    <p>{{ subtitulo }}</p>
-</section>
+<style>
+/* PETCARE 165R.343.2 - FORMULARIO BAUHAUS */
+
+.mascota-v16-panel {
+    max-width: 1100px;
+    padding: 30px;
+    border-radius: 16px;
+    background: #fffdf9;
+    border: 1px solid #e6ded2;
+    box-shadow: 0 8px 24px rgba(25, 52, 81, .06);
+}
+
+.mascota-v16-panel .mascota-v16-encabezado {
+    margin-bottom: 25px;
+    padding: 5px 0 14px 18px;
+    border-left: 5px solid #c96b50;
+    border-bottom: 1px solid #e9e2d8;
+}
+
+.mascota-v16-panel .mascota-v16-encabezado h2 {
+    margin: 0 0 8px;
+    color: #193451;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.mascota-v16-panel .mascota-v16-encabezado p {
+    margin: 0;
+    color: #766e65;
+    font-size: 15px;
+}
+
+.mascota-v16-panel .mascota-v16-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 24px;
+}
+
+.mascota-v16-panel .mascota-v16-campo {
+    min-width: 0;
+}
+
+.mascota-v16-panel .mascota-v16-campo label {
+    display: block;
+    margin-bottom: 8px;
+    color: #193451;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.mascota-v16-panel .mascota-v16-input {
+    width: 100%;
+    min-height: 47px;
+    padding: 11px 13px;
+    border: 1px solid #d8d0c5;
+    border-radius: 8px;
+    background: #fff;
+    color: #24364b;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.mascota-v16-panel .mascota-v16-input:focus {
+    outline: 2px solid #e3bd70;
+    outline-offset: 1px;
+    border-color: #c49b50;
+}
+
+.mascota-v16-panel .mascota-v16-ancho {
+    grid-column: 1 / -1;
+}
+
+.mascota-v16-panel .mascota-v16-ancho textarea {
+    min-height: 105px;
+    resize: vertical;
+}
+
+.mascota-v16-panel .mascota-v16-estado {
+    margin-top: 26px;
+    padding: 16px 20px;
+    background: #e6f3ee;
+    border: 1px solid #bcdccf;
+    border-radius: 10px;
+}
+
+.mascota-v16-panel .mascota-v16-estado label {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: #245846;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.mascota-v16-panel .mascota-v16-check {
+    width: 19px;
+    height: 19px;
+    accent-color: #287b64;
+}
+
+.mascota-v16-panel .mascota-v16-acciones {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e9e2d8;
+}
+
+.mascota-v16-panel .mascota-v16-acciones button,
+.mascota-v16-panel .mascota-v16-cancelar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    box-sizing: border-box;
+}
+
+.mascota-v16-panel .mascota-v16-acciones button {
+    background: #193451;
+    border: 1px solid #193451;
+    color: #fff;
+    cursor: pointer;
+}
+
+.mascota-v16-panel .mascota-v16-acciones button:hover {
+    background: #285277;
+}
+
+.mascota-v16-panel .mascota-v16-cancelar {
+    background: #eae4db;
+    border: 1px solid #ddd4c8;
+    color: #263746;
+    text-decoration: none;
+}
+
+.mascota-v16-panel .mascota-v16-cancelar:hover {
+    background: #ded6cb;
+}
+
+@media (max-width: 760px) {
+    .mascota-v16-panel {
+        padding: 18px;
+    }
+
+    .mascota-v16-panel .mascota-v16-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .mascota-v16-panel .mascota-v16-ancho {
+        grid-column: auto;
+    }
+}
+
+/* FIN PETCARE 165R.343.2 */
+</style>
+
+
+{# PETCARE 165R.355.5 - ENCABEZADO UNIFICADO #}
+{% include "components/encabezado_bauhaus.html" with titulo="{{ titulo }}" subtitulo="{{ subtitulo }}" %}
 
 <section class="panel mascota-v16-panel">
 

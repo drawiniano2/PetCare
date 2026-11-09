@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+.pc-activate-page {
+    max-width: 850px;
+    margin: 0 auto;
+    color: #24364b;
+}
+.pc-activate-header {
+    background: #17354d;
+    color: white;
+    padding: 25px 30px;
+    border-radius: 15px 15px 0 0;
+}
+.pc-activate-header h1 {
+    color: white;
+    font-size: 25px;
+    margin: 0 0 7px;
+}
+.pc-activate-header p {
+    color: #dce9f0;
+    margin: 0;
+}
+.pc-activate-body {
+    background: white;
+    border: 1px solid #e0e8ef;
+    border-radius: 0 0 15px 15px;
+    padding: 30px;
+}
+.pc-activate-section {
+    margin-bottom: 25px;
+}
+.pc-activate-section h2 {
+    font-size: 17px;
+    color: #17354d;
+    margin-bottom: 12px;
+}
+.pc-activate-data {
+    background: #f3f7fa;
+    border-radius: 10px;
+    padding: 18px;
+    line-height: 1.9;
+}
+.pc-activate-field {
+    margin: 18px 0;
+}
+.pc-activate-field label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 9px;
+}
+.pc-activate-field input {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #cad7e2;
+    border-radius: 9px;
+    font: inherit;
+    box-sizing: border-box;
+}
+.pc-activate-field input:focus {
+    outline: none;
+    border-color: #16b8aa;
+    box-shadow: 0 0 0 3px rgba(22,184,170,.12);
+}
+.pc-activate-error {
+    color: #a43e38;
+    font-size: 14px;
+    margin-top: 7px;
+}
+.pc-activate-note {
+    background: #eaf8f5;
+    border-left: 4px solid #16b8aa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 22px 0;
+}
+.pc-activate-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+.pc-activate-btn {
+    background: #17354d;
+    color: white;
+    border: 0;
+    border-radius: 9px;
+    padding: 14px 25px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+.pc-activate-btn:hover {
+    background: #245270;
+}
+.pc-activate-back {
+    color: #17354d;
+    font-weight: 700;
+    text-decoration: none;
+}
+@media(max-width:600px) {
+    .pc-activate-body { padding: 20px; }
+    .pc-activate-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+    .pc-activate-btn { width: 100%; }
+}
+
+/* PETCARE 165R.357.9.274 - OJOS CONTRASENAS */
+
+.pc-password-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.pc-password-wrap input {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 58px !important;
+}
+
+.pc-password-eye {
+    position: absolute;
+    right: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d8e3ec;
+    border-radius: 10px;
+    background: #f3f6fb;
+    color: #19375E;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+}
+
+.pc-password-eye:hover {
+    background: #19375E;
+    color: white;
+}
+
+.pc-password-eye:focus-visible {
+    outline: 3px solid #168A80;
+    outline-offset: 2px;
+}
+
+.pc-password-eye[aria-pressed="true"] {
+    background: #e4f8f5;
+    color: #168A80;
+}
+
+</style>
+
+<div class="pc-activate-page">
+    {# PETCARE 165R.355.11 - BAUHAUS LOTE 2 #}
+{% include "components/encabezado_bauhaus.html" with titulo="Activación administrativa" subtitulo="Habilitación segura de cuenta PetCare" %}
+
+    <div class="pc-activate-body">
+        <section class="pc-activate-section">
+            <h2>01 · Cuenta aprobada</h2>
+            <div class="pc-activate-data">
+                <div><strong>Solicitud:</strong> N.º {{ solicitud.pk }}</div>
+                <div><strong>Solicitante:</strong>
+                    {{ solicitud.nombre }} {{ solicitud.apellido }}</div>
+                <div><strong>Usuario:</strong>
+                    {{ solicitud.usuario_creado.username }}</div>
+                <div><strong>Tipo de cuenta:</strong>
+                    {{ solicitud.get_tipo_cuenta_display }}</div>
+                <div><strong>Estado:</strong> Aprobada · Cuenta inactiva</div>
+            </div>
+        </section>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if formulario.non_field_errors %}
+            <div class="pc-activate-error">
+                {{ formulario.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <section class="pc-activate-section">
+                <h2>02 · Contraseña temporal</h2>
+                <div class="pc-activate-field">
+                    <label for="{{ formulario.password.id_for_label }}">
+                        {{ formulario.password.label }}
+                    </label>
+                    <div class="pc-password-wrap">
+    {{ formulario.password }}
+    <button type="button" class="pc-password-eye" data-password-toggle aria-label="Mostrar contraseña" aria-pressed="false" title="Mostrar contraseña">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 12s3.5-7 10-7 7 10 7 10-7-3.5-7-10-7Z"/>
+            <circle cx="12" cy="12" r="3"/>
+        </svg>
+    </button>
+</div>
+                    <div class="pc-activate-error">
+                        {{ formulario.password.errors }}
+                    </div>
+                </div>
+            </section>
+
+            <section class="pc-activate-section">
+                <h2>03 · Confirmar contraseña</h2>
+                <div class="pc-activate-field">
+                    <label for="{{ formulario.confirmar.id_for_label }}">
+                        {{ formulario.confirmar.label }}
+                    </label>
+                    <div class="pc-password-wrap">
+    {{ formulario.confirmar }}
+    <button type="button" class="pc-password-eye" data-password-toggle aria-label="Mostrar contraseña" aria-pressed="false" title="Mostrar contraseña">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 12s3.5-7 10-7 7 10 7 10-7-3.5-7-10-7Z"/>
+            <circle cx="12" cy="12" r="3"/>
+        </svg>
+    </button>
+</div>
+                    <div class="pc-activate-error">
+                        {{ formulario.confirmar.errors }}
+                    </div>
+                </div>
+            </section>
+
+            <div class="pc-activate-note">
+                La contraseña se almacenará de forma segura.
+                El usuario deberá cambiarla en su primer ingreso.
+            </div>
+
+            <div class="pc-activate-actions">
+                <a class="pc-activate-back"
+                   href="{% url 'solicitudes_acceso_revisar' solicitud.pk %}">
+                    Volver a revisión
+                </a>
+
+                <button type="submit" class="pc-activate-btn">
+                    Activar cuenta
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(
+        "[data-password-toggle]"
+    ).forEach(function (boton) {
+        boton.addEventListener("click", function () {
+            const contenedor = boton.closest(".pc-password-wrap");
+            const campo = contenedor
+                ? contenedor.querySelector("input")
+                : null;
+
+            if (!campo) return;
+
+            const mostrar = campo.type === "password";
+
+            campo.type = mostrar ? "text" : "password";
+
+            boton.setAttribute(
+                "aria-pressed",
+                mostrar ? "true" : "false"
+            );
+
+            boton.setAttribute(
+                "aria-label",
+                mostrar ? "Ocultar contraseña" : "Mostrar contraseña"
+            );
+
+            boton.title = mostrar
+                ? "Ocultar contraseña"
+                : "Mostrar contraseña";
+
+            boton.style.opacity = mostrar ? "0.65" : "1";
+        });
+    });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block section_title %}{{ titulo }}{% endblock %}
+{% block content %}
+<!-- PETCARE 165R.357.9.227 - FORMULARIO HORARIOS -->
+<style>
+.pc-horario-form {
+    max-width: 950px;
+    padding: 24px;
+    background: white;
+    border-radius: 12px;
+    border-top: 4px solid #168A80;
+}
+.pc-horario-form h2 {
+    margin-top: 0;
+    color: #19375E;
+}
+.pc-horario-form .campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 22px;
+}
+.pc-horario-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 15px;
+    font-weight: 700;
+}
+.pc-horario-form input,
+.pc-horario-form select {
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 11px;
+    font-size: 15px;
+    border: 1px solid #D7E1EB;
+    border-radius: 7px;
+}
+.pc-horario-form input:not([type="checkbox"]),
+.pc-horario-form select {
+    width: 100%;
+}
+.pc-horario-form .error {
+    color: #C73532;
+    font-size: 14px;
+}
+.pc-horario-form .acciones {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+.pc-horario-form .boton {
+    padding: 11px 17px;
+    border: 0;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+.pc-horario-form .guardar {
+    background: #168A80;
+    color: white;
+}
+.pc-horario-form .volver {
+    background: #19375E;
+    color: white;
+}
+@media(max-width:760px) {
+    .pc-horario-form .campos {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<div class="pc-horario-form">
+    <h2>{{ titulo }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ formulario.non_field_errors }}
+
+        <div class="campos">
+            {% for campo in formulario %}
+            <div>
+                <label for="{{ campo.id_for_label }}">
+                    {{ campo.label }}
+                </label>
+                {{ campo }}
+                {% for error in campo.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="acciones">
+            <button type="submit" class="boton guardar">
+                Guardar horario
+            </button>
+            <a class="boton volver"
+               href="{% url 'citas:horarios_estetica' %}">
+                Volver
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

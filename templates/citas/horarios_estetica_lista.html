@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block section_title %}Horarios de estética{% endblock %}
+{% block content %}
+<!-- PETCARE 165R.357.9.227 - LISTADO HORARIOS -->
+<style>
+.pc-horarios-estetica {
+    padding: 22px;
+    background: white;
+    border-radius: 12px;
+    border-top: 4px solid #168A80;
+}
+.pc-horarios-estetica h2 {
+    color: #19375E;
+    margin-top: 0;
+}
+.pc-horarios-estetica .cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+.pc-horarios-estetica .boton {
+    display: inline-block;
+    border: 0;
+    border-radius: 7px;
+    padding: 10px 14px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+.pc-horarios-estetica .nuevo {
+    background: #E2AE4B;
+    color: #19375E;
+}
+.pc-horarios-estetica .editar {
+    background: #168A80;
+    color: white;
+}
+.pc-horarios-estetica .desactivar {
+    background: #C73532;
+    color: white;
+}
+.pc-horarios-estetica .activar {
+    background: #19375E;
+    color: white;
+}
+.pc-horarios-estetica .tabla {
+    overflow-x: auto;
+}
+.pc-horarios-estetica table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+.pc-horarios-estetica th {
+    background: #19375E;
+    color: white;
+    text-align: left;
+    padding: 12px;
+}
+.pc-horarios-estetica td {
+    padding: 12px;
+    border-bottom: 1px solid #E4EAF2;
+}
+.pc-horarios-estetica .acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.pc-horarios-estetica .acciones form {
+    margin: 0;
+}
+</style>
+
+<div class="pc-horarios-estetica">
+    <div class="cabecera">
+        <div>
+            <h2>Horarios de estética e higiene</h2>
+            <p>Disponibilidad del personal de estética.</p>
+        </div>
+        {% if perms.citas.add_horariopersonalservicio %}
+        <a class="boton nuevo"
+           href="{% url 'citas:horarios_estetica_nuevo' %}">
+            + Registrar horario
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="tabla">
+    <table>
+        <thead>
+            <tr>
+                <th>Trabajador</th>
+                <th>Día</th>
+                <th>Inicio</th>
+                <th>Término</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for horario in horarios %}
+            <tr>
+                <td>{{ horario.personal.nombre }} {{ horario.personal.apellido }}</td>
+                <td>{{ horario.get_dia_semana_display }}</td>
+                <td>{{ horario.hora_inicio|time:"H:i" }}</td>
+                <td>{{ horario.hora_fin|time:"H:i" }}</td>
+                <td>
+                    {% if horario.activo %}Activo{% else %}Inactivo{% endif %}
+                </td>
+                <td>
+                    <div class="acciones">
+                    {% if perms.citas.change_horariopersonalservicio %}
+                        <a class="boton editar"
+                           href="{% url 'citas:horarios_estetica_editar' horario.pk %}">
+                            Editar
+                        </a>
+                        <form method="post"
+                              action="{% url 'citas:horarios_estetica_estado' horario.pk %}">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="boton {% if horario.activo %}desactivar{% else %}activar{% endif %}"
+                                    onclick="return confirm('¿Confirmar cambio de estado del horario?')">
+                                {% if horario.activo %}Desactivar{% else %}Activar{% endif %}
+                            </button>
+                        </form>
+                    {% else %}
+                        —
+                    {% endif %}
+                    </div>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">
+                    No hay horarios de estética registrados.
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}

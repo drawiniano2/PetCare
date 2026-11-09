@@ -1,85 +1,445 @@
 {% extends "base.html" %}
 
-{% block title %}Nuevo veterinario | PetCare{% endblock %}
+{% block title %}{{ titulo }} | PetCare{% endblock %}
 {% block section_title %}Gestión de Veterinarios{% endblock %}
 
 {% block content %}
 
-<div class="page-heading">
-    <div>
-        <h1>{{ titulo }}</h1>
-        <p>Registro de profesionales de la clínica veterinaria PetCare.</p>
-    </div>
-</div>
+<!-- PETCARE 165R.346.4 - FORMULARIO BAUHAUS -->
 
-<section class="panel veterinarios-v17-formulario veterinarios-v174-formulario">
+{# PETCARE 165R.355.5 - ENCABEZADO UNIFICADO #}
+{% include "components/encabezado_bauhaus.html" with titulo="{{ titulo }}" subtitulo="Registro y administración de profesionales de PetCare." %}
 
-    <div class="veterinarios-v17-formulario-header">
-        <div class="veterinarios-v17-formulario-icono veterinarios-v174-icono">+</div>
-        <div>
-            <h2 class="veterinarios-v174-titulo">Información del profesional</h2>
-            <p>Complete los antecedentes personales y profesionales.</p>
+
+<!-- PETCARE 165R.346.7 - FORMULARIO CONTINUO -->
+<section class="panel veterinarios-v3467">
+
+    <header class="veterinarios-v3467-header">
+        <div class="veterinarios-v3467-icono">
+            <svg width="32" height="32"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="1.9"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 aria-hidden="true">
+                <path d="M6 3v5a6 6 0 0 0 12 0V3"/>
+                <path d="M4 3h4"/>
+                <path d="M16 3h4"/>
+                <path d="M12 14v3a4 4 0 0 0 8 0v-2"/>
+                <circle cx="20" cy="13" r="2"/>
+            </svg>
         </div>
-    </div>
+
+        <div class="veterinarios-v3467-titulo">
+            <h2>Información del profesional</h2>
+            <p>
+                {% if veterinario %}
+                    Actualización de antecedentes profesionales.
+                {% else %}
+                    Registro de un nuevo integrante del equipo.
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="veterinarios-v3467-geometria"
+             aria-hidden="true">
+            <i></i><i></i><i></i>
+        </div>
+    </header>
 
     <form method="post" novalidate>
         {% csrf_token %}
 
         {% if formulario.non_field_errors %}
-        <div class="veterinarios-v17-alerta">
-            {{ formulario.non_field_errors }}
-        </div>
+            <div class="veterinarios-v17-alerta">
+                {{ formulario.non_field_errors }}
+            </div>
         {% endif %}
 
-        <div class="veterinarios-v17-form-grid">
+        <div class="veterinarios-v3467-grid">
 
             {% for campo in formulario %}
-            <div class="veterinarios-v17-campo{% if campo.field.widget.input_type == 'checkbox' %} campo-check{% endif %}">
 
-                {% if campo.field.widget.input_type == 'checkbox' %}
-                    <label class="veterinarios-v17-check">
+                {% if campo.name != "activo" %}
+
+                    <div class="veterinarios-v3467-campo">
+
+                        <label for="{{ campo.id_for_label }}">
+                            {{ campo.label }}
+                            {% if campo.field.required %}
+                                <span class="obligatorio">*</span>
+                            {% endif %}
+                        </label>
+
                         {{ campo }}
-                        <span>{{ campo.label }}</span>
-                    </label>
-                {% else %}
-                    <label for="{{ campo.id_for_label }}">
-                        {{ campo.label }}
-                        {% if campo.field.required %}
-                            <span class="obligatorio">*</span>
+
+                        {% if campo.help_text %}
+                            <small>{{ campo.help_text }}</small>
                         {% endif %}
-                    </label>
 
-                    {{ campo }}
-                {% endif %}
+                        {% for error in campo.errors %}
+                            <div class="veterinarios-v17-error">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
 
-                {% if campo.help_text %}
-                    <small>{{ campo.help_text }}</small>
-                {% endif %}
-
-                {% for error in campo.errors %}
-                    <div class="veterinarios-v17-error">
-                        {{ error }}
                     </div>
-                {% endfor %}
-            </div>
+
+                {% else %}
+
+                    <div class="veterinarios-v3467-estado">
+                        <label for="{{ campo.id_for_label }}">
+                            {{ campo }}
+                            <span>{{ campo.label }}</span>
+                        </label>
+                        <small>
+                            Habilitado para la gestión de la clínica.
+                        </small>
+
+                        {% for error in campo.errors %}
+                            <div class="veterinarios-v17-error">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
+
             {% endfor %}
 
         </div>
 
-        <div class="veterinarios-v17-form-acciones">
+        <div class="veterinarios-v3467-acciones">
             <a href="{% url 'veterinarios:lista' %}"
-               class="veterinarios-v17-cancelar">
+               class="veterinarios-v3467-cancelar">
                 Cancelar
             </a>
 
             <button type="submit"
-                    class="veterinarios-v17-guardar">
+                    class="veterinarios-v3467-guardar">
                 Guardar veterinario
             </button>
         </div>
-
     </form>
-
 </section>
+
+<style>
+/* PETCARE 165R.346.7 - FORMULARIO CONTINUO */
+
+.veterinarios-v3467 {
+    max-width: 1050px;
+    padding: 30px 32px;
+    background: #fffcf7;
+    border: 1px solid #ded2c2;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(24,49,83,.045);
+}
+
+.veterinarios-v3467-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+    border-bottom: 4px solid #c94b3f;
+}
+
+.veterinarios-v3467-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 62px;
+    flex-shrink: 0;
+    color: #c94b3f;
+    background: #f7e7e2;
+    border-radius: 13px;
+}
+
+.veterinarios-v3467-titulo {
+    flex: 1;
+}
+
+.veterinarios-v3467-titulo h2 {
+    margin: 0 0 7px;
+    color: #183153;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 26px;
+}
+
+.veterinarios-v3467-titulo p {
+    margin: 0;
+    color: #687587;
+    font-size: 15px;
+}
+
+.veterinarios-v3467-geometria {
+    display: flex;
+    gap: 7px;
+}
+
+.veterinarios-v3467-geometria i {
+    display: block;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+}
+
+.veterinarios-v3467-geometria i:nth-child(1) {
+    background: #c94b3f;
+}
+
+.veterinarios-v3467-geometria i:nth-child(2) {
+    background: #d9ac50;
+}
+
+.veterinarios-v3467-geometria i:nth-child(3) {
+    background: #247f80;
+}
+
+.veterinarios-v3467-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 24px;
+}
+
+.veterinarios-v3467-campo {
+    min-width: 0;
+}
+
+.veterinarios-v3467-campo label {
+    display: block;
+    margin-bottom: 9px;
+    color: #183153;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.veterinarios-v3467-campo input,
+.veterinarios-v3467-campo select,
+.veterinarios-v3467-campo textarea {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    min-height: 47px;
+    padding: 11px 14px;
+    color: #183153;
+    background: #f3efe8;
+    border: 1px solid #dcd1c2;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.veterinarios-v3467-campo input:focus,
+.veterinarios-v3467-campo select:focus,
+.veterinarios-v3467-campo textarea:focus {
+    background: #ffffff;
+    border-color: #c94b3f;
+    outline: 2px solid rgba(201,75,63,.12);
+}
+
+.veterinarios-v3467-campo small {
+    display: block;
+    margin-top: 5px;
+    color: #687587;
+}
+
+.veterinarios-v3467-estado {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px 17px;
+    background: #e0f0eb;
+    border: 1px solid #c2e1d7;
+    border-radius: 9px;
+}
+
+.veterinarios-v3467-estado label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #183153;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.veterinarios-v3467-estado input {
+    width: 19px;
+    height: 19px;
+    accent-color: #247f80;
+}
+
+.veterinarios-v3467-estado small {
+    margin-top: 6px;
+    color: #247f80;
+    font-size: 13px;
+}
+
+.veterinarios-v3467-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 13px;
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid #ded2c2;
+}
+
+.veterinarios-v3467-cancelar,
+.veterinarios-v3467-guardar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 22px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.veterinarios-v3467-cancelar {
+    color: #183153;
+    background: #eae4db;
+    border: 1px solid #ded2c2;
+}
+
+.veterinarios-v3467-guardar {
+    color: #183153;
+    background: #d9ac50;
+    border: 1px solid #d9ac50;
+}
+
+.veterinarios-v3467-guardar:hover {
+    background: #e8bb62;
+}
+
+@media (max-width: 760px) {
+    .veterinarios-v3467 {
+        padding: 20px;
+    }
+
+    .veterinarios-v3467-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .veterinarios-v3467-geometria {
+        display: none;
+    }
+
+    .veterinarios-v3467-acciones {
+        flex-wrap: wrap;
+    }
+}
+
+/* FIN PETCARE 165R.346.7 */
+</style>
+
+
+<style>
+/* PETCARE 165R.346.8 - ENCABEZADO COMPACTO */
+
+.veterinarios-v3467-header {
+    gap: 14px;
+    padding-bottom: 15px;
+    margin-bottom: 19px;
+}
+
+.veterinarios-v3467-icono {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.veterinarios-v3467-icono svg {
+    width: 27px;
+    height: 27px;
+}
+
+.veterinarios-v3467-titulo h2 {
+    font-size: 22px;
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+
+.veterinarios-v3467-titulo p {
+    font-size: 14px;
+}
+
+.veterinarios-v3467-grid {
+    row-gap: 17px;
+}
+
+/* FIN PETCARE 165R.346.8 */
+</style>
+
+
+<style>
+/* ==================================================
+   PETCARE 165R.346.8B - TITULOS COMPACTOS
+   ================================================== */
+
+/* Titulo principal */
+.page-heading h1 {
+    font-size: 26px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 7px !important;
+}
+
+/* Descripcion principal */
+.page-heading p {
+    font-size: 14px !important;
+}
+
+/* Encabezado interior */
+.veterinarios-v3467 .veterinarios-v3467-titulo h2 {
+    font-size: 21px !important;
+    line-height: 1.25 !important;
+    margin-bottom: 5px !important;
+}
+
+/* Descripcion interior */
+.veterinarios-v3467 .veterinarios-v3467-titulo p {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+}
+
+/* Compactacion vertical */
+.veterinarios-v3467 .veterinarios-v3467-header {
+    padding-bottom: 15px !important;
+    margin-bottom: 18px !important;
+}
+
+/* FIN PETCARE 165R.346.8B */
+</style>
+
+
+<style>
+/* PETCARE 165R.346.8D - AMPLIACION 18 POR CIENTO */
+
+.page-heading h1 {
+    font-size: 31px !important;
+    line-height: 1.2 !important;
+}
+
+.page-heading p {
+    font-size: 16.5px !important;
+}
+
+.veterinarios-v3467 .veterinarios-v3467-titulo h2 {
+    font-size: 25px !important;
+    line-height: 1.25 !important;
+}
+
+.veterinarios-v3467 .veterinarios-v3467-titulo p {
+    font-size: 16.5px !important;
+    line-height: 1.45 !important;
+}
+
+/* FIN PETCARE 165R.346.8D */
+</style>
 
 {% endblock %}

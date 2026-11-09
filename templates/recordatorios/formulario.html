@@ -1,0 +1,160 @@
+{# PETCARE 165R.355.24 - REPARACION FINAL #}
+﻿<!-- PETCARE MEJORAS VISUALES 165R.332.1 -->
+{% extends "base.html" %}
+
+{% block title %}{{ titulo }} | PetCare{% endblock %}
+{% block section_title %}Vacunas y controles{% endblock %}
+
+{% block content %}
+<!-- PETCARE FORMULARIO BAUHAUS 165R.331.3 -->
+<section class="recordatorios rec-form-bauhaus">
+
+    {# PETCARE 165R.355.20B - BAUHAUS LOTE 3 #}
+{% if registro %}
+{# PETCARE 165R.355.20B - BAUHAUS LOTE 3 #}
+{% include "components/encabezado_bauhaus.html" with titulo="Editar registro sanitario" subtitulo="Actualización del registro sanitario veterinario." %}
+{% else %}
+{# PETCARE 165R.355.20B - BAUHAUS LOTE 3 #}
+{% include "components/encabezado_bauhaus.html" with titulo="Registrar atención sanitaria" subtitulo="Registro y seguimiento sanitario veterinario." %}
+{% endif %}
+<header class="rec-form-hero">
+        <div class="rec-form-simbolo" aria-hidden="true">
+            {% if titulo == "Vacuna" %}
+                <svg viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.8"
+                     stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true">
+                    <path d="m18 2 4 4"/>
+                    <path d="m17 7 3-3"/>
+                    <path d="m9 15 8-8"/>
+                    <path d="m7 13 4 4"/>
+                    <path d="m5 15 4 4"/>
+                    <path d="m3 21 4-4"/>
+                    <path d="m11 5 8 8"/>
+                </svg>
+            {% else %}
+                <svg viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.8"
+                     stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true">
+                    <rect x="3" y="5" width="18" height="16" rx="2"/>
+                    <path d="M7 3v4M17 3v4M3 10h18"/>
+                    <path d="m9 16 2 2 4-4"/>
+                </svg>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="rec-panel rec-form-panel">
+        <form method="post">
+            {% csrf_token %}
+
+            {% if formulario.non_field_errors %}
+                <div class="rec-error">
+                    {{ formulario.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="rec-form-seccion rec-form-seccion-paciente">
+                <div class="rec-form-seccion-titulo">
+                    <span class="rec-form-numero">01</span>
+                    <div>
+                        <h3>Paciente y profesional</h3>
+                        <p>Identificación de la mascota y del veterinario responsable.</p>
+                    </div>
+                </div>
+
+                <div class="rec-form-grid">
+                    {% for campo in formulario %}
+                        {% if campo.name == "ficha" or campo.name == "veterinario" %}
+                        <div class="rec-campo">
+                            <label for="{{ campo.id_for_label }}">
+                                {{ campo.label }}
+                                {% if campo.field.required %}<span class="rec-requerido">*</span>{% endif %}
+                            </label>
+                            {{ campo }}
+                            {% if campo.name == "nombre" %}
+                                <small class="rec-ayuda">Ej.: Antirrábica, séxtuple u otra vacuna.</small>
+                            {% elif campo.name == "lote" %}
+                                <small class="rec-ayuda">Número de lote indicado por el fabricante.</small>
+                            {% elif campo.name == "motivo" %}
+                                <small class="rec-ayuda">Indique el motivo de la consulta o revisión.</small>
+                            {% elif campo.name == "proxima_dosis" %}
+                                <small class="rec-ayuda">Complete solo si corresponde una próxima dosis.</small>
+                            {% endif %}
+                            {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+                            {% for error in campo.errors %}
+                                <small class="rec-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="rec-form-seccion rec-form-seccion-datos">
+                <div class="rec-form-seccion-titulo">
+                    <span class="rec-form-numero">02</span>
+                    <div>
+                        <h3>
+                            {% if titulo == "Vacuna" %}
+                                Datos de la vacuna
+                            {% else %}
+                                Programación del control
+                            {% endif %}
+                        </h3>
+                        <p>Complete la información sanitaria correspondiente.</p>
+                    </div>
+                </div>
+
+                <div class="rec-form-grid">
+                    {% for campo in formulario %}
+                        {% if campo.name != "ficha" and campo.name != "veterinario" %}
+                        <div class="rec-campo {% if campo.name == 'observaciones' %}rec-campo-ancho{% endif %}">
+                            <label for="{{ campo.id_for_label }}">
+                                {{ campo.label }}
+                                {% if campo.field.required %}<span class="rec-requerido">*</span>{% endif %}
+                            </label>
+                            {{ campo }}
+                            {% if campo.name == "nombre" %}
+                                <small class="rec-ayuda">Ej.: Antirrábica, séxtuple u otra vacuna.</small>
+                            {% elif campo.name == "lote" %}
+                                <small class="rec-ayuda">Número de lote indicado por el fabricante.</small>
+                            {% elif campo.name == "motivo" %}
+                                <small class="rec-ayuda">Indique el motivo de la consulta o revisión.</small>
+                            {% elif campo.name == "proxima_dosis" %}
+                                <small class="rec-ayuda">Complete solo si corresponde una próxima dosis.</small>
+                            {% endif %}
+                            {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+                            {% for error in campo.errors %}
+                                <small class="rec-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <footer class="rec-form-pie">
+                <p><span class="rec-requerido">*</span> Campos obligatorios</p>
+                <div class="rec-form-botones">
+                    <a href="{% if ficha_origen %}{% url 'historial_clinico:detalle' ficha_origen.mascota_id %}{% else %}{% url 'recordatorios_lista' %}{% endif %}"
+                       class="rec-boton rec-boton-secundario">
+                        Cancelar y volver
+                    </a>
+                    <button type="submit" class="rec-boton rec-boton-primario">
+                        {% if registro %}
+                            Guardar cambios
+                        {% elif titulo == "Vacuna" %}
+                            Guardar vacuna
+                        {% else %}
+                            Guardar control
+                        {% endif %}
+                    </button>
+                </div>
+            </footer>
+        </form>
+    </div>
+
+</section>
+{% endblock %}

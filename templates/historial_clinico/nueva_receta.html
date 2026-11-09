@@ -1,3 +1,4 @@
+{# PETCARE 165R.355.24 - REPARACION FINAL #}
 {% extends "base.html" %}
 {% load static %}
 
@@ -471,10 +472,8 @@
 </style>
 
 <div class="pc-receta">
-    <h1>Nueva receta veterinaria</h1>
-    <p class="subtitulo">
-        PetCare &middot; Atenci&oacute;n N.&ordm; {{ atencion.pk }}
-    </p>
+    {# PETCARE 165R.355.20B - BAUHAUS LOTE 3 #}
+{% include "components/encabezado_bauhaus.html" with titulo="Receta veterinaria" subtitulo="PetCare · Registro de receta veterinaria" %}
 
     <section class="panel">
         <h2>Identificaci&oacute;n del paciente</h2>
@@ -502,7 +501,44 @@
     <section class="panel" id="pc-formulario-receta">
         <h2>Prescripci&oacute;n veterinaria</h2>
 
-        <form method="post">
+
+<style>
+.pc-aviso-edicion {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 16px 20px;
+    margin: 0 0 20px;
+    background: #e8f6f4;
+    border-left: 4px solid #168f8b;
+    border-radius: 9px;
+    color: #173653;
+    font-size: 15px;
+}
+
+.pc-aviso-edicion strong {
+    font-size: 18px;
+}
+
+.pc-aviso-edicion span {
+    font-size: 14px;
+}
+</style>
+
+
+{# PETCARE 165R.357.9.61 - NAVEGACION #}
+{% if modo_edicion %}
+<div class="pc-aviso-edicion">
+    <strong>
+        Editar receta veterinaria N.º {{ receta.pk }}
+    </strong>
+    <span>
+        Los cambios se guardarán en esta misma receta.
+    </span>
+</div>
+{% endif %}
+
+<form method="post">
             {% csrf_token %}
 
             {% if formulario.non_field_errors %}
@@ -559,7 +595,7 @@
                             </div>
                         {% endfor %}
 
-    
+
                     <button type="button"
                             class="pc-quitar-medicamento">
                         Quitar medicamento
@@ -595,8 +631,8 @@
                 </div>
             </template>
 
-            
-            
+
+
 
             <div class="pc-fila-botones" style="display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:12px;width:100%;margin-top:24px;">
                 <button type="button"
@@ -607,13 +643,21 @@
 
 <div class="acciones">
                 <button type="submit" class="boton pc-guardar-receta" style="display:inline-flex;align-items:center;justify-content:center;background:#17365d;color:#ffffff;border:1px solid #17365d;border-radius:9px;padding:13px 26px;font:700 14px inherit;min-height:48px;cursor:pointer;text-decoration:none;">
-                    Guardar receta veterinaria
+                    {% if modo_edicion %}Guardar cambios{% else %}Guardar receta veterinaria{% endif %}
                 </button>
             </div>
+{# PETCARE 165R.357.9.62A - NAVEGACION #}
+{% if modo_edicion %}
+<a class="boton pc-volver-receta" style="display:inline-flex;align-items:center;justify-content:center;background:#e9e1d5;color:#17365d;border:1px solid #d5c6b2;border-radius:9px;padding:13px 26px;font-weight:700;font-size:14px;min-height:48px;text-decoration:none;box-sizing:border-box;"
+           href="{% url 'historial_clinico:detalle_receta' mascota.pk atencion.pk receta.pk %}">
+            Cancelar edición
+        </a>
+{% else %}
 <a class="boton pc-volver-receta" style="display:inline-flex;align-items:center;justify-content:center;background:#e9e1d5;color:#17365d;border:1px solid #d5c6b2;border-radius:9px;padding:13px 26px;font-weight:700;font-size:14px;min-height:48px;text-decoration:none;box-sizing:border-box;"
            href="{% url 'historial_clinico:detalle_atencion' mascota.pk atencion.pk %}">
             Volver a la atenci&oacute;n
         </a>
+{% endif %}
 </div>
 </form>
 </section>
@@ -631,50 +675,64 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // PETCARE_V20_QUITAR_MEDICAMENTO
+
+    // PETCARE 165R.357.9.66 - CONTROLES MEDICAMENTOS
+
+    function renumerar() {
+        const bloques = Array.from(
+            lista.querySelectorAll(".pc-medicamento")
+        ).filter(function (bloque) {
+            return bloque.style.display !== "none";
+        });
+
+        bloques.forEach(function (bloque, indice) {
+            const titulo = bloque.querySelector("h3");
+
+            if (titulo) {
+                titulo.textContent =
+                    "Medicamento N.º " + (indice + 1);
+            }
+        });
+    }
+
     lista.addEventListener("click", function (evento) {
         const quitar = evento.target.closest(
             ".pc-quitar-medicamento"
         );
 
-        if (!quitar) {
-            return;
-        }
+        if (!quitar) return;
 
         const bloque = quitar.closest(".pc-medicamento");
 
-        if (!bloque) {
-            return;
-        }
+        if (!bloque) return;
 
         const eliminar = bloque.querySelector(
-            'input[type="checkbox"][name$="-DELETE"]'
+            'input[name$="-DELETE"]'
         );
 
         if (eliminar) {
             eliminar.checked = true;
             bloque.style.display = "none";
+        } else {
+            // Conservar el índice del formulario para Django.
+            bloque.querySelectorAll(
+                "input, select, textarea"
+            ).forEach(function (campo) {
+                if (campo.type !== "hidden") {
+                    campo.value = "";
+                }
+            });
+
+            bloque.style.display = "none";
         }
 
-        // No reducir TOTAL_FORMS:
-        // Django necesita conservar los indices.
-        const visibles = Array.from(
-            lista.querySelectorAll(".pc-medicamento")
-        ).filter(function (elemento) {
-            return elemento.style.display !== "none";
-        });
-
-        visibles.forEach(function (elemento, indice) {
-            const titulo = elemento.querySelector("h3");
-
-            if (titulo) {
-                titulo.textContent = "Medicamento N." + (indice + 1);
-            }
-        });
+        renumerar();
     });
 
     boton.addEventListener("click", function () {
         const indice = parseInt(total.value, 10);
+
+        if (Number.isNaN(indice)) return;
 
         const html = plantilla.innerHTML.replace(
             /__prefix__/g,
@@ -684,17 +742,130 @@ document.addEventListener("DOMContentLoaded", function () {
         lista.insertAdjacentHTML("beforeend", html);
         total.value = indice + 1;
 
-        const bloques = lista.querySelectorAll(".pc-medicamento");
-
-        bloques.forEach(function (bloque, posicion) {
-            const titulo = bloque.querySelector("h3");
-            if (titulo) {
-                titulo.textContent = "Medicamento N." + (posicion + 1);
-            }
-        });
+        renumerar();
     });
+
 });
 </script>
 
 <!-- PETCARE_V20_ESTILO_DIRECTO -->
+
+
+<style>
+/* PETCARE 165R.357.9.87 - FORMULARIO COMPACTO */
+
+@media screen {
+
+    .pc-receta .panel {
+        padding: 20px 24px;
+        margin-bottom: 16px;
+    }
+
+    .pc-receta .datos {
+        gap: 12px 24px;
+    }
+
+    .pc-receta .pc-campos-receta {
+        gap: 12px;
+    }
+
+    .pc-receta .pc-campo-receta {
+        margin-bottom: 8px;
+    }
+
+    .pc-receta .pc-campo-receta label {
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+
+    .pc-receta .pc-campo-receta textarea {
+        min-height: 72px;
+        height: 78px;
+        resize: vertical;
+    }
+
+    .pc-receta #pc-lista-medicamentos
+    .pc-medicamento,
+    .pc-receta #pc-medicamento-vacio
+    .pc-medicamento {
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+        gap: 12px 18px;
+        padding: 18px 20px;
+    }
+
+    .pc-receta .pc-medicamento > h3,
+    .pc-receta .pc-medicamento >
+    .pc-quitar-medicamento {
+        grid-column: 1 / -1;
+    }
+
+    .pc-receta .pc-medicamento
+    > .pc-campo-receta {
+        min-width: 0;
+        margin: 0;
+    }
+
+    .pc-receta .pc-medicamento
+    > .pc-campo-receta:has(textarea) {
+        grid-column: 1 / -1;
+    }
+
+    .pc-receta .pc-medicamento
+    input,
+    .pc-receta .pc-medicamento
+    select {
+        min-height: 44px;
+        font-size: 15px;
+    }
+
+    .pc-receta .pc-medicamento
+    > .pc-quitar-medicamento {
+        justify-self: start;
+        margin-top: 4px;
+        color: #c73532;
+    }
+
+    .pc-receta .pc-fila-botones
+    .pc-guardar-receta {
+        background: #168a80 !important;
+        border-color: #168a80 !important;
+        color: #ffffff !important;
+    }
+
+    .pc-receta .pc-fila-botones
+    .pc-guardar-receta:hover {
+        background: #11756d !important;
+    }
+
+    .pc-receta .pc-fila-botones
+    .pc-volver-receta {
+        background: #19375e !important;
+        border-color: #19375e !important;
+        color: #ffffff !important;
+    }
+
+    .pc-receta .pc-fila-botones
+    .pc-volver-receta:hover {
+        background: #254b77 !important;
+    }
+}
+
+@media screen and (max-width: 700px) {
+
+    .pc-receta #pc-lista-medicamentos
+    .pc-medicamento,
+    .pc-receta #pc-medicamento-vacio
+    .pc-medicamento {
+        grid-template-columns: 1fr;
+        padding: 16px;
+    }
+
+    .pc-receta .panel {
+        padding: 18px;
+    }
+}
+</style>
+
 {% endblock %}

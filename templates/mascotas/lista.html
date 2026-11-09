@@ -1,20 +1,136 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Gestión de Mascotas | PetCare{% endblock %}
 {% block section_title %}Gestión de Mascotas{% endblock %}
 
 {% block content %}
 
-<section class="page-heading">
-    <h1>Gestión de Mascotas</h1>
-    <p>Registro y consulta de pacientes veterinarios.</p>
-</section>
+<style>
+/* PETCARE 165R.342.3A - LISTADO MASCOTAS CORREGIDO */
+
+.mascotas-v14 {
+    max-width: none;
+    padding: 24px;
+    border-radius: 16px;
+}
+
+.mascotas-v14 .mascotas-v14-encabezado {
+    margin-bottom: 16px;
+}
+
+.mascotas-v14 .panel-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 22px;
+}
+
+.mascotas-v14 .mascotas-contador {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 4px 12px;
+    background: #e3f0f7;
+    border: 1px solid #b5d5e6;
+    border-radius: 9px;
+    color: #193451;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.mascotas-v14 .mascotas-v14-buscador {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.mascotas-v14 .mascotas-v14-buscador input {
+    min-height: 47px;
+    font-size: 15px;
+}
+
+.mascotas-v14 .mascotas-v14-buscador .tutor-btn-primary,
+.mascotas-v14 .mascotas-v14-buscador .tutor-btn-secondary {
+    min-height: 47px;
+    padding: 10px 18px;
+}
+
+.mascotas-v14 .data-table {
+    width: 100%;
+}
+
+.mascotas-v14 .data-table thead th {
+    background: #eee9e1;
+    color: #193451;
+    font-weight: 700;
+}
+
+.mascotas-v14 .data-table tbody tr:nth-child(even) {
+    background: rgba(25, 52, 81, .035);
+}
+
+.mascotas-v14 .data-table tbody tr:hover {
+    background: rgba(40, 124, 136, .075);
+}
+
+.mascotas-v14 .mascota-ver-ficha {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 11px;
+    border: 1px solid #c5dce9;
+    border-radius: 7px;
+    background: #e3eff7;
+    color: #193451;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.mascotas-v14 .mascota-ver-ficha:hover {
+    background: #cfe5f1;
+    text-decoration: none;
+}
+
+.mascotas-v14 .mascota-ver-ficha svg {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 15px;
+}
+
+@media (max-width: 760px) {
+    .mascotas-v14 {
+        padding: 16px;
+    }
+
+    .mascotas-v14 .mascotas-v14-encabezado {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .mascotas-v14 .mascotas-v14-buscador input {
+        flex-basis: 100%;
+    }
+}
+
+/* FIN PETCARE 165R.342.3A */
+</style>
+
+
+{# PETCARE 165R.355.5 - ENCABEZADO UNIFICADO #}
+{% include "components/encabezado_bauhaus.html" with titulo="Gestión de Mascotas" subtitulo="Registro y consulta de pacientes veterinarios." %}
 
 <section class="panel mascotas-v14">
 
     <div class="mascotas-v14-encabezado mascota-v16-listado-encabezado">
         <h2 class="panel-title">
-            Mascotas registradas: {{ total_mascotas }}
+            Mascotas registradas: <span class="mascotas-contador">{{ total_mascotas }}</span>
         </h2>
 
         {% if perms.mascotas.add_mascota %}
@@ -54,6 +170,7 @@
                     <th>Tutor</th>
                     <th>Sexo</th>
                     <th>Estado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
 
@@ -90,11 +207,31 @@
                             </span>
                         {% endif %}
                     </td>
-                </tr>
+
+                      <td>
+                          <a href="{% url 'mascotas:detalle' mascota.pk %}"
+                             class="mascota-ver-ficha">
+                              <svg xmlns="http://www.w3.org/2000/svg"
+                                   viewBox="0 0 24 24"
+                                   fill="none"
+                                   stroke="currentColor"
+                                   stroke-width="2"
+                                   stroke-linecap="round"
+                                   stroke-linejoin="round"
+                                   aria-hidden="true">
+                                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                  <path d="M14 2v6h6"/>
+                                  <path d="M8 13h8"/>
+                                  <path d="M8 17h8"/>
+                              </svg>
+                              Ver ficha
+                          </a>
+                      </td>
+</tr>
 
                 {% empty %}
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         No se encontraron mascotas registradas.
                     </td>
                 </tr>

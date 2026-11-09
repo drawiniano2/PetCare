@@ -1,0 +1,501 @@
+{% extends "base.html" %}
+{% block title %}Solicitudes de acceso | PetCare{% endblock %}
+{% block section_title %}Solicitudes de acceso{% endblock %}
+
+{% block content %}
+{# PETCARE_LISTADO_ACCESOS_165R323 #}
+<style>
+.pc-access {max-width:1200px;margin:0 auto;color:#17354d}
+.pc-access * {box-sizing:border-box}
+.pc-access-header {
+    background:#17354d;color:white;border-radius:12px;
+    padding:22px 26px;margin-bottom:18px;
+}
+.pc-access-header h1 {color:white!important;margin:0 0 7px;font-size:25px}
+.pc-access-header p {color:#e1ebf1;margin:0}
+.pc-access-stats {
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;margin-bottom:18px;
+}
+.pc-access-stat {
+    background:white;border:1px solid #dce5ed;
+    border-radius:11px;padding:17px 20px;
+}
+.pc-access-stat strong {display:block;font-size:30px;margin-top:6px}
+.pc-access-panel {
+    background:white;border:1px solid #dce5ed;
+    border-radius:12px;padding:22px;
+}
+.pc-access-filters {display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.pc-access-filters input,.pc-access-filters select {
+    padding:11px;border:1px solid #ccd7e2;border-radius:8px;
+    font:inherit;background:white;color:#17354d;
+}
+.pc-access-filters input {flex:1;min-width:210px}
+.pc-access-btn {
+    display:inline-block;background:#17354d;color:white!important;
+    padding:11px 17px;border-radius:8px;text-decoration:none;
+    border:0;font-weight:700;cursor:pointer;
+}
+.pc-access-secondary {
+    background:#edf3f7;color:#17354d!important;
+}
+.pc-access-table {width:100%;border-collapse:collapse}
+.pc-access-table th,.pc-access-table td {
+    padding:13px 11px;text-align:left;border-bottom:1px solid #e4eaf2;
+}
+.pc-access-table th {background:#f3f6fb}
+.pc-access-status {
+    display:inline-block;padding:6px 11px;border-radius:20px;
+    font-size:12px;font-weight:700;background:#fff0bd;color:#755000;
+}
+.pc-access-status.aprobada {background:#e4f8f5;color:#08685f}
+.pc-access-status.rechazada {background:#fde9e7;color:#9a2922}
+.pc-access-footer {display:flex;gap:15px;justify-content:center;margin-top:20px}
+@media(max-width:760px) {
+    .pc-access-stats {grid-template-columns:1fr}
+    .pc-access-panel {padding:12px}
+    .pc-access-table-wrap {overflow-x:auto}
+}
+
+/* PETCARE 165R.354.3 - LISTADO COMPACTO */
+
+/* Encabezado */
+main .access-hero,
+main .sa-hero,
+main .solicitudes-hero {
+    padding: 20px 24px !important;
+    margin-bottom: 14px !important;
+}
+
+main .access-hero h1,
+main .sa-hero h1,
+main .solicitudes-hero h1 {
+    font-size: 24px !important;
+    margin: 0 0 5px !important;
+}
+
+/* Estadisticas */
+main .access-stats,
+main .sa-stats,
+main .solicitudes-stats {
+    gap: 12px !important;
+    margin-bottom: 14px !important;
+}
+
+main .access-stats > *,
+main .sa-stats > *,
+main .solicitudes-stats > * {
+    padding: 14px 18px !important;
+    min-height: 90px !important;
+}
+
+/* Filtros */
+main .access-filters,
+main .sa-filters,
+main .solicitudes-filters {
+    gap: 10px !important;
+    margin-bottom: 14px !important;
+}
+
+main .access-filters input,
+main .access-filters select,
+main .sa-filters input,
+main .sa-filters select,
+main .solicitudes-filters input,
+main .solicitudes-filters select {
+    min-height: 42px;
+    font-size: 14px;
+}
+
+/* Tabla */
+main table {
+    font-size: 14px;
+}
+
+main table th,
+main table td {
+    padding: 10px 11px !important;
+    vertical-align: middle;
+    line-height: 1.45;
+}
+
+main table th {
+    font-weight: 700;
+}
+
+/* Boton de revision */
+main table td a[href*="/revisar/"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 14px;
+    background: #142d4e;
+    color: #ffffff !important;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+main table td a[href*="/revisar/"]:hover {
+    background: #203d61;
+}
+
+/* Espaciado general */
+main .card,
+main .panel {
+    margin-bottom: 14px;
+}
+
+@media (max-width: 850px) {
+    main table {
+        min-width: 740px;
+    }
+}
+
+
+/* PETCARE 165R.354.4B - BAUHAUS UNIFICADO */
+
+/* Encabezado PetCare */
+.pc-access-header {
+    position: relative;
+    overflow: hidden;
+    border-left: 5px solid #eab637;
+    padding-right: 120px;
+}
+
+.pc-access-header::after {
+    content: "";
+    position: absolute;
+    right: 32px;
+    top: 22px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #eab637;
+    box-shadow:
+        28px 12px 0 -10px #e65c4f,
+        -18px 25px 0 -13px #16b8aa;
+}
+
+/* Tarjetas estadísticas */
+.pc-access-stat {
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.pc-access-stat:nth-child(1) {
+    border-top: 5px solid #eab637;
+    background: #fffaf0;
+}
+
+.pc-access-stat:nth-child(2) {
+    border-top: 5px solid #16b8aa;
+    background: #f0fcf9;
+}
+
+.pc-access-stat:nth-child(3) {
+    border-top: 5px solid #e65c4f;
+    background: #fff6f4;
+}
+
+.pc-access-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(20,45,78,.12);
+}
+
+/* Botón de regreso */
+.pc-access-footer .pc-access-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+.pc-access-footer .pc-access-secondary::before {
+    content: "←";
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.pc-access-footer .pc-access-secondary:hover {
+    background: #17354d;
+    color: white !important;
+    transform: translateX(-3px);
+}
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 760px) {
+    .pc-access-header {
+        padding-right: 26px;
+    }
+
+    .pc-access-header::after {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pc-access-stat,
+    .pc-access-footer .pc-access-secondary {
+        transition: none;
+    }
+}
+
+
+/* PETCARE 165R.354.5 - UNIFICACION VISUAL */
+
+/* Encabezado igual al estilo general de PetCare */
+.pc-access-header {
+    background: #ffffff !important;
+    border: 1px solid #dce6ef !important;
+    border-left: 5px solid #16b8aa !important;
+    padding: 22px 26px !important;
+    box-shadow: 0 3px 12px rgba(20,45,78,.04);
+}
+
+.pc-access-header::after {
+    display: none !important;
+}
+
+.pc-access-header h1,
+.pc-access-header h2 {
+    color: #142d4e !important;
+}
+
+.pc-access-header p {
+    color: #617186 !important;
+}
+
+/* Botón volver: color y flecha */
+a.pc-access-secondary,
+.pc-access-footer a {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 9px;
+    background: #e5eef2 !important;
+    color: #142d4e !important;
+    border-radius: 8px;
+    text-decoration: none !important;
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+a.pc-access-secondary::before,
+.pc-access-footer a::before {
+    content: "\2190";
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+a.pc-access-secondary:hover,
+.pc-access-footer a:hover {
+    background: #142d4e !important;
+    color: #ffffff !important;
+    transform: translateX(-3px);
+}
+
+a.pc-access-secondary:focus-visible,
+.pc-access-footer a:focus-visible {
+    outline: 3px solid #16b8aa;
+    outline-offset: 3px;
+}
+
+
+/* PETCARE 165R.354.6 - ENCABEZADO VETERINARIO */
+
+.pc-access .pc-access-header {
+    position: relative !important;
+    background: #17354b !important;
+    color: #ffffff !important;
+    border-left: 5px solid #eab637 !important;
+    border-radius: 12px !important;
+    padding: 22px 160px 22px 26px !important;
+    min-height: 112px;
+    overflow: hidden;
+}
+
+.pc-access .pc-access-header h1 {
+    font-family: 'Josefin Sans', 'Outfit', sans-serif !important;
+    color: #ffffff !important;
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    line-height: 1.2;
+    margin: 0 0 8px !important;
+}
+
+.pc-access .pc-access-header p {
+    font-family: 'Outfit', sans-serif !important;
+    color: #e3edf3 !important;
+    font-size: 15px !important;
+    margin: 0 !important;
+}
+
+.pc-access .pc-access-header::after {
+    content: none !important;
+    display: none !important;
+}
+
+.pc-access .pc-access-header::before {
+    content: "";
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 115px;
+    height: 85px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 90'%3E%3Cpath d='M12 70A43 43 0 0 1 55 27' fill='none' stroke='%23eab637' stroke-width='9'/%3E%3Crect x='79' y='44' width='30' height='30' fill='%23e65c4f'/%3E%3Ccircle cx='24' cy='75' r='12' fill='%2316b8aa'/%3E%3Cpath d='M43 63V43L52 31L60 43L70 31L80 43V65Q65 77 43 63Z' fill='%23fff7e8'/%3E%3Cpath d='M64 44L74 22L91 24L103 42L94 58L82 61L77 48Z' fill='%23fff7e8'/%3E%3Ccircle cx='56' cy='51' r='2.3' fill='%2317354b'/%3E%3Ccircle cx='89' cy='39' r='2.3' fill='%2317354b'/%3E%3C/svg%3E");
+}
+
+.pc-access {
+    font-family: 'Outfit', 'Segoe UI', sans-serif;
+}
+
+.pc-access .pc-access-stat,
+.pc-access .pc-access-panel {
+    font-family: 'Outfit', sans-serif;
+}
+
+@media (max-width: 700px) {
+    .pc-access .pc-access-header {
+        padding-right: 100px !important;
+    }
+
+    .pc-access .pc-access-header::before {
+        width: 75px;
+        right: 12px;
+    }
+
+    .pc-access .pc-access-header h1 {
+        font-size: 21px !important;
+    }
+}
+
+
+/* PETCARE 165R.354.10 - MOTIVO DEFINITIVO */
+.pc-access .pc-access-header::before {
+    background-image: url("/petcare/static/img/petcare_motivo_bauhaus_transparente.png") !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    width: 135px !important;
+    height: 95px !important;
+    right: 18px !important;
+}
+
+</style>
+
+<div class="pc-access">
+    <header class="pc-access-header">
+        <h1>Gestión de solicitudes de acceso</h1>
+        <p>Veterinarios y personal autorizado · PetCare</p>
+    </header>
+
+    <section class="pc-access-stats">
+        <div class="pc-access-stat">
+            Pendientes<strong>{{ pendientes }}</strong>
+        </div>
+        <div class="pc-access-stat">
+            Aprobadas<strong>{{ aprobadas }}</strong>
+        </div>
+        <div class="pc-access-stat">
+            Rechazadas<strong>{{ rechazadas }}</strong>
+        </div>
+    </section>
+
+    <section class="pc-access-panel">
+        <form method="get" class="pc-access-filters">
+            <input type="search" name="q" value="{{ busqueda }}"
+                   placeholder="Buscar nombre, RUT, correo o usuario">
+
+            <select name="estado">
+                <option value="">Todos los estados</option>
+                <option value="PENDIENTE" {% if estado == "PENDIENTE" %}selected{% endif %}>Pendientes</option>
+                <option value="APROBADA" {% if estado == "APROBADA" %}selected{% endif %}>Aprobadas</option>
+                <option value="RECHAZADA" {% if estado == "RECHAZADA" %}selected{% endif %}>Rechazadas</option>
+            </select>
+
+            <select name="tipo">
+                <option value="">Todos los tipos</option>
+                <option value="VETERINARIO" {% if tipo == "VETERINARIO" %}selected{% endif %}>Veterinario</option>
+                <option value="PERSONAL" {% if tipo == "PERSONAL" %}selected{% endif %}>Personal autorizado</option>
+            </select>
+
+            <button class="pc-access-btn" type="submit">Buscar</button>
+            <a class="pc-access-btn pc-access-secondary"
+               href="{% url 'solicitudes_acceso_lista' %}">Limpiar</a>
+        </form>
+
+        <p>Total de resultados: <strong>{{ total }}</strong></p>
+
+        <div class="pc-access-table-wrap">
+            <table class="pc-access-table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Solicitante</th>
+                        <th>Usuario</th>
+                        <th>Tipo de cuenta</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for solicitud in solicitudes %}
+                    <tr>
+                        <td>{{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}</td>
+                        <td><strong>{{ solicitud.nombre }} {{ solicitud.apellido }}</strong></td>
+                        <td>{{ solicitud.username_solicitado }}</td>
+                        <td>{{ solicitud.get_tipo_cuenta_display }}</td>
+                        <td>
+                            <span class="pc-access-status {% if solicitud.estado == 'APROBADA' %}aprobada{% elif solicitud.estado == 'RECHAZADA' %}rechazada{% endif %}">
+                                {{ solicitud.get_estado_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{% url 'solicitudes_acceso_revisar' solicitud.pk %}">
+                                Revisar
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No se encontraron solicitudes.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if solicitudes.has_other_pages %}
+        <nav class="pc-access-footer">
+            {% if solicitudes.has_previous %}
+            <a href="?page={{ solicitudes.previous_page_number }}&amp;q={{ busqueda|urlencode }}&amp;estado={{ estado|urlencode }}&amp;tipo={{ tipo|urlencode }}">Anterior</a>
+            {% endif %}
+            <span>Página {{ solicitudes.number }} de {{ solicitudes.paginator.num_pages }}</span>
+            {% if solicitudes.has_next %}
+            <a href="?page={{ solicitudes.next_page_number }}&amp;q={{ busqueda|urlencode }}&amp;estado={{ estado|urlencode }}&amp;tipo={{ tipo|urlencode }}">Siguiente</a>
+            {% endif %}
+        </nav>
+        {% endif %}
+    </section>
+
+    <p style="margin-top:20px">
+        <a href="{% url 'dashboard' %}" class="pc-access-btn pc-access-secondary">
+            Volver al Panel principal
+        </a>
+    </p>
+</div>
+{% endblock %}

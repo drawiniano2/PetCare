@@ -1,4 +1,7 @@
-{% extends "base.html" %}
+{# PETCARE 165R.355.34 - RETOQUES FINALES #}
+{# PETCARE 165R.355.31 - FICHA COMPACTA #}
+{# PETCARE 165R.355.24 - REPARACION FINAL #}
+﻿{% extends "base.html" %}
 
 {% block title %}Ficha Cl&iacute;nica | PetCare{% endblock %}
 {% block section_title %}Historial Cl&iacute;nico{% endblock %}
@@ -192,18 +195,288 @@
     margin-bottom: 20px;
 }
 
+
+/* PETCARE 165R.329.3 - FICHA COMPACTA */
+
+.pc-ficha {
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.pc-ficha h1 {
+    font-size: 27px;
+    margin-bottom: 4px;
+}
+
+.pc-ficha h2 {
+    font-size: 21px;
+    margin-bottom: 12px;
+}
+
+.pc-ficha .pc-subtitulo {
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.pc-ficha .pc-panel {
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    border-radius: 11px;
+}
+
+.pc-ficha .pc-datos {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.pc-ficha .pc-dato {
+    padding: 9px 12px;
+}
+
+.pc-ficha .pc-dato,
+.pc-ficha .pc-dato strong,
+.pc-ficha .pc-campo label {
+    font-size: 15px;
+}
+
+.pc-ficha .pc-dato strong {
+    margin-bottom: 3px;
+}
+
+.pc-ficha .pc-campos {
+    gap: 12px;
+}
+
+.pc-ficha textarea {
+    font-size: 16px;
+    min-height: 75px;
+    padding: 9px;
+}
+
+.pc-ficha .pc-boton {
+    font-size: 15px;
+    padding: 9px 13px;
+}
+
+.pc-ficha table {
+    font-size: 15px;
+    line-height: 1.35;
+}
+
+.pc-ficha th,
+.pc-ficha td {
+    padding: 9px 10px;
+}
+
+.pc-ficha .pc-vacio {
+    font-size: 15px;
+    padding: 10px;
+}
+
+.pc-ficha .pc-nota-antecedentes {
+    font-size: 14px;
+    padding: 9px 12px;
+    margin-bottom: 12px;
+}
+
+.pc-ficha .pc-acciones {
+    margin-top: 12px;
+}
+
+.pc-ficha .pc-desplegable summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 21px;
+    font-weight: 700;
+    color: #17365D;
+    list-style: none;
+}
+
+.pc-ficha .pc-desplegable summary::-webkit-details-marker {
+    display: none;
+}
+
+.pc-ficha .pc-desplegable summary span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #65748A;
+}
+
+.pc-ficha .pc-desplegable[open] summary {
+    margin-bottom: 14px;
+}
+
+@media (max-width: 900px) {
+    .pc-ficha .pc-datos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .pc-ficha .pc-datos,
+    .pc-ficha .pc-campos {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* PETCARE 165R.329.9 - ATENCIONES COMPACTAS */
+
+.pc-ficha .pc-tabla-atenciones {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.pc-ficha .pc-tabla-atenciones th:nth-child(1) {
+    width: 17%;
+}
+
+.pc-ficha .pc-tabla-atenciones th:nth-child(2) {
+    width: 23%;
+}
+
+.pc-ficha .pc-tabla-atenciones th:nth-child(3) {
+    width: 43%;
+}
+
+.pc-ficha .pc-tabla-atenciones th:nth-child(4) {
+    width: 17%;
+}
+
+.pc-ficha .pc-tabla-atenciones th,
+.pc-ficha .pc-tabla-atenciones td {
+    padding: 10px 12px;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.pc-ficha .pc-tabla-atenciones .pc-fecha small {
+    display: block;
+    color: #65748A;
+    margin-top: 3px;
+}
+
+.pc-ficha .pc-tabla-atenciones .pc-motivo {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.pc-ficha .pc-tabla-atenciones .pc-accion-tabla {
+    text-align: center;
+}
+
+.pc-ficha .pc-tabla-atenciones .pc-accion-tabla .pc-boton {
+    padding: 8px 11px;
+    white-space: nowrap;
+}
+
+@media (max-width: 750px) {
+    .pc-ficha .pc-tabla-atenciones {
+        min-width: 650px;
+    }
+}
+
+
+/* PETCARE 165R.330.7 - BOTONES RECORDATORIOS */
+.pc-ficha .pc-acciones-registro {
+    margin: 0 0 12px;
+}
+.pc-ficha .pc-acciones-registro .pc-boton {
+    padding: 8px 13px;
+}
+
+
+/* PETCARE 165R.355.31 - FICHA COMPACTA */
+
+.pc-ficha .pc-panel {
+    padding: 14px 18px;
+    margin-bottom: 12px;
+}
+
+.pc-ficha .pc-panel > h2 {
+    margin-bottom: 10px;
+}
+
+.pc-ficha .pc-dato {
+    padding: 8px 12px;
+}
+
+.pc-ficha .pc-titulo-acciones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.pc-ficha .pc-titulo-acciones h2 {
+    margin: 0;
+}
+
+.pc-ficha .pc-titulo-acciones .pc-boton {
+    font-size: 15px;
+    padding: 8px 13px;
+}
+
+.pc-ficha .pc-desplegable summary span {
+    background: #F5F0E7;
+    border-radius: 7px;
+    padding: 7px 12px;
+    color: #17365D;
+    font-weight: 700;
+}
+
+.pc-ficha th,
+.pc-ficha td {
+    padding: 8px 10px;
+}
+
+.pc-ficha .pc-tabla-atenciones th,
+.pc-ficha .pc-tabla-atenciones td {
+    padding: 8px 10px;
+}
+
+@media (max-width: 700px) {
+    .pc-ficha .pc-panel {
+        padding: 14px;
+    }
+    .pc-ficha .pc-titulo-acciones {
+        align-items: flex-start;
+    }
+}
+
+
+/* PETCARE 165R.355.34 - RETOQUES FINALES */
+
+.pc-ficha .pc-vacio {
+    background: #FAF8F3;
+    color: #52677E;
+    padding: 12px 14px;
+    line-height: 1.5;
+}
+
+.pc-ficha > a.pc-boton.pc-dorado {
+    margin-top: 2px;
+    padding: 9px 14px;
+    font-size: 15px;
+}
+
 </style>
 
 <div class="pc-ficha">
 
-    <h1>Ficha Cl&iacute;nica: {{ mascota.nombre }}</h1>
-    <p class="pc-subtitulo">
-        Antecedentes y seguimiento veterinario de
-        {{ mascota.nombre }}.
-        Tutor responsable:
-        {{ mascota.tutor.nombre }}
-        {{ mascota.tutor.apellido }}.
-    </p>
+    {# PETCARE 165R.355.20B - BAUHAUS LOTE 3 #}
+{% with nombre_mascota=mascota.nombre %}
+{% with titulo_bauhaus="Ficha Clínica: "|add:nombre_mascota %}
+{% include "components/encabezado_bauhaus.html" with titulo=titulo_bauhaus subtitulo="Antecedentes y seguimiento veterinario." %}
+{% endwith %}
+{% endwith %}
 
     <section class="pc-panel">
         <h2>Datos de la mascota</h2>
@@ -229,8 +502,9 @@
         </div>
     </section>
 
-    <section class="pc-panel">
-        <h2>Antecedentes cl&iacute;nicos</h2>
+    <details class="pc-panel pc-desplegable" {% if formulario.errors %}open{% endif %}>
+        <summary>Antecedentes clínicos<span>Consultar / editar</span></summary>
+
 
         {% if not ficha %}
             <p>
@@ -302,56 +576,114 @@
                 </div>
             </div>
         {% endif %}
-    </section>
+    </details>
 
     <section class="pc-panel">
+        <div class="pc-titulo-acciones">
         <h2>Atenciones veterinarias</h2>
+        <a href="{% url 'historial_clinico:nueva_atencion' mascota.pk %}"
+       class="pc-boton pc-azul">
+       + Nueva atención veterinaria
+    </a>
+    </div>
 
-        <div style="margin: 16px 0 22px;">
-            <a href="{% url 'historial_clinico:nueva_atencion' mascota.pk %}"
-               class="pc-boton"
-               style="background:#19375e; color:#ffffff; display:inline-block; text-decoration:none;">
-                + Nueva atención veterinaria
-            </a>
+        <div class="pc-tabla">
+
+<table class="pc-tabla-atenciones">
+    <thead>
+        <tr>
+            <th>Fecha y hora</th>
+            <th>Veterinario</th>
+            <th>Motivo de consulta</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for atencion in atenciones %}
+        <tr>
+            <td class="pc-fecha">
+                {{ atencion.fecha_atencion|date:"d/m/Y" }}
+                <small>{{ atencion.fecha_atencion|date:"H:i" }}</small>
+            </td>
+            <td>
+                {{ atencion.veterinario.nombre }}
+                {{ atencion.veterinario.apellido }}
+            </td>
+            <td>
+                <span class="pc-motivo">
+                    {{ atencion.motivo_consulta }}
+                </span>
+            </td>
+            <td class="pc-accion-tabla">
+                <a class="pc-boton pc-dorado"
+                   href="{% url 'historial_clinico:detalle_atencion' mascota.pk atencion.pk %}">
+                    Ver detalle
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="pc-vacio">
+                Aún no se han registrado atenciones veterinarias para esta mascota.
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
         </div>
+    </section>
+
+
+    <!-- PETCARE 165R.328.7 - VACUNAS Y CONTROLES -->
+
+    {% if puede_ver_vacunas %}
+    <section class="pc-panel">
+        <div class="pc-titulo-acciones">
+        <h2>Vacunas registradas</h2>
+        {% if puede_crear_vacuna %}
+        <a class="pc-boton pc-azul"
+           href="{% url 'recordatorios_vacuna_crear' %}?ficha={{ ficha.pk }}">
+           + Nueva vacuna
+        </a>
+        {% endif %}
+    </div>
+
 
         <div class="pc-tabla">
             <table>
                 <thead>
                     <tr>
-                        <th>Fecha</th>
-                        <th>Veterinario</th>
-                        <th>Motivo</th>
-                        <th>Diagn&oacute;stico</th>
-                        <th>Tratamiento</th>
-                        <th>Acciones</th>
+                        <th>Vacuna</th>
+                        <th>Fecha de aplicación</th>
+                        <th>Próxima dosis</th>
+                        <th>Veterinario</th><th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for atencion in atenciones %}
+                    {% for vacuna in vacunas %}
                     <tr>
+                        <td>{{ vacuna.nombre }}</td>
+                        <td>{{ vacuna.fecha_aplicacion|date:"d/m/Y" }}</td>
                         <td>
-                            {{ atencion.fecha_atencion|date:"d/m/Y H:i" }}
+                            {{ vacuna.proxima_dosis|date:"d/m/Y"|default:"No programada" }}
                         </td>
-                        <td>{{ atencion.veterinario }}</td>
-                        <td>{{ atencion.motivo_consulta }}</td>
+                        <td>{{ vacuna.veterinario }}</td>
                         <td>
-                            {{ atencion.diagnostico|default:"Pendiente" }}
-                        </td>
-                        <td>
-                            {{ atencion.tratamiento|default:"No registrado" }}
-                        </td>
-                        <td>
+                            {% if vacuna.pk in vacunas_editables %}
                             <a class="pc-boton pc-dorado"
-                               href="{% url 'historial_clinico:detalle_atencion' mascota.pk atencion.pk %}">
-                                Ver detalle
+                               href="{% url 'recordatorios_vacuna_editar' vacuna.pk %}">
+                                Editar
                             </a>
+                            {% else %}
+                            —
+                            {% endif %}
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="6" class="pc-vacio">
-                            A&uacute;n no se han registrado consultas o tratamientos veterinarios para esta mascota.
+                        <td colspan="5" class="pc-vacio">
+                            No hay vacunas registradas para esta mascota.
                         </td>
                     </tr>
                     {% endfor %}
@@ -359,10 +691,65 @@
             </table>
         </div>
     </section>
+    {% endif %}
+
+    {% if puede_ver_controles %}
+    <section class="pc-panel">
+        <div class="pc-titulo-acciones">
+        <h2>Controles veterinarios</h2>
+        {% if puede_crear_control %}
+        <a class="pc-boton pc-azul"
+           href="{% url 'recordatorios_control_crear' %}?ficha={{ ficha.pk }}">
+           + Nuevo control
+        </a>
+        {% endif %}
+    </div>
+
+
+        <div class="pc-tabla">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Motivo</th>
+                        <th>Fecha programada</th>
+                        <th>Estado</th>
+                        <th>Veterinario</th><th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for control in controles %}
+                    <tr>
+                        <td>{{ control.motivo }}</td>
+                        <td>{{ control.fecha_programada|date:"d/m/Y" }}</td>
+                        <td>{{ control.estado }}</td>
+                        <td>{{ control.veterinario }}</td>
+                        <td>
+                            {% if control.pk in controles_editables %}
+                            <a class="pc-boton pc-dorado"
+                               href="{% url 'recordatorios_control_editar' control.pk %}">
+                                Editar
+                            </a>
+                            {% else %}
+                            —
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="pc-vacio">
+                            No hay controles veterinarios registrados para esta mascota.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    {% endif %}
 
     <a href="{% url 'historial_clinico:lista' %}"
        class="pc-boton pc-dorado">
-        Volver al Historial Cl&iacute;nico
+        ← Volver al listado
     </a>
 
 </div>

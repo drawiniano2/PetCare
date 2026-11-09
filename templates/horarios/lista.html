@@ -1,6 +1,98 @@
 {% extends "base.html" %}
 
-{% block section_title %}Horarios{% endblock %}
+{% block section_title %}Horarios
+<style>
+/* PETCARE 165R.349.2 - DISTRIBUCION HORIZONTAL */
+
+@media (min-width: 901px) {
+
+    .horarios-v18 .horarios-tabla {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .horarios-v18 .horarios-tabla th:nth-child(1) {
+        width: 25%;
+    }
+
+    .horarios-v18 .horarios-tabla th:nth-child(2) {
+        width: 14%;
+    }
+
+    .horarios-v18 .horarios-tabla th:nth-child(3) {
+        width: 11%;
+    }
+
+    .horarios-v18 .horarios-tabla th:nth-child(4) {
+        width: 12%;
+    }
+
+    .horarios-v18 .horarios-tabla th:nth-child(5) {
+        width: 13%;
+    }
+
+    .horarios-v18 .horarios-tabla th:nth-child(6) {
+        width: 25%;
+    }
+
+    .horarios-v18 .horarios-tabla td:last-child {
+        white-space: nowrap;
+    }
+}
+
+/* FIN PETCARE 165R.349.2 */
+</style>
+
+
+<style>
+/* PETCARE 165R.350.2 - BARRA HORIZONTAL */
+
+.horarios-v18 .horarios-barra-unificada {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.horarios-v18 .horarios-barra-unificada .horarios-buscador {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    gap: 10px;
+    margin-bottom: 0 !important;
+}
+
+.horarios-v18 .horarios-barra-unificada .horarios-buscador input {
+    flex: 1;
+    min-width: 0;
+}
+
+.horarios-v18 .horarios-boton-nuevo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    min-height: 40px;
+}
+
+@media (max-width: 760px) {
+    .horarios-v18 .horarios-barra-unificada {
+        flex-wrap: wrap;
+    }
+
+    .horarios-v18 .horarios-barra-unificada .horarios-buscador {
+        flex-basis: 100%;
+    }
+
+    .horarios-v18 .horarios-boton-nuevo {
+        margin-left: auto;
+    }
+}
+
+/* FIN PETCARE 165R.350.2 */
+</style>
+
+{% endblock %}
 
 {% block content %}
 
@@ -166,38 +258,36 @@
 
 <section class="horarios-v18">
 
-    <h2 class="horarios-titulo">
-        Horarios de atención
-    </h2>
-
-    <p class="horarios-subtitulo">
-        Organización semanal del equipo veterinario.
-    </p>
+    {# PETCARE 165R.355.16 - BAUHAUS ESPECIAL #}
+{% include "components/encabezado_bauhaus.html" with titulo="Horarios de atención" subtitulo="Organización semanal del equipo veterinario." %}
 
     <div class="horarios-tarjeta">
 
-        {% if perms.horarios.add_horario %}
-        <div style="display:flex;justify-content:flex-end;margin-bottom:18px;">
+        <!-- PETCARE 165R.350.2 - BARRA UNIFICADA -->
+        <div class="horarios-barra-unificada">
+
+            <form method="get" class="horarios-buscador">
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ busqueda }}"
+                    placeholder="Buscar veterinario, RUT o especialidad"
+                    aria-label="Buscar horarios"
+                >
+                <button type="submit" class="horarios-boton">
+                    Buscar
+                </button>
+            </form>
+
+            {% if perms.horarios.add_horario %}
             <a href="{% url 'horarios:nuevo' %}"
-               class="horarios-boton"
+               class="horarios-boton horarios-boton-nuevo"
                style="background:#DCAE50;color:#17365D;">
                 + Nuevo horario
             </a>
-        </div>
-        {% endif %}
+            {% endif %}
 
-        <form method="get" class="horarios-buscador">
-            <input
-                type="search"
-                name="q"
-                value="{{ busqueda }}"
-                placeholder="Buscar veterinario, RUT o especialidad"
-                aria-label="Buscar horarios"
-            >
-            <button type="submit" class="horarios-boton">
-                Buscar
-            </button>
-        </form>
+        </div>
 
         <div class="horarios-tabla-contenedor">
             <table class="horarios-tabla">
@@ -278,5 +368,170 @@
 
     </div>
 </section>
+
+
+<style>
+/* PETCARE 165R.348.4 - LISTADO COMPACTO BAUHAUS */
+
+.horarios-v18 {
+    padding: 4px 8px !important;
+}
+
+.horarios-v18 .horarios-titulo {
+    font-size: 26px !important;
+    margin-bottom: 7px !important;
+}
+
+.horarios-v18 .horarios-titulo::after {
+    margin-top: 5px !important;
+    height: 3px !important;
+}
+
+.horarios-v18 .horarios-subtitulo {
+    font-size: 14px;
+    margin-bottom: 14px !important;
+}
+
+.horarios-v18 .horarios-tarjeta {
+    padding: 18px 20px !important;
+    background: #fffcf8 !important;
+    border: 1px solid #e6d8c7 !important;
+    border-top: 4px solid #c94b3f !important;
+    border-radius: 14px !important;
+}
+
+.horarios-v18 .horarios-tarjeta > div:first-child {
+    margin-bottom: 12px !important;
+}
+
+.horarios-v18 .horarios-buscador {
+    gap: 10px !important;
+    margin-bottom: 14px !important;
+}
+
+.horarios-v18 .horarios-buscador input {
+    min-height: 40px;
+    padding: 9px 13px !important;
+    background: #f5f1eb;
+    border-color: #dfd3c5;
+}
+
+.horarios-v18 .horarios-boton {
+    padding: 9px 15px !important;
+    min-height: 40px;
+    box-sizing: border-box;
+    font-size: 13px;
+}
+
+.horarios-v18 .horarios-tabla th {
+    padding: 11px 12px !important;
+    background: #eee9e0 !important;
+    font-size: 13px;
+    border-bottom: 2px solid #c94b3f;
+}
+
+.horarios-v18 .horarios-tabla td {
+    padding: 9px 12px !important;
+    font-size: 13.5px;
+    line-height: 1.35;
+}
+
+.horarios-v18 .horarios-tabla tbody tr:nth-child(even) {
+    background: #faf7f2;
+}
+
+.horarios-v18 .horarios-tabla tbody tr:hover {
+    background: #f3eadb !important;
+}
+
+.horarios-v18 .horarios-estado {
+    padding: 4px 10px !important;
+    font-size: 12px !important;
+}
+
+.horarios-v18 .horarios-accion-editar,
+.horarios-v18 .horarios-accion-estado {
+    min-height: 32px !important;
+    padding: 7px 11px !important;
+    font-size: 12px !important;
+    line-height: 1.2;
+}
+
+.horarios-v18 .horarios-accion-editar {
+    margin-right: 7px !important;
+}
+
+.horarios-v18 .horarios-tabla td:last-child {
+    white-space: nowrap;
+}
+
+.horarios-v18 .horarios-tarjeta > p:last-child {
+    margin-top: 12px !important;
+    font-size: 13px;
+}
+
+@media (max-width: 700px) {
+    .horarios-v18 .horarios-tarjeta {
+        padding: 13px !important;
+    }
+
+    .horarios-v18 .horarios-tabla {
+        min-width: 730px;
+    }
+}
+
+/* FIN PETCARE 165R.348.4 */
+</style>
+
+
+<style>
+/* PETCARE 165R.348.5 - LEGIBILIDAD BAUHAUS */
+
+.horarios-v18 .horarios-titulo {
+    font-size: 28px !important;
+}
+
+.horarios-v18 .horarios-subtitulo {
+    font-size: 15px !important;
+}
+
+.horarios-v18 .horarios-buscador input {
+    font-size: 15px !important;
+}
+
+.horarios-v18 .horarios-tabla th {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    padding: 12px !important;
+}
+
+.horarios-v18 .horarios-tabla td {
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+    padding: 10px 12px !important;
+}
+
+.horarios-v18 .horarios-estado {
+    font-size: 13px !important;
+    padding: 5px 11px !important;
+}
+
+.horarios-v18 .horarios-accion-editar,
+.horarios-v18 .horarios-accion-estado {
+    font-size: 13.5px !important;
+    min-height: 35px !important;
+    padding: 8px 12px !important;
+}
+
+.horarios-v18 .horarios-boton {
+    font-size: 14px !important;
+}
+
+.horarios-v18 .horarios-tarjeta > p:last-child {
+    font-size: 14px !important;
+}
+
+/* FIN PETCARE 165R.348.5 */
+</style>
 
 {% endblock %}

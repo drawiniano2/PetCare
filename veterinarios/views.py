@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, get_object_or_404
+﻿from django.shortcuts import redirect, get_object_or_404
 from .forms import VeterinarioForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Q
@@ -7,7 +7,7 @@ from django.shortcuts import render
 from .models import Veterinario
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("veterinarios.view_veterinario", raise_exception=True)
 def lista_veterinarios(request):
     busqueda = request.GET.get("q", "").strip()
@@ -35,7 +35,7 @@ def lista_veterinarios(request):
     )
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("veterinarios.add_veterinario", raise_exception=True)
 def crear_veterinario(request):
     if request.method == "POST":
@@ -58,7 +58,7 @@ def crear_veterinario(request):
 
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("veterinarios.view_veterinario", raise_exception=True)
 def detalle_veterinario(request, pk):
     veterinario = get_object_or_404(Veterinario, pk=pk)
@@ -70,7 +70,7 @@ def detalle_veterinario(request, pk):
     )
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("veterinarios.change_veterinario", raise_exception=True)
 def editar_veterinario(request, pk):
     veterinario = get_object_or_404(Veterinario, pk=pk)

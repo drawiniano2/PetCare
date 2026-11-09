@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+{% block section_title %}Solicitudes de citas{% endblock %}
+{% block content %}
+<style>
+.ps-panel{max-width:1300px;margin:auto}
+.ps-panel h1{font-size:1.7rem;color:#142d4e;margin-bottom:8px}
+.ps-panel .ps-card{background:white;border:1px solid #e4eaf2;border-radius:14px;padding:20px;margin-top:18px}
+.ps-panel table{width:100%;border-collapse:collapse;font-size:15px}
+.ps-panel th,.ps-panel td{padding:13px 12px;text-align:left;border-bottom:1px solid #e4eaf2}
+.ps-panel th{background:#f3f6fb;color:#142d4e}
+.ps-panel a.ps-btn{display:inline-block;background:#142d4e;color:white;padding:8px 13px;border-radius:8px;text-decoration:none}
+.ps-panel select,.ps-panel button{font-size:15px;padding:9px;border:1px solid #d5deea;border-radius:8px}
+.ps-panel button{background:#16b8aa;color:#fff;border:0;cursor:pointer}
+.ps-panel .ps-scroll{overflow-x:auto}
+
+/* PETCARE 165R.353.6B - TABLA */
+.ps-panel table {
+    font-size: 14px;
+}
+
+.ps-panel th,
+.ps-panel td {
+    padding: 10px 9px;
+    line-height: 1.45;
+    vertical-align: middle;
+}
+
+.ps-panel a.ps-btn {
+    white-space: nowrap;
+    padding: 9px 12px;
+    font-size: 14px;
+}
+
+.ps-estado {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.ps-aprobada {
+    background: #d9f5e8;
+    color: #087348;
+}
+
+.ps-pendiente {
+    background: #fff1c7;
+    color: #855700;
+}
+
+.ps-rechazada {
+    background: #fde3e3;
+    color: #a12626;
+}
+
+.ps-cancelada {
+    background: #edf0f4;
+    color: #596579;
+}
+
+
+/* PETCARE 165R.357.9.124 - TITULO BLANCO */
+
+/* Encabezado exclusivo de Solicitudes de citas */
+.ps-panel .encabezado-bauhaus h1,
+.ps-panel .encabezado-bauhaus h2,
+.ps-panel .encabezado-bauhaus h3 {
+    color: #FFFFFF !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+.ps-panel .encabezado-bauhaus p {
+    color: #E0EAF4 !important;
+    opacity: 1 !important;
+}
+
+
+/* PETCARE 165R.357.9.126 - ENCABEZADO CORREGIDO */
+
+/* Título blanco sobre fondo azul marino */
+.ps-panel .petcare-bauhaus-header
+.petcare-bauhaus-content h1 {
+    color: #FFFFFF !important;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 8px;
+    opacity: 1;
+}
+
+/* Descripción clara */
+.ps-panel .petcare-bauhaus-header
+.petcare-bauhaus-content p {
+    color: #E3EDF3 !important;
+    font-size: 15px;
+    line-height: 1.45;
+    margin: 0;
+}
+
+/* Adaptación móvil */
+@media (max-width: 650px) {
+    .ps-panel .petcare-bauhaus-header
+    .petcare-bauhaus-content h1 {
+        font-size: 21px;
+    }
+}
+
+
+/* PETCARE 165R.357.9.127 - FILTROS BAUHAUS */
+
+/* Distribución horizontal */
+.ps-panel .ps-filtros-bauhaus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 18px 22px;
+}
+
+/* Título y descripción */
+.ps-panel .ps-filtros-descripcion h3 {
+    color: #19375E;
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.ps-panel .ps-filtros-descripcion p {
+    color: #718096;
+    font-size: 15px;
+    margin: 0;
+}
+
+/* Formulario */
+.ps-panel .ps-filtros-bauhaus form {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.ps-panel .ps-filtros-bauhaus label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #19375E;
+}
+
+.ps-panel .ps-filtros-bauhaus select {
+    min-height: 43px;
+    padding: 9px 12px;
+    font-size: 15px;
+    color: #19375E;
+    background: #FFFFFF;
+    border: 1px solid #CBD8E7;
+    border-radius: 8px;
+}
+
+/* Botón con doble estado Bauhaus */
+.ps-panel .ps-filtros-bauhaus button {
+    min-height: 43px;
+    padding: 9px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    background: #EDF3F9;
+    color: #19375E;
+    border: 2px solid #19375E;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+.ps-panel .ps-filtros-bauhaus button:hover {
+    background: #19375E;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+}
+
+.ps-panel .ps-filtros-bauhaus button:focus-visible {
+    outline: 3px solid #E2AE4B;
+    outline-offset: 3px;
+}
+
+/* Estado cancelado: rojo Bauhaus */
+.ps-panel .ps-estado.ps-cancelada {
+    background: #FCEDEC;
+    color: #C73532;
+}
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 750px) {
+    .ps-panel .ps-filtros-bauhaus {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .ps-panel .ps-filtros-bauhaus form {
+        justify-content: flex-start;
+    }
+}
+
+
+/* PETCARE 165R.357.9.129 - TABLA Y PAGINACION */
+
+.ps-panel .ps-tabla-bauhaus {
+    padding: 18px 20px;
+    overflow-x: auto;
+}
+
+.ps-panel .ps-tabla-bauhaus table {
+    width: 100%;
+    font-size: 15px;
+    border-collapse: collapse;
+}
+
+.ps-panel .ps-tabla-bauhaus th,
+.ps-panel .ps-tabla-bauhaus td {
+    padding: 12px 10px;
+    line-height: 1.45;
+    vertical-align: middle;
+}
+
+.ps-panel .ps-tabla-bauhaus th {
+    background: #F1F5FA;
+    color: #19375E;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.ps-panel .ps-tabla-bauhaus tbody tr:hover {
+    background: #F7FAFD;
+}
+
+.ps-panel .ps-tabla-bauhaus a.ps-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 9px 12px;
+    background: #19375E;
+    color: #FFFFFF;
+    border: 2px solid #19375E;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background .2s, color .2s, transform .2s;
+}
+
+.ps-panel .ps-tabla-bauhaus a.ps-btn:hover {
+    background: #EDF3F9;
+    color: #19375E;
+    transform: translateY(-2px);
+}
+
+.ps-panel .ps-paginacion-bauhaus {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 5px 3px;
+    color: #596579;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.ps-panel .ps-paginacion-bauhaus a {
+    display: inline-block;
+    padding: 8px 13px;
+    border: 1px solid #19375E;
+    border-radius: 8px;
+    background: #EDF3F9;
+    color: #19375E;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.ps-panel .ps-paginacion-bauhaus a:hover {
+    background: #19375E;
+    color: #FFFFFF;
+}
+
+@media (max-width: 850px) {
+    .ps-panel .ps-tabla-bauhaus table {
+        min-width: 900px;
+    }
+}
+
+</style>
+
+<div class="ps-panel">
+{# PETCARE 165R.355.11 - BAUHAUS LOTE 2 #}
+{% include "components/encabezado_bauhaus.html" with titulo="Solicitudes de citas" subtitulo="Administración de solicitudes enviadas por los tutores." %}
+
+<div class="ps-card ps-filtros-bauhaus">
+<div class="ps-filtros-descripcion">
+    <h3>Filtrar solicitudes</h3>
+    <p>Consulta las solicitudes según su estado.</p>
+</div>
+<form method="get">
+<label for="estado">Filtrar por estado:</label>
+<select name="estado" id="estado">
+<option value="">Todos los estados</option>
+{% for valor, etiqueta in estados %}
+<option value="{{ valor }}" {% if estado_actual == valor %}selected{% endif %}>{{ etiqueta }}</option>
+{% endfor %}
+</select>
+<button type="submit">Filtrar</button>
+</form>
+</div>
+
+<div class="ps-card ps-scroll ps-tabla-bauhaus">
+<table>
+<thead><tr>
+<th>N.º</th><th>Tutor</th><th>Mascota</th>
+<th>Fecha solicitada</th><th>Hora</th><th>Veterinario preferido</th>
+<th>Estado</th><th>Acción</th>
+</tr></thead>
+<tbody>
+{% for s in pagina %}
+<tr>
+<td>{{ s.pk }}</td>
+<td>{{ s.tutor }}</td>
+<td>{{ s.mascota }}</td>
+<td>{{ s.fecha_preferida|date:"d/m/Y" }}</td>
+<td>{{ s.hora_preferida|time:"H:i" }}</td>
+<td>{{ s.veterinario_preferido|default:"Sin preferencia" }}</td>
+<td>
+<span class="ps-estado
+{% if s.estado == 'APROBADA' %}ps-aprobada
+{% elif s.estado == 'PENDIENTE' %}ps-pendiente
+{% elif s.estado == 'RECHAZADA' %}ps-rechazada
+{% else %}ps-cancelada{% endif %}">
+{{ s.get_estado_display }}
+</span>
+</td>
+<td><a class="ps-btn" href="{% url 'citas:solicitudes_detalle' s.pk %}">Ver detalle</a></td>
+</tr>
+{% empty %}
+<tr><td colspan="8">No hay solicitudes para mostrar.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+<div class="ps-paginacion-bauhaus">
+Página {{ pagina.number }} de {{ pagina.paginator.num_pages }}
+{% if pagina.has_previous %}
+<a href="?estado={{ estado_actual }}&page={{ pagina.previous_page_number }}">Anterior</a>
+{% endif %}
+{% if pagina.has_next %}
+<a href="?estado={{ estado_actual }}&page={{ pagina.next_page_number }}">Siguiente</a>
+{% endif %}
+</div>
+</div>
+{% endblock %}

@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 
 from tutores.models import Tutor
+from accounts.models import SolicitudAcceso
 from mascotas.models import Mascota, SolicitudMascota
 from veterinarios.models import Veterinario
 from citas.models import Cita
@@ -18,17 +19,31 @@ from historial_clinico.views import (
 def dashboard(request):
     usuario = request.user
 
-    # Las cuentas publicas de tutores utilizan su panel privado.
-    if not usuario.is_staff and not usuario.is_superuser:
+    # PETCARE_DASHBOARD_VETERINARIO_165R441
+    grupos = set(usuario.groups.values_list("name", flat=True))
+    es_veterinario = "Veterinario" in grupos
+
+    # Veterinarios pueden utilizar el dashboard clinico
+    # aunque no tengan permisos de acceso administrativo.
+    # PETCARE_PANEL_PERSONAL_165R442
+    if (
+        not usuario.is_superuser
+        and "Personal Autorizado" in grupos
+        and not es_veterinario
+    ):
+        return redirect("panel_personal")
+
+    if (
+        not usuario.is_staff
+        and not usuario.is_superuser
+        and not es_veterinario
+    ):
         return redirect("panel_tutor")
 
     hoy = timezone.localdate()
 
-    grupos = set(usuario.groups.values_list("name", flat=True))
-
     es_admin = usuario.is_superuser or "Administrador" in grupos
     es_recepcion = "Recepcionista" in grupos
-    es_veterinario = "Veterinario" in grupos
 
     acceso_administrativo = es_admin or es_recepcion
     acceso_clinico = es_admin or es_veterinario
@@ -77,8 +92,33 @@ def dashboard(request):
             estado=SolicitudMascota.Estado.PENDIENTE
         ).count()
 
+
+    # PETCARE_CUENTAS_DASHBOARD_165R322
+    puede_ver_solicitudes_cuentas = (
+        usuario.is_active
+        and (
+            usuario.is_superuser
+            or (
+                es_admin
+                and usuario.is_staff
+                and usuario.has_perm("accounts.view_solicitudacceso")
+            )
+        )
+    )
+
+    solicitudes_cuentas_pendientes = None
+
+    if puede_ver_solicitudes_cuentas:
+        solicitudes_cuentas_pendientes = (
+            SolicitudAcceso.objects.filter(
+                estado=SolicitudAcceso.Estado.PENDIENTE
+            ).count()
+        )
+
     contexto = {
         "puede_ver_solicitudes": puede_ver_solicitudes,
+        "puede_ver_solicitudes_cuentas": puede_ver_solicitudes_cuentas,
+        "solicitudes_cuentas_pendientes": solicitudes_cuentas_pendientes,
         "solicitudes_pendientes": solicitudes_pendientes,
         "total_tutores": total_tutores,
         "total_mascotas": total_mascotas,
@@ -115,3 +155,34 @@ def dashboard(request):
         )
 
     return render(request, "dashboard/inicio.html", contexto)
+
+
+@login_required(login_url="petcare_login")
+def panel_personal(request):
+    from django.core.exceptions import PermissionDenied
+
+    usuario = request.user
+    grupos = set(usuario.groups.values_list("name", flat=True))
+
+    if not usuario.is_active or (
+        not usuario.is_superuser
+        and "Personal Autorizado" not in grupos
+    ):
+        raise PermissionDenied("Acceso exclusivo de Personal Autorizado.")
+
+    puede_ver = usuario.has_perm("mascotas.view_solicitudmascota")
+
+    pendientes = None
+    if puede_ver:
+        pendientes = SolicitudMascota.objects.filter(
+            estado=SolicitudMascota.Estado.PENDIENTE
+        ).count()
+
+    return render(
+        request,
+        "dashboard/personal_autorizado.html",
+        {
+            "puede_ver_solicitudes": puede_ver,
+            "solicitudes_pendientes": pendientes,
+        },
+    )

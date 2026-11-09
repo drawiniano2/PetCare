@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Ficha de {{ mascota.nombre }} | PetCare{% endblock %}
@@ -6,10 +6,195 @@
 
 {% block content %}
 
-<section class="page-heading">
-    <h1>Ficha de la mascota</h1>
-    <p>Información general del paciente veterinario.</p>
-</section>
+<style>
+/* PETCARE 165R.344.2 - FICHA MASCOTA BAUHAUS */
+
+.ficha-mascota-v15 {
+    max-width: 1100px;
+    padding: 28px;
+    background: #fffdf9;
+    border: 1px solid #e6ded2;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(25, 52, 81, .06);
+}
+
+.ficha-mascota-v15 .mascota-v15-cabecera {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 22px;
+    background: #f5eee3;
+    border-radius: 12px;
+    border-left: 5px solid #c96b50;
+}
+
+.ficha-mascota-v15 .mascota-v15-avatar {
+    width: 135px;
+    height: 135px;
+    flex: 0 0 135px;
+    border-radius: 12px;
+    background: #e8d9bc;
+    font-size: 75px;
+}
+
+.ficha-mascota-v15 .mascota-v15-identidad h2 {
+    margin: 0 0 10px;
+    color: #193451;
+    font-size: 34px;
+}
+
+.ficha-mascota-v15 .mascota-v15-identidad p {
+    margin-bottom: 14px;
+    color: #615c56;
+    font-size: 16px;
+}
+
+.ficha-mascota-v15 .mascota-v15-separador {
+    margin: 25px 0;
+    background: #e5ddd2;
+}
+
+.ficha-mascota-v15 .mascota-v15-subtitulo {
+    margin-bottom: 16px;
+    color: #193451;
+    font-size: 23px;
+}
+
+.ficha-mascota-v15 .mascota-v15-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.ficha-mascota-v15 .mascota-v15-dato {
+    min-width: 0;
+    padding: 17px 19px;
+    background: #f6f1e9;
+    border-left: 4px solid #d6ac57;
+    border-radius: 9px;
+    gap: 7px;
+}
+
+.ficha-mascota-v15 .mascota-v15-dato span {
+    color: #6d665d;
+    font-size: 14px;
+}
+
+.ficha-mascota-v15 .mascota-v15-dato strong {
+    color: #193451;
+    font-size: 16px;
+    overflow-wrap: anywhere;
+}
+
+.ficha-mascota-v15 .mascota-v15-tutor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 20px;
+    background: #e9f3f0;
+    border: 1px solid #cce1d9;
+    border-radius: 10px;
+}
+
+.ficha-mascota-v15 .mascota-v15-tutor strong {
+    color: #193451;
+    font-size: 18px;
+}
+
+.ficha-mascota-v15 .mascota-v15-tutor p {
+    color: #475b56;
+    margin: 6px 0 0;
+    overflow-wrap: anywhere;
+}
+
+.ficha-mascota-v15 .mascota-v15-observaciones {
+    padding: 18px 20px;
+    background: #f6f1e9;
+    border: 1px solid #e9e0d4;
+    border-radius: 9px;
+    color: #344052;
+    line-height: 1.6;
+}
+
+.ficha-mascota-v15 .mascota-v15-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 13px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e5ddd2;
+}
+
+.ficha-mascota-v15 .mascota-v15-boton,
+.ficha-mascota-v15 .mascota-v16-boton-editar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.ficha-mascota-v15 .mascota-v15-boton {
+    background: #193451;
+    color: #fff;
+}
+
+.ficha-mascota-v15 .mascota-v15-boton:hover {
+    background: #285277;
+    color: #fff;
+}
+
+.ficha-mascota-v15 .mascota-v16-boton-editar {
+    background: #d9ad52;
+    color: #193451;
+    border: 1px solid #c89d43;
+}
+
+.ficha-mascota-v15 .mascota-v16-boton-editar:hover {
+    background: #e6be6d;
+    color: #193451;
+}
+
+@media (max-width: 760px) {
+    .ficha-mascota-v15 {
+        padding: 16px;
+    }
+
+    .ficha-mascota-v15 .mascota-v15-cabecera {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .ficha-mascota-v15 .mascota-v15-avatar {
+        width: 90px;
+        height: 90px;
+        flex-basis: 90px;
+        font-size: 50px;
+    }
+
+    .ficha-mascota-v15 .mascota-v15-identidad h2 {
+        font-size: 27px;
+    }
+
+    .ficha-mascota-v15 .mascota-v15-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* FIN PETCARE 165R.344.2 */
+</style>
+
+
+{# PETCARE 165R.355.5 - ENCABEZADO UNIFICADO #}
+{% include "components/encabezado_bauhaus.html" with titulo="Ficha de la mascota" subtitulo="Información general del paciente veterinario." %}
 
 <section class="panel ficha-mascota-v15">
 
@@ -59,6 +244,13 @@
                 {{ mascota.fecha_nacimiento|date:"d/m/Y"|default:"No registrada" }}
             </strong>
         </div>
+
+          <!-- PETCARE 165R.344.7C - EDAD -->
+          <div class="mascota-v15-dato">
+              <span>Edad</span>
+              <strong>{{ mascota.edad_mascota }}</strong>
+          </div>
+
 
         <div class="mascota-v15-dato">
             <span>Peso</span>
@@ -138,6 +330,138 @@
     </div>
 
 </section>
+
+
+<style>
+/* PETCARE 165R.344.4A - FICHA COMPACTA */
+
+.ficha-mascota-v15 {
+    padding: 22px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-cabecera {
+    padding: 15px 18px !important;
+    gap: 18px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-avatar {
+    width: 100px !important;
+    height: 100px !important;
+    flex: 0 0 100px !important;
+    font-size: 58px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-identidad h2 {
+    font-size: 29px !important;
+    margin-bottom: 6px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-identidad p {
+    font-size: 15px !important;
+    margin-bottom: 9px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-separador {
+    margin: 17px 0 !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-subtitulo {
+    font-size: 21px !important;
+    margin-bottom: 12px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-grid {
+    gap: 10px 12px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-dato {
+    padding: 11px 15px !important;
+    gap: 4px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-dato span {
+    font-size: 13px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-dato strong {
+    font-size: 15px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-tutor {
+    padding: 14px 18px !important;
+    gap: 12px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-tutor strong {
+    font-size: 16px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-tutor p {
+    margin-top: 3px !important;
+    font-size: 14px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-observaciones {
+    padding: 12px 16px !important;
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-acciones {
+    margin-top: 18px !important;
+    padding-top: 15px !important;
+    gap: 10px !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-boton,
+.ficha-mascota-v15 .mascota-v16-boton-editar {
+    min-height: 40px !important;
+    padding: 9px 15px !important;
+    font-size: 13px !important;
+}
+
+@media (max-width: 760px) {
+    .ficha-mascota-v15 {
+        padding: 15px !important;
+    }
+
+    .ficha-mascota-v15 .mascota-v15-avatar {
+        width: 80px !important;
+        height: 80px !important;
+        flex-basis: 80px !important;
+        font-size: 46px !important;
+    }
+
+    .ficha-mascota-v15 .mascota-v15-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* FIN PETCARE 165R.344.4A */
+</style>
+
+
+<style>
+/* PETCARE 165R.344.7C - SEIS TARJETAS */
+
+.ficha-mascota-v15 .mascota-v15-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.ficha-mascota-v15 .mascota-v15-grid
+.mascota-v15-dato {
+    grid-column: auto !important;
+}
+
+@media (max-width: 760px) {
+    .ficha-mascota-v15 .mascota-v15-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* FIN PETCARE 165R.344.7C */
+</style>
 
 {% endblock %}
 

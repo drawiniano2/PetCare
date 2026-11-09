@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+{% block section_title %}Personal de estética{% endblock %}
+{% block content %}
+<!-- PETCARE 165R.357.9.224 - LISTADO BAUHAUS -->
+<style>
+.pc-estetica-panel {
+    background: #fff;
+    border-radius: 12px;
+    border-top: 4px solid #E2AE4B;
+    padding: 20px 22px;
+    box-shadow: 0 8px 24px rgba(20,45,78,.06);
+}
+.pc-estetica-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+.pc-estetica-cabecera h2 {
+    color: #19375E;
+    font-size: 23px;
+    margin: 0 0 5px;
+}
+.pc-estetica-cabecera p {
+    margin: 0;
+    color: #718096;
+    font-size: 15px;
+}
+.pc-estetica-boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    border-radius: 7px;
+    border: 0;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.pc-estetica-crear {
+    background: #E2AE4B;
+    color: #19375E;
+}
+.pc-estetica-editar {
+    background: #168A80;
+    color: #fff;
+}
+.pc-estetica-desactivar {
+    background: #C73532;
+    color: #fff;
+}
+.pc-estetica-activar {
+    background: #19375E;
+    color: #fff;
+}
+.pc-estetica-resumen {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+.pc-estetica-indicador {
+    padding: 14px;
+    background: #F3F6FB;
+    border: 1px solid #E4EAF2;
+    border-radius: 9px;
+}
+.pc-estetica-indicador strong {
+    display: block;
+    color: #19375E;
+    font-size: 25px;
+}
+.pc-estetica-indicador span {
+    font-size: 14px;
+    color: #596B80;
+}
+.pc-estetica-filtros {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+.pc-estetica-filtros input {
+    flex: 1;
+    min-width: 0;
+    padding: 11px;
+    border: 1px solid #D7E1EB;
+    border-radius: 7px;
+    font-size: 15px;
+}
+.pc-estetica-tabla {
+    overflow-x: auto;
+}
+.pc-estetica-tabla table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+.pc-estetica-tabla th {
+    background: #19375E;
+    color: #fff;
+    padding: 12px;
+    text-align: left;
+}
+.pc-estetica-tabla td {
+    padding: 12px;
+    border-bottom: 1px solid #E4EAF2;
+}
+.pc-estetica-acciones {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.pc-estetica-acciones form {
+    margin: 0;
+}
+.pc-estetica-estado {
+    display: inline-block;
+    border-radius: 6px;
+    padding: 5px 9px;
+    font-size: 13px;
+    font-weight: 700;
+}
+.pc-estetica-estado.activo {
+    background: #E4F8F5;
+    color: #126E66;
+}
+.pc-estetica-estado.inactivo {
+    background: #FDEBEA;
+    color: #C73532;
+}
+.pc-estetica-vacio {
+    padding: 28px 15px;
+    text-align: center;
+    color: #596B80;
+}
+.pc-estetica-vacio strong {
+    display: block;
+    color: #19375E;
+    font-size: 17px;
+    margin-bottom: 7px;
+}
+@media(max-width:760px) {
+    .pc-estetica-resumen {
+        grid-template-columns: 1fr;
+    }
+    .pc-estetica-filtros {
+        flex-wrap: wrap;
+    }
+}
+</style>
+
+<div class="pc-estetica-panel">
+
+    <div class="pc-estetica-cabecera">
+        <div>
+            <h2>Personal de estética e higiene</h2>
+            <p>Gestión de trabajadores y especialidades</p>
+        </div>
+        {% if perms.citas.add_personalservicio %}
+        <a class="pc-estetica-boton pc-estetica-crear"
+           href="{% url 'citas:personal_estetica_nuevo' %}">
+            + Registrar personal
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="pc-estetica-resumen">
+        <div class="pc-estetica-indicador">
+            <strong>{{ total }}</strong>
+            <span>Registrados</span>
+        </div>
+        <div class="pc-estetica-indicador">
+            <strong>{{ activos }}</strong>
+            <span>Activos</span>
+        </div>
+        <div class="pc-estetica-indicador">
+            <strong>{{ inactivos }}</strong>
+            <span>Inactivos</span>
+        </div>
+    </div>
+
+    <form method="get" class="pc-estetica-filtros">
+        <input type="search"
+               name="q"
+               value="{{ busqueda }}"
+               placeholder="Buscar por nombre o especialidad"
+               aria-label="Buscar personal">
+        <button type="submit"
+                class="pc-estetica-boton pc-estetica-editar">
+            Buscar
+        </button>
+        {% if busqueda %}
+        <a class="pc-estetica-boton pc-estetica-activar"
+           href="{% url 'citas:personal_estetica' %}">
+            Limpiar
+        </a>
+        {% endif %}
+    </form>
+
+    {% if personal %}
+    <div class="pc-estetica-tabla">
+        <table>
+            <thead>
+                <tr>
+                    <th>RUT</th>
+                    <th>Nombre</th>
+                    <th>Especialidad</th>
+                    <th>Teléfono</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for persona in personal %}
+                <tr>
+                    <td>{{ persona.rut|default:"Pendiente" }}</td>
+                    <td>{{ persona.nombre }} {{ persona.apellido }}</td>
+                    <td>{{ persona.especialidad }}</td>
+                    <td>{{ persona.telefono|default:"—" }}</td>
+                    <td>
+                        {% if persona.activo %}
+                        <span class="pc-estetica-estado activo">
+                            Activo
+                        </span>
+                        {% else %}
+                        <span class="pc-estetica-estado inactivo">
+                            Inactivo
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="pc-estetica-acciones">
+                        {% if perms.citas.change_personalservicio %}
+                            <a class="pc-estetica-boton pc-estetica-editar"
+                               href="{% url 'citas:personal_estetica_editar' persona.pk %}">
+                                Editar
+                            </a>
+                            <form method="post"
+                                  action="{% url 'citas:personal_estetica_estado' persona.pk %}">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="pc-estetica-boton {% if persona.activo %}pc-estetica-desactivar{% else %}pc-estetica-activar{% endif %}"
+                                        onclick="return confirm('¿Confirmar cambio de estado?')">
+                                    {% if persona.activo %}Desactivar{% else %}Activar{% endif %}
+                                </button>
+                            </form>
+                        {% else %}
+                            —
+                        {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="pc-estetica-vacio">
+        {% if busqueda %}
+            <strong>Sin resultados</strong>
+            No se encontraron trabajadores con ese criterio.
+        {% else %}
+            <strong>No hay personal registrado</strong>
+            Registra el primer trabajador para configurar sus horarios.
+        {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

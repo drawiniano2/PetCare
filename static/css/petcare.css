@@ -2509,3 +2509,1863 @@ body {
     stroke: currentColor;
 }
 
+
+
+/* PETCARE RECORDATORIOS 165R.329 */
+
+.recordatorios {
+    display: grid;
+    gap: 24px;
+}
+
+.recordatorios h2,
+.recordatorios h3 {
+    color: #142d4e;
+    margin: 0 0 12px;
+}
+
+.recordatorios .rec-descripcion {
+    color: #718096;
+    margin: 0;
+}
+
+.recordatorios .rec-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.recordatorios .rec-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.recordatorios .rec-panel {
+    background: #fff;
+    border: 1px solid #e4eaf2;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(20,45,78,.08);
+}
+
+.recordatorios .rec-boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 18px;
+    border-radius: 9px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    font: inherit;
+}
+
+.recordatorios .rec-boton-primario {
+    background: #142d4e;
+    color: #fff;
+}
+
+.recordatorios .rec-boton-verde {
+    background: #16b8aa;
+    color: #fff;
+}
+
+.recordatorios .rec-boton-secundario {
+    background: #fff;
+    color: #142d4e;
+    border-color: #d4deea;
+}
+
+.recordatorios .rec-tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.recordatorios .rec-tabla th,
+.recordatorios .rec-tabla td {
+    padding: 12px;
+    border-bottom: 1px solid #e4eaf2;
+    text-align: left;
+}
+
+.recordatorios .rec-tabla th {
+    background: #f3f6fb;
+    color: #142d4e;
+}
+
+.recordatorios .rec-formulario {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.recordatorios .rec-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+}
+
+.recordatorios .rec-campo input,
+.recordatorios .rec-campo select,
+.recordatorios .rec-campo textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d4deea;
+    border-radius: 9px;
+    padding: 11px 12px;
+    font: inherit;
+    background: #fff;
+    color: #24364b;
+}
+
+.recordatorios .rec-campo input:focus,
+.recordatorios .rec-campo select:focus,
+.recordatorios .rec-campo textarea:focus {
+    outline: 2px solid #16b8aa;
+    outline-offset: 1px;
+}
+
+.recordatorios .rec-error {
+    color: #b42318;
+}
+
+.recordatorios .rec-pie {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 24px;
+}
+
+@media (max-width: 700px) {
+    .recordatorios .rec-formulario {
+        grid-template-columns: 1fr;
+    }
+
+    .recordatorios .rec-panel {
+        padding: 16px;
+    }
+}
+
+
+/* PETCARE BAUHAUS 165R.329.4 */
+
+.recordatorios .rec-indicadores-bauhaus {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.recordatorios .rec-kpi {
+    min-width: 0;
+    padding: 22px;
+    background: #fff;
+    border: 1px solid #e4eaf2;
+    border-top: 5px solid var(--rec-kpi-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(20,45,78,.08);
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.recordatorios .rec-kpi-azul {
+    --rec-kpi-color: #17365d;
+}
+
+.recordatorios .rec-kpi-rojo {
+    --rec-kpi-color: #d9543d;
+}
+
+.recordatorios .rec-kpi-verde {
+    --rec-kpi-color: #16b8aa;
+}
+
+.recordatorios .rec-kpi-amarillo {
+    --rec-kpi-color: #e3b54f;
+}
+
+.recordatorios .rec-kpi-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-weight: 700;
+    color: #142d4e;
+}
+
+.recordatorios .rec-figura {
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+    background: var(--rec-kpi-color);
+}
+
+.recordatorios .rec-circulo {
+    border-radius: 50%;
+}
+
+.recordatorios .rec-cuadrado {
+    border-radius: 2px;
+}
+
+.recordatorios .rec-kpi strong {
+    font-size: 38px;
+    line-height: 1;
+    color: #142d4e;
+}
+
+.recordatorios .rec-kpi small {
+    font-size: 13px;
+    color: #718096;
+}
+
+@media (max-width: 1100px) {
+    .recordatorios .rec-indicadores-bauhaus {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .recordatorios .rec-indicadores-bauhaus {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* PETCARE BAUHAUS 165R.329.14 */
+
+.recordatorios .rec-estado {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 11px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .55px;
+    white-space: nowrap;
+}
+
+.recordatorios .rec-estado-vencido {
+    background: #fce8e5;
+    color: #b42318;
+    border-left: 4px solid #d9543d;
+}
+
+.recordatorios .rec-estado-hoy {
+    background: #fff3d6;
+    color: #895b08;
+    border-left: 4px solid #e3b54f;
+}
+
+.recordatorios .rec-estado-proximo {
+    background: #e2f5f3;
+    color: #087d73;
+    border-left: 4px solid #16b8aa;
+}
+
+.recordatorios .rec-estado-pendiente {
+    background: #fff3d6;
+    color: #895b08;
+}
+
+.recordatorios .rec-estado-realizado {
+    background: #e2f5e9;
+    color: #267345;
+    border-left: 4px solid #287b65;
+}
+
+.recordatorios .rec-estado-cancelado {
+    background: #edf0f4;
+    color: #586579;
+    border-left: 4px solid #718096;
+}
+
+.recordatorios .rec-tabla tbody tr:hover {
+    background: #f5f8fc;
+    transition: background .2s ease;
+}
+
+
+/* PETCARE FILTROS BAUHAUS 165R.330.5 */
+
+.recordatorios .rec-panel-filtros {
+    border-left: 5px solid #17365d;
+}
+
+.recordatorios .rec-filtros-titulo h3 {
+    margin: 0 0 5px;
+    color: #142d4e;
+    font-size: 20px;
+}
+
+.recordatorios .rec-filtros-titulo p {
+    margin: 0 0 18px;
+    color: #718096;
+}
+
+.recordatorios .rec-filtros-form {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 16px;
+    align-items: end;
+}
+
+.recordatorios .rec-filtro-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.recordatorios .rec-filtro-campo label {
+    font-weight: 700;
+    font-size: 13px;
+    color: #142d4e;
+}
+
+.recordatorios .rec-filtro-campo input,
+.recordatorios .rec-filtro-campo select {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    background: #fff;
+    color: #24364b;
+    font: inherit;
+}
+
+.recordatorios .rec-filtros-acciones {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.recordatorios .rec-boton-limpiar {
+    background: #edf0f4;
+    color: #142d4e;
+    border: 1px solid #cbd5e1;
+}
+
+@media (max-width: 1050px) {
+    .recordatorios .rec-filtros-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .recordatorios .rec-filtros-form {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* PETCARE FORMULARIO BAUHAUS 165R.331.3 */
+
+.recordatorios.rec-form-bauhaus {
+    gap: 22px;
+}
+
+.rec-form-bauhaus .rec-form-hero {
+    background: #142d4e;
+    color: #ffffff;
+    border-radius: 14px;
+    padding: 26px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    border-left: 7px solid #16b8aa;
+}
+
+.rec-form-bauhaus .rec-form-hero h2 {
+    color: #ffffff;
+    font-size: 27px;
+    margin: 9px 0;
+}
+
+.rec-form-bauhaus .rec-form-hero p {
+    color: #dbe8f5;
+    margin: 0;
+}
+
+.rec-form-bauhaus .rec-form-etiqueta {
+    color: #75e0d6;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.rec-form-bauhaus .rec-form-simbolo {
+    width: 66px;
+    height: 66px;
+    min-width: 66px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #e3b54f;
+    color: #142d4e;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.rec-form-bauhaus .rec-form-panel {
+    padding: 30px;
+}
+
+.rec-form-bauhaus .rec-form-seccion + .rec-form-seccion {
+    margin-top: 30px;
+}
+
+.rec-form-bauhaus .rec-form-seccion-titulo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e4eaf2;
+}
+
+.rec-form-bauhaus .rec-form-numero {
+    display: grid;
+    place-items: center;
+    flex: 0 0 42px;
+    height: 42px;
+    border-radius: 9px;
+    background: #16b8aa;
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.rec-form-bauhaus .rec-form-seccion-datos .rec-form-numero {
+    background: #e3b54f;
+    color: #142d4e;
+}
+
+.rec-form-bauhaus .rec-form-seccion-titulo h3 {
+    font-size: 19px;
+    margin: 0 0 4px;
+    color: #142d4e;
+}
+
+.rec-form-bauhaus .rec-form-seccion-titulo p {
+    color: #718096;
+    font-size: 13px;
+    margin: 0;
+}
+
+.rec-form-bauhaus .rec-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.rec-form-bauhaus .rec-campo-ancho {
+    grid-column: 1 / -1;
+}
+
+.rec-form-bauhaus .rec-campo label {
+    font-weight: 700;
+    color: #142d4e;
+    font-size: 14px;
+}
+
+.rec-form-bauhaus .rec-campo input,
+.rec-form-bauhaus .rec-campo select,
+.rec-form-bauhaus .rec-campo textarea {
+    width: 100%;
+    min-height: 46px;
+    box-sizing: border-box;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 11px 13px;
+    background: #ffffff;
+    color: #24364b;
+    font: inherit;
+}
+
+.rec-form-bauhaus .rec-campo textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.rec-form-bauhaus .rec-campo input:focus,
+.rec-form-bauhaus .rec-campo select:focus,
+.rec-form-bauhaus .rec-campo textarea:focus {
+    outline: 2px solid #16b8aa;
+    outline-offset: 1px;
+}
+
+.rec-form-bauhaus .rec-requerido {
+    color: #d9543d;
+    font-weight: 800;
+}
+
+.rec-form-bauhaus .rec-form-pie {
+    margin-top: 30px;
+    padding-top: 22px;
+    border-top: 1px solid #e4eaf2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.rec-form-bauhaus .rec-form-pie p {
+    margin: 0;
+    color: #718096;
+    font-size: 13px;
+}
+
+.rec-form-bauhaus .rec-form-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.rec-form-bauhaus .rec-form-botones .rec-boton {
+    min-height: 46px;
+    padding: 12px 22px;
+    font-weight: 700;
+}
+
+@media (max-width: 650px) {
+    .rec-form-bauhaus .rec-form-hero {
+        padding: 22px;
+    }
+
+    .rec-form-bauhaus .rec-form-simbolo {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        font-size: 24px;
+    }
+
+    .rec-form-bauhaus .rec-form-panel {
+        padding: 20px;
+    }
+
+    .rec-form-bauhaus .rec-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rec-form-bauhaus .rec-campo-ancho {
+        grid-column: auto;
+    }
+
+    .rec-form-bauhaus .rec-form-botones {
+        width: 100%;
+    }
+}
+
+
+/* PETCARE MEJORAS VISUALES 165R.332.1 */
+
+.rec-form-bauhaus .rec-form-simbolo svg {
+    width: 34px;
+    height: 34px;
+    display: block;
+}
+
+.rec-form-bauhaus .rec-ayuda {
+    display: block;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+    margin-top: 2px;
+}
+
+@media (max-width: 650px) {
+    .rec-form-bauhaus .rec-form-simbolo svg {
+        width: 27px;
+        height: 27px;
+    }
+}
+
+
+/* PETCARE 165R.333.2 - MENU BAUHAUS INTERACTIVO */
+
+.sidebar .sidebar-nav .nav-link {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition:
+        background-color .22s ease,
+        color .22s ease,
+        box-shadow .22s ease;
+}
+
+/* Paleta Bauhaus sobria */
+.sidebar .sidebar-nav .nav-link {
+    --bauhaus-hover: #193451;
+}
+
+.sidebar .sidebar-nav .nav-link:nth-child(4n+2) {
+    --bauhaus-hover: #B65E4B;
+}
+
+.sidebar .sidebar-nav .nav-link:nth-child(4n+3) {
+    --bauhaus-hover: #B98745;
+}
+
+.sidebar .sidebar-nav .nav-link:nth-child(4n+4) {
+    --bauhaus-hover: #287C88;
+}
+
+/* Barra geométrica lateral */
+.sidebar .sidebar-nav .nav-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 20%;
+    width: 4px;
+    height: 60%;
+    background: #FFFFFF;
+    border-radius: 0 3px 3px 0;
+    opacity: 0;
+    transform: scaleY(.35);
+    transition:
+        opacity .22s ease,
+        transform .22s ease;
+    pointer-events: none;
+}
+
+/* Color al pasar el mouse */
+.sidebar .sidebar-nav .nav-link:hover:not(.active),
+.sidebar .sidebar-nav .nav-link:focus-visible:not(.active) {
+    background: var(--bauhaus-hover) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(20,45,78,.12);
+}
+
+/* Mostrar barra */
+.sidebar .sidebar-nav .nav-link:hover::before,
+.sidebar .sidebar-nav .nav-link:focus-visible::before {
+    opacity: 1;
+    transform: scaleY(1);
+}
+
+/* Iconos blancos */
+.sidebar .sidebar-nav .nav-link:hover .nav-icon,
+.sidebar .sidebar-nav .nav-link:focus-visible .nav-icon {
+    color: #FFFFFF !important;
+}
+
+.sidebar .sidebar-nav .nav-link:hover svg,
+.sidebar .sidebar-nav .nav-link:focus-visible svg {
+    stroke: currentColor;
+}
+
+/* Mantener opción activa */
+.sidebar .sidebar-nav .nav-link.active {
+    background: #193451 !important;
+    color: #FFFFFF !important;
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .sidebar .sidebar-nav .nav-link,
+    .sidebar .sidebar-nav .nav-link::before {
+        transition: none !important;
+    }
+}
+
+
+/* PETCARE 165R.334.1 - BAUHAUS TRANSLUCIDO */
+
+/* Colores suaves del menú */
+.sidebar .sidebar-nav .nav-link {
+    --bauhaus-hover: #193451;
+    --bauhaus-soft: rgba(25, 52, 81, .13);
+    --bauhaus-text: #193451;
+}
+
+.sidebar .sidebar-nav .nav-link:nth-child(4n+2) {
+    --bauhaus-hover: #B65E4B;
+    --bauhaus-soft: rgba(182, 94, 75, .15);
+    --bauhaus-text: #873D30;
+}
+
+.sidebar .sidebar-nav .nav-link:nth-child(4n+3) {
+    --bauhaus-hover: #B98745;
+    --bauhaus-soft: rgba(185, 135, 69, .17);
+    --bauhaus-text: #76521F;
+}
+
+.sidebar .sidebar-nav .nav-link:nth-child(4n+4) {
+    --bauhaus-hover: #287C88;
+    --bauhaus-soft: rgba(40, 124, 136, .15);
+    --bauhaus-text: #21616A;
+}
+
+/* Interacción translúcida */
+.sidebar .sidebar-nav .nav-link:hover:not(.active),
+.sidebar .sidebar-nav .nav-link:focus-visible:not(.active) {
+    background: var(--bauhaus-soft) !important;
+    color: var(--bauhaus-text) !important;
+    box-shadow: inset 3px 0 0 var(--bauhaus-hover);
+}
+
+/* Iconos del mismo color */
+.sidebar .sidebar-nav .nav-link:hover:not(.active) .nav-icon,
+.sidebar .sidebar-nav .nav-link:focus-visible:not(.active) .nav-icon {
+    color: var(--bauhaus-text) !important;
+}
+
+/* Línea geométrica */
+.sidebar .sidebar-nav .nav-link:hover::before,
+.sidebar .sidebar-nav .nav-link:focus-visible::before {
+    background: var(--bauhaus-hover);
+}
+
+/* Opción seleccionada */
+.sidebar .sidebar-nav .nav-link.active {
+    background: rgba(40, 124, 136, .17) !important;
+    color: #193451 !important;
+    box-shadow: inset 4px 0 0 #287C88;
+    border-left: 0 !important;
+}
+
+.sidebar .sidebar-nav .nav-link.active .nav-icon {
+    color: #287C88 !important;
+}
+
+.sidebar .sidebar-nav .nav-link.active::before {
+    opacity: 0;
+}
+
+
+/* =====================================================
+   PETCARE 165R.345.3B - TABLA COMPACTA
+   ===================================================== */
+
+.veterinarios-v17-tabla {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.veterinarios-v17-tabla .data-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+}
+
+.veterinarios-v17-tabla .data-table th,
+.veterinarios-v17-tabla .data-table td {
+    padding: 12px 7px;
+    font-size: 12px;
+    line-height: 1.45;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(1) {
+    width: 15%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(2) {
+    width: 10%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(3) {
+    width: 16%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(4) {
+    width: 13%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(5) {
+    width: 20%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(6) {
+    width: 9%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(7) {
+    width: 17%;
+}
+
+.veterinarios-v17-tabla .data-table td:first-child,
+.veterinarios-v17-tabla .data-table td:nth-child(4) {
+    min-width: 0;
+}
+
+.veterinarios-v17-tabla .data-table td:nth-child(4) {
+    white-space: normal;
+}
+
+.veterinarios-v173-acciones {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
+.veterinarios-v173-acciones a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    padding: 7px 6px;
+    font-size: 11px;
+    line-height: 1.3;
+    text-align: center;
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .veterinarios-v17-tabla .data-table {
+        min-width: 780px;
+    }
+}
+
+/* FIN PETCARE 165R.345.3B */
+
+
+
+/* ==================================================
+   PETCARE 165R.345.3C - COLUMNAS DEFINITIVAS
+   ================================================== */
+
+.veterinarios-v17-tabla {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.veterinarios-v17-tabla .data-table {
+    width: 100%;
+    min-width: 0 !important;
+    table-layout: fixed;
+}
+
+.veterinarios-v17-tabla .data-table th,
+.veterinarios-v17-tabla .data-table td {
+    padding: 11px 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    min-width: 0 !important;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(1) {
+    width: 14%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(2) {
+    width: 10%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(3) {
+    width: 16%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(4) {
+    width: 13%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(5) {
+    width: 20%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(6) {
+    width: 9%;
+}
+
+.veterinarios-v17-tabla .data-table th:nth-child(7) {
+    width: 18%;
+}
+
+.veterinarios-v17-tabla .data-table td:first-child {
+    padding-left: 9px;
+}
+
+.veterinarios-v17-tabla .data-table td:nth-child(4) {
+    white-space: normal !important;
+}
+
+.veterinarios-v173-acciones {
+    display: flex;
+    flex-direction: column !important;
+    gap: 5px;
+    width: 100%;
+}
+
+.veterinarios-v173-acciones a {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 7px 4px;
+    font-size: 11px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+@media (max-width: 760px) {
+    .veterinarios-v17-tabla .data-table {
+        min-width: 760px !important;
+    }
+}
+
+/* FIN PETCARE 165R.345.3C */
+
+
+
+/* PETCARE 165R.353.6B - SUBMENUS */
+.sidebar-nav .petcare-submenu {
+    margin-left: 20px;
+    margin-top: 2px;
+    margin-bottom: 8px;
+    width: calc(100% - 20px);
+    min-height: 42px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 500;
+    background: transparent;
+}
+
+.sidebar-nav .petcare-submenu .nav-icon {
+    width: 20px;
+    min-width: 20px;
+}
+
+.sidebar-nav .petcare-submenu.active {
+    background: #e4f8f5;
+    color: #142d4e;
+    border-left: 3px solid #16b8aa;
+}
+
+.sidebar-nav .petcare-submenu:hover {
+    background: #e9f0f1;
+}
+
+
+/* PETCARE 165R.355.1 - ESTILO BAUHAUS GLOBAL */
+
+.petcare-bauhaus-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100px;
+    padding: 22px 30px;
+    margin-bottom: 20px;
+    border-left: 5px solid #eab637;
+    border-radius: 12px;
+    background: #17354b;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.petcare-bauhaus-content {
+    position: relative;
+    z-index: 1;
+    padding-right: 90px;
+}
+
+.petcare-bauhaus-header h1 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 25px;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+.petcare-bauhaus-header p {
+    margin: 7px 0 0;
+    color: #e3edf3;
+    font-size: 15px;
+}
+
+.petcare-bauhaus-art {
+    position: absolute;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 65px;
+}
+
+.bauhaus-circle {
+    position: absolute;
+    width: 46px;
+    height: 46px;
+    top: 0;
+    left: 8px;
+    border-radius: 50%;
+    background: #eab637;
+}
+
+.bauhaus-square {
+    position: absolute;
+    width: 27px;
+    height: 27px;
+    right: 0;
+    bottom: 4px;
+    border-radius: 3px;
+    background: #e65c4f;
+}
+
+.bauhaus-small-circle {
+    position: absolute;
+    width: 23px;
+    height: 23px;
+    left: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: #16b8aa;
+}
+
+/* Botón Volver reutilizable */
+
+.petcare-btn-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 17px;
+    border-radius: 8px;
+    background: #e5eef2;
+    color: #142d4e;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+.petcare-btn-volver::before {
+    content: "\2190";
+    font-size: 21px;
+    line-height: 1;
+}
+
+.petcare-btn-volver:hover {
+    background: #142d4e;
+    color: #ffffff;
+    transform: translateX(-3px);
+}
+
+.petcare-btn-volver:focus-visible {
+    outline: 3px solid #16b8aa;
+    outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+    .petcare-bauhaus-header {
+        padding: 18px 20px;
+        min-height: 85px;
+    }
+
+    .petcare-bauhaus-header h1 {
+        font-size: 21px;
+    }
+
+    .petcare-bauhaus-art {
+        transform: translateY(-50%) scale(.7);
+        right: 8px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .petcare-btn-volver {
+        transition: none;
+    }
+}
+
+
+/* PETCARE 165R.355.3 - BAUHAUS GLOBAL */
+
+.petcare-bauhaus-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 112px;
+    padding: 22px 165px 22px 26px;
+    margin-bottom: 18px;
+    background: #17354b;
+    border-left: 5px solid #eab637;
+    border-radius: 12px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.petcare-bauhaus-content {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+}
+
+.petcare-bauhaus-header h1 {
+    font-family: 'Josefin Sans', 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #ffffff;
+    margin: 0 0 8px;
+}
+
+.petcare-bauhaus-header p {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    line-height: 1.45;
+    color: #e3edf3;
+    margin: 0;
+}
+
+.petcare-bauhaus-art {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 135px;
+    height: 95px;
+    background-image: url("../img/petcare_motivo_bauhaus_transparente.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+@media (max-width: 650px) {
+    .petcare-bauhaus-header {
+        padding: 20px 115px 20px 18px;
+        min-height: 100px;
+    }
+
+    .petcare-bauhaus-header h1 {
+        font-size: 21px;
+    }
+
+    .petcare-bauhaus-art {
+        width: 95px;
+        height: 75px;
+        right: 10px;
+    }
+}
+
+
+/* PETCARE 165R.357.9.94 - RECORDATORIOS VISUAL */
+
+/* Pantalla principal: distribución general */
+.recordatorios:not(.rec-form-bauhaus) {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Indicadores sanitarios */
+.recordatorios .rec-indicadores-bauhaus {
+    gap: 14px;
+}
+
+.recordatorios .rec-kpi {
+    padding: 17px 19px;
+    gap: 9px;
+    border-radius: 10px;
+}
+
+.recordatorios .rec-kpi-cabecera {
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.recordatorios .rec-kpi strong {
+    font-size: 35px;
+}
+
+.recordatorios .rec-kpi small {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.recordatorios .rec-kpi-verde {
+    --rec-kpi-color: #168A80;
+}
+
+.recordatorios .rec-kpi-rojo {
+    --rec-kpi-color: #C73532;
+}
+
+.recordatorios .rec-kpi-amarillo {
+    --rec-kpi-color: #E2AE4B;
+}
+
+/* Paneles */
+.recordatorios:not(.rec-form-bauhaus) .rec-panel {
+    padding: 19px 21px;
+    border-radius: 11px;
+}
+
+.recordatorios:not(.rec-form-bauhaus) .rec-panel h4 {
+    margin: 0 0 12px;
+    color: #19375E;
+    font-size: 19px;
+}
+
+.recordatorios:not(.rec-form-bauhaus) .rec-panel h5 {
+    margin: 18px 0 9px;
+    color: #19375E;
+    font-size: 16px;
+}
+
+/* Filtros */
+.recordatorios .rec-filtros-form {
+    gap: 12px;
+}
+
+.recordatorios .rec-filtro-campo label {
+    font-size: 15px;
+}
+
+.recordatorios .rec-filtro-campo input,
+.recordatorios .rec-filtro-campo select {
+    font-size: 15px;
+    min-height: 43px;
+}
+
+/* Tablas */
+.recordatorios .rec-tabla {
+    font-size: 15px;
+}
+
+.recordatorios .rec-tabla th,
+.recordatorios .rec-tabla td {
+    padding: 10px 12px;
+    vertical-align: middle;
+    line-height: 1.45;
+}
+
+.recordatorios .rec-tabla th {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Estados */
+.recordatorios .rec-estado {
+    font-size: 13px;
+    letter-spacing: .2px;
+    padding: 6px 10px;
+    font-weight: 700;
+}
+
+/* Botones de creación */
+.recordatorios:not(.rec-form-bauhaus)
+.rec-acciones .rec-boton {
+    background: #E2AE4B;
+    color: #19375E;
+    border-color: #D19B36;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* Edición */
+.recordatorios:not(.rec-form-bauhaus)
+.rec-tabla .rec-boton-secundario {
+    background: #168A80;
+    color: #FFFFFF;
+    border-color: #168A80;
+    padding: 8px 13px;
+    font-size: 14px;
+}
+
+/* Aplicar filtros */
+.recordatorios .rec-filtros-acciones
+.rec-boton-primario {
+    background: #19375E;
+    color: #FFFFFF;
+}
+
+/* Adaptación móvil */
+@media (max-width: 700px) {
+    .recordatorios:not(.rec-form-bauhaus) .rec-panel {
+        padding: 16px;
+    }
+
+    .recordatorios .rec-kpi {
+        padding: 16px;
+    }
+
+    .recordatorios .rec-tabla {
+        font-size: 15px;
+    }
+
+    .recordatorios .rec-filtros-acciones {
+        justify-content: flex-start;
+    }
+}
+
+
+/* PETCARE 165R.357.9.109 - PESTANAS COMPACTAS */
+
+.recordatorios:not(.rec-form-bauhaus) {
+    gap: 13px;
+}
+
+.recordatorios .rec-indicadores-bauhaus {
+    gap: 10px;
+}
+
+.recordatorios .rec-kpi {
+    padding: 13px 16px;
+}
+
+.recordatorios:not(.rec-form-bauhaus) .rec-panel {
+    padding: 15px 18px;
+}
+
+.recordatorios .rec-pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    border-bottom: 2px solid #e4eaf2;
+    padding-bottom: 8px;
+}
+
+.recordatorios .rec-pestana {
+    appearance: none;
+    border: 1px solid #d7e0ea;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #19375e;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 11px 17px;
+    cursor: pointer;
+}
+
+.recordatorios .rec-pestana:hover {
+    background: #edf3f8;
+}
+
+.recordatorios .rec-pestana.activa {
+    background: #19375e;
+    border-color: #19375e;
+    color: #ffffff;
+}
+
+.recordatorios .rec-pestana:focus-visible {
+    outline: 3px solid #e2ae4b;
+    outline-offset: 3px;
+}
+
+.recordatorios .rec-panel-pestana[hidden] {
+    display: none !important;
+}
+
+.recordatorios .rec-panel-pestana h4 {
+    margin-bottom: 10px;
+}
+
+.recordatorios .rec-panel-pestana .table-responsive {
+    margin-bottom: 12px;
+}
+
+.recordatorios .rec-acciones .rec-boton-verde {
+    background: #168a80 !important;
+    color: #ffffff !important;
+    border-color: #168a80 !important;
+}
+
+@media (max-width: 700px) {
+    .recordatorios .rec-pestanas {
+        flex-direction: column;
+    }
+
+    .recordatorios .rec-pestana {
+        width: 100%;
+        text-align: left;
+    }
+}
+
+
+/* PETCARE 165R.357.9.114 - PESTANAS DINAMICAS */
+
+.recordatorios .rec-pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 10px;
+}
+
+.recordatorios .rec-pestana {
+    border: 2px solid #dce4ed;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #19375E;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 12px 18px;
+    cursor: pointer;
+    transition:
+        background-color .22s ease,
+        color .22s ease,
+        border-color .22s ease,
+        transform .22s ease,
+        box-shadow .22s ease;
+}
+
+.recordatorios .rec-pestana:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(25,55,94,.14);
+}
+
+/* Recordatorios: azul marino */
+.recordatorios
+.rec-pestana[data-rec-tab="recordatorios"].activa {
+    background: #19375E;
+    border-color: #19375E;
+    color: #ffffff;
+}
+
+/* Historial de vacunas: verde petróleo */
+.recordatorios
+.rec-pestana[data-rec-tab="vacunas"].activa {
+    background: #168A80;
+    border-color: #168A80;
+    color: #ffffff;
+}
+
+/* Controles veterinarios: amarillo Bauhaus */
+.recordatorios
+.rec-pestana[data-rec-tab="controles"].activa {
+    background: #E2AE4B;
+    border-color: #E2AE4B;
+    color: #19375E;
+}
+
+/* Colores al pasar el cursor */
+.recordatorios
+.rec-pestana[data-rec-tab="recordatorios"]:hover {
+    border-color: #19375E;
+}
+
+.recordatorios
+.rec-pestana[data-rec-tab="vacunas"]:hover {
+    border-color: #168A80;
+}
+
+.recordatorios
+.rec-pestana[data-rec-tab="controles"]:hover {
+    border-color: #E2AE4B;
+}
+
+/* Accesibilidad */
+.recordatorios .rec-pestana:focus-visible {
+    outline: 3px solid #E2AE4B;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .recordatorios .rec-pestana {
+        transition: none;
+    }
+
+    .recordatorios .rec-pestana:hover {
+        transform: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.115 - FILTROS BAUHAUS */
+
+/* Ambos botones */
+.recordatorios .rec-filtros-acciones .rec-boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 45px;
+    padding: 11px 19px;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color .22s ease,
+        border-color .22s ease,
+        color .22s ease,
+        transform .22s ease,
+        box-shadow .22s ease;
+}
+
+/* Aplicar filtros: azul marino */
+.recordatorios .rec-filtros-acciones
+.rec-boton-primario {
+    background: #19375E;
+    border: 2px solid #19375E;
+    color: #FFFFFF;
+}
+
+/* Limpiar: rojo Bauhaus */
+.recordatorios .rec-filtros-acciones
+.rec-boton-limpiar {
+    background: #C73532;
+    border: 2px solid #C73532;
+    color: #FFFFFF;
+}
+
+/* Movimiento al pasar el cursor */
+.recordatorios .rec-filtros-acciones
+.rec-boton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(25,55,94,.18);
+}
+
+/* Azul más intenso */
+.recordatorios .rec-filtros-acciones
+.rec-boton-primario:hover {
+    background: #102844;
+    border-color: #102844;
+    color: #FFFFFF;
+}
+
+/* Rojo más intenso */
+.recordatorios .rec-filtros-acciones
+.rec-boton-limpiar:hover {
+    background: #A92C29;
+    border-color: #A92C29;
+    color: #FFFFFF;
+}
+
+/* Accesibilidad */
+.recordatorios .rec-filtros-acciones
+.rec-boton:focus-visible {
+    outline: 3px solid #E2AE4B;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .recordatorios .rec-filtros-acciones
+    .rec-boton {
+        transition: none;
+    }
+
+    .recordatorios .rec-filtros-acciones
+    .rec-boton:hover {
+        transform: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.116 - DOBLE ESTADO */
+
+/* Estilo general */
+.recordatorios .rec-pestanas .rec-pestana {
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 700;
+    transition:
+        background-color .22s ease,
+        color .22s ease,
+        border-color .22s ease,
+        transform .22s ease,
+        box-shadow .22s ease;
+}
+
+/* RECORDATORIOS: inactivo */
+.recordatorios
+.rec-pestana[data-rec-tab="recordatorios"]:not(.activa) {
+    background: #EDF3F9;
+    border-color: #19375E;
+    color: #19375E;
+}
+
+/* VACUNAS: inactivo */
+.recordatorios
+.rec-pestana[data-rec-tab="vacunas"]:not(.activa) {
+    background: #E7F5F2;
+    border-color: #168A80;
+    color: #168A80;
+}
+
+/* CONTROLES: inactivo */
+.recordatorios
+.rec-pestana[data-rec-tab="controles"]:not(.activa) {
+    background: #FFF6E3;
+    border-color: #E2AE4B;
+    color: #876015;
+}
+
+/* RECORDATORIOS: activo */
+.recordatorios
+.rec-pestana[data-rec-tab="recordatorios"].activa {
+    background: #19375E;
+    border-color: #19375E;
+    color: #FFFFFF;
+}
+
+/* VACUNAS: activo */
+.recordatorios
+.rec-pestana[data-rec-tab="vacunas"].activa {
+    background: #168A80;
+    border-color: #168A80;
+    color: #FFFFFF;
+}
+
+/* CONTROLES: activo */
+.recordatorios
+.rec-pestana[data-rec-tab="controles"].activa {
+    background: #E2AE4B;
+    border-color: #E2AE4B;
+    color: #19375E;
+}
+
+/* Efecto dinámico */
+.recordatorios .rec-pestana:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(25,55,94,.18);
+    filter: brightness(.97);
+}
+
+.recordatorios .rec-pestana:focus-visible {
+    outline: 3px solid #E2AE4B;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .recordatorios .rec-pestana {
+        transition: none;
+    }
+
+    .recordatorios .rec-pestana:hover {
+        transform: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.117 - FILTROS DOBLE ESTADO */
+
+/* Aplicar filtros: azul claro y borde marino */
+.recordatorios .rec-filtros-acciones
+.rec-boton-primario {
+    background: #EDF3F9 !important;
+    border: 2px solid #19375E !important;
+    color: #19375E !important;
+}
+
+/* Limpiar: rojo claro y borde rojo */
+.recordatorios .rec-filtros-acciones
+.rec-boton-limpiar {
+    background: #FCEDEC !important;
+    border: 2px solid #C73532 !important;
+    color: #C73532 !important;
+}
+
+/* Transiciones para ambos */
+.recordatorios .rec-filtros-acciones
+.rec-boton-primario,
+.recordatorios .rec-filtros-acciones
+.rec-boton-limpiar {
+    transition:
+        background-color .22s ease,
+        color .22s ease,
+        border-color .22s ease,
+        transform .22s ease,
+        box-shadow .22s ease;
+}
+
+/* Aplicar filtros: al pasar el cursor */
+.recordatorios .rec-filtros-acciones
+.rec-boton-primario:hover {
+    background: #19375E !important;
+    border-color: #19375E !important;
+    color: #FFFFFF !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(25,55,94,.20);
+}
+
+/* Limpiar: al pasar el cursor */
+.recordatorios .rec-filtros-acciones
+.rec-boton-limpiar:hover {
+    background: #C73532 !important;
+    border-color: #C73532 !important;
+    color: #FFFFFF !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(199,53,50,.20);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .recordatorios .rec-filtros-acciones
+    .rec-boton-primario,
+    .recordatorios .rec-filtros-acciones
+    .rec-boton-limpiar {
+        transition: none;
+    }
+
+    .recordatorios .rec-filtros-acciones
+    .rec-boton-primario:hover,
+    .recordatorios .rec-filtros-acciones
+    .rec-boton-limpiar:hover {
+        transform: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.122 - BOTONES SUPERIORES */
+
+/* El panel organiza titulo, botones y campos */
+.recordatorios .rec-filtros-superiores {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 18px;
+    row-gap: 14px;
+    align-items: start;
+}
+
+/* Titulo a la izquierda */
+.recordatorios .rec-filtros-superiores
+.rec-filtros-titulo {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+}
+
+/* El formulario participa en la grilla del panel */
+.recordatorios .rec-filtros-superiores
+.rec-filtros-form {
+    display: contents !important;
+}
+
+/* Campos debajo, ocupando todo el ancho */
+.recordatorios .rec-filtros-superiores
+.rec-filtro-campo {
+    grid-row: 2;
+    min-width: 0;
+}
+
+/* Cuatro columnas proporcionadas */
+.recordatorios .rec-filtros-superiores {
+    grid-template-columns:
+        minmax(0, 2fr)
+        minmax(0, 1fr)
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+}
+
+.recordatorios .rec-filtros-superiores
+.rec-filtro-busqueda {
+    grid-column: 1;
+}
+
+.recordatorios .rec-filtros-superiores
+.rec-filtro-busqueda + .rec-filtro-campo {
+    grid-column: 2;
+}
+
+.recordatorios .rec-filtros-superiores
+.rec-filtro-busqueda + .rec-filtro-campo
++ .rec-filtro-campo {
+    grid-column: 3;
+}
+
+.recordatorios .rec-filtros-superiores
+.rec-filtro-busqueda + .rec-filtro-campo
++ .rec-filtro-campo + .rec-filtro-campo {
+    grid-column: 4;
+}
+
+/* Botones alineados arriba a la derecha */
+.recordatorios .rec-filtros-superiores
+.rec-filtros-acciones {
+    grid-column: 2 / -1;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 !important;
+}
+
+/* Mantener titulo y descripcion juntos */
+.recordatorios .rec-filtros-superiores
+.rec-filtros-titulo h3 {
+    margin-top: 0;
+}
+
+.recordatorios .rec-filtros-superiores
+.rec-filtros-titulo p {
+    margin-bottom: 0;
+}
+
+/* Adaptación a pantallas estrechas */
+@media (max-width: 900px) {
+    .recordatorios .rec-filtros-superiores {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .recordatorios .rec-filtros-superiores
+    .rec-filtros-titulo {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .recordatorios .rec-filtros-superiores
+    .rec-filtros-acciones {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .recordatorios .rec-filtros-superiores
+    .rec-filtro-campo {
+        grid-column: auto !important;
+        grid-row: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .recordatorios .rec-filtros-superiores {
+        display: flex !important;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .recordatorios .rec-filtros-superiores
+    .rec-filtros-form {
+        display: flex !important;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+    }
+
+    .recordatorios .rec-filtros-superiores
+    .rec-filtros-acciones {
+        order: -1;
+        justify-content: flex-start;
+    }
+
+    .recordatorios .rec-filtros-superiores
+    .rec-filtro-campo {
+        width: 100%;
+    }
+}
+
+@media (min-width: 901px) {
+    .recordatorios .rec-filtros-superiores
+    .rec-filtros-titulo {
+        grid-column: 1 / 2;
+    }
+}

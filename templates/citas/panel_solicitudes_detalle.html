@@ -1,0 +1,507 @@
+{% extends "base.html" %}
+{% block section_title %}Detalle de solicitud{% endblock %}
+{% block content %}
+<style>
+.ps-detalle{max-width:1100px;margin:auto;font-size:15px}
+.ps-detalle h1{font-size:1.7rem;color:#142d4e}
+.ps-detalle .ps-card{background:#fff;border:1px solid #e4eaf2;border-radius:14px;padding:22px;margin:18px 0}
+.ps-detalle h2{font-size:1.15rem;color:#142d4e;margin-bottom:16px}
+.ps-detalle .ps-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.ps-detalle .ps-label{font-size:13px;color:#718096;display:block;margin-bottom:5px}
+.ps-detalle .ps-btn{display:inline-block;background:#142d4e;color:white;padding:10px 15px;border-radius:8px;text-decoration:none;border:0;cursor:pointer}
+.ps-detalle .ps-approve{background:#087d70}
+.ps-detalle .ps-reject{background:#b42332}
+.ps-detalle input,.ps-detalle select,.ps-detalle textarea{max-width:100%;padding:9px;border:1px solid #d5deea;border-radius:8px;font-size:15px}
+.ps-detalle form p{margin:12px 0}
+.ps-detalle .ps-errors{color:#b42332}
+@media(max-width:650px){.ps-detalle .ps-grid{grid-template-columns:1fr}}
+
+/* PETCARE 165R.353.9 - FICHA COMPACTA */
+.ps-detalle {
+    max-width: 1180px;
+    font-size: 15px;
+}
+
+.ps-detalle h1 {
+    font-size: 1.55rem;
+    margin: 14px 0;
+}
+
+.ps-detalle .ps-card {
+    padding: 16px 20px;
+    margin: 12px 0;
+    border-radius: 12px;
+}
+
+.ps-detalle h2 {
+    background: #142d4e;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 10px 14px;
+    border-radius: 7px;
+    margin: -3px 0 15px;
+}
+
+.ps-detalle .ps-grid {
+    gap: 12px 24px;
+}
+
+.ps-detalle .ps-label {
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.ps-detalle p {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.ps-detalle .ps-btn {
+    padding: 9px 13px;
+    font-size: 14px;
+}
+
+.ps-detalle .ps-estado-aprobada {
+    display: inline-block;
+    padding: 5px 12px;
+    background: #d9f5e8;
+    color: #087348;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+.ps-detalle .ps-estado-otro {
+    display: inline-block;
+    padding: 5px 12px;
+    background: #edf0f4;
+    color: #596579;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+@media (max-width: 650px) {
+    .ps-detalle .ps-card {
+        padding: 14px;
+    }
+}
+
+
+/* PETCARE 165R.353.10 - RESULTADO */
+.ps-detalle .ps-resultado {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+}
+
+.ps-resultado-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #edf0f4;
+    color: #596579;
+    font-weight: 700;
+}
+
+.ps-resultado-ok {
+    background: #d9f5e8;
+    color: #087348;
+}
+
+.ps-resultado-error {
+    background: #fde3e3;
+    color: #a12626;
+}
+
+
+/* PETCARE 165R.357.9.131 - ENCABEZADO DETALLE */
+
+.ps-detalle .petcare-bauhaus-header
+.petcare-bauhaus-content h1 {
+    color: #FFFFFF !important;
+    font-family: 'Josefin Sans', 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 8px;
+    opacity: 1;
+}
+
+.ps-detalle .petcare-bauhaus-header
+.petcare-bauhaus-content p {
+    color: #E3EDF3 !important;
+    font-size: 15px;
+    line-height: 1.45;
+    margin: 0;
+}
+
+@media (max-width: 650px) {
+    .ps-detalle .petcare-bauhaus-header
+    .petcare-bauhaus-content h1 {
+        font-size: 21px;
+    }
+}
+
+
+/* PETCARE 165R.357.9.132 - DETALLE VISUAL */
+
+/* Volver: separado del encabezado */
+.ps-detalle .ps-volver-bauhaus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 43px;
+    padding: 9px 16px;
+    margin: 0 0 18px;
+    background: #19375E;
+    color: #FFFFFF;
+    border: 2px solid #19375E;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+.ps-detalle .ps-volver-bauhaus span {
+    font-size: 21px;
+    line-height: 1;
+}
+
+.ps-detalle .ps-volver-bauhaus:hover {
+    background: #EDF3F9;
+    color: #19375E;
+    transform: translateX(-3px);
+}
+
+.ps-detalle .ps-volver-bauhaus:focus-visible {
+    outline: 3px solid #E2AE4B;
+    outline-offset: 3px;
+}
+
+/* Tarjetas */
+.ps-detalle .ps-card:not(.ps-resultado) {
+    padding: 18px 20px;
+    margin: 14px 0;
+    border: 1px solid #DFE7F1;
+    border-radius: 12px;
+    background: #FFFFFF;
+}
+
+/* Titulos Bauhaus mas ligeros */
+.ps-detalle .ps-card h2 {
+    background: #EDF3F9;
+    color: #19375E;
+    border-left: 5px solid #19375E;
+    border-radius: 7px;
+    padding: 11px 14px;
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+/* Informacion */
+.ps-detalle .ps-grid {
+    gap: 16px 26px;
+}
+
+.ps-detalle .ps-label {
+    display: block;
+    color: #62758C;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.ps-detalle .ps-grid > div {
+    color: #24364B;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* Resultado de gestion */
+.ps-detalle .ps-resultado {
+    border-left: 4px solid #168A80;
+    padding: 13px 18px;
+    margin-top: 14px;
+    font-size: 15px;
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 650px) {
+    .ps-detalle .ps-card:not(.ps-resultado) {
+        padding: 14px;
+    }
+
+    .ps-detalle .ps-grid {
+        grid-template-columns: 1fr;
+        gap: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ps-detalle .ps-volver-bauhaus {
+        transition: none;
+        transform: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.133 - ACABADO FINAL */
+
+/* Separacion uniforme */
+.ps-detalle .petcare-bauhaus-header {
+    margin-bottom: 18px;
+}
+
+/* Tarjetas: efecto discreto */
+.ps-detalle .ps-card:not(.ps-resultado) {
+    transition:
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+.ps-detalle .ps-card:not(.ps-resultado):hover {
+    border-color: #B9CBDF;
+    box-shadow: 0 5px 16px rgba(25,55,94,.07);
+}
+
+/* Mejor contraste de las etiquetas */
+.ps-detalle .ps-label {
+    color: #526B86;
+    font-weight: 600;
+}
+
+/* Confirmacion clinica */
+.ps-detalle .ps-resultado {
+    background: #F8FCFA;
+    border: 1px solid #D9EDE5;
+    border-left: 4px solid #168A80;
+    border-radius: 12px;
+    color: #19375E;
+}
+
+.ps-detalle .ps-resultado-ok {
+    background: #D9F5E8;
+    color: #087348;
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .ps-detalle .ps-card:not(.ps-resultado) {
+        transition: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.134 - ICONOS BAUHAUS */
+
+/* Barras interiores armonizadas */
+.ps-detalle h2.ps-seccion-tutor,
+.ps-detalle h2.ps-seccion-datos,
+.ps-detalle h2.ps-seccion-clinica {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background: #EDF3F9 !important;
+    color: #19375E !important;
+    font-size: 16px;
+    font-weight: 700;
+    border-left: 4px solid #19375E;
+    padding: 11px 14px;
+}
+
+/* Iconos */
+.ps-detalle .ps-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+/* Tutor y mascota */
+.ps-detalle .ps-seccion-tutor {
+    border-left-color: #19375E !important;
+}
+
+.ps-detalle .ps-seccion-tutor .ps-icono {
+    color: #19375E;
+}
+
+/* Datos de la solicitud */
+.ps-detalle .ps-seccion-datos {
+    border-left-color: #E2AE4B !important;
+}
+
+.ps-detalle .ps-seccion-datos .ps-icono {
+    color: #B68119;
+}
+
+/* Gestión clínica */
+.ps-detalle .ps-seccion-clinica {
+    border-left-color: #168A80 !important;
+}
+
+.ps-detalle .ps-seccion-clinica .ps-icono {
+    color: #168A80;
+}
+
+
+
+/* PETCARE 165R.357.9.135 - COLORES FINALES */
+
+/* Botón del mismo azul que el encabezado */
+.ps-detalle a.ps-volver-bauhaus {
+    background: #17354B !important;
+    border: 2px solid #17354B !important;
+    color: #FFFFFF !important;
+    transition:
+        background .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+.ps-detalle a.ps-volver-bauhaus:hover {
+    background: #244B65 !important;
+    border-color: #244B65 !important;
+    color: #FFFFFF !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(23,53,75,.16);
+}
+
+/* Acento rojo exclusivamente decorativo */
+.ps-detalle .ps-resultado {
+    border-left: 5px solid #C73532 !important;
+}
+
+/* Mantener confirmación aprobada en verde */
+.ps-detalle .ps-resultado-ok {
+    background: #D9F5E8 !important;
+    color: #087348 !important;
+}
+
+
+
+/* PETCARE 165R.357.9.136 - ICONO ROJO */
+
+/* Icono de confirmación en rojo Bauhaus */
+.ps-detalle .ps-resultado .ps-resultado-icono.ps-resultado-ok {
+    background: #FCEDEC !important;
+    color: #C73532 !important;
+    border: 1px solid #F1C6C4;
+}
+
+
+</style>
+
+<div class="ps-detalle">
+<a class="ps-btn ps-volver-bauhaus" href="{% url 'citas:solicitudes_lista' %}"><span aria-hidden="true">←</span> Volver a solicitudes</a>
+{# PETCARE 165R.355.11 - BAUHAUS LOTE 2 #}
+{% with numero=solicitud.pk|stringformat:"s" %}
+{% include "components/encabezado_bauhaus.html" with titulo="Solicitud de cita N.º "|add:numero subtitulo="Revisión y seguimiento de la solicitud veterinaria." %}
+{% endwith %}
+
+<div class="ps-card">
+<h2 class="ps-seccion-tutor"><span class="ps-icono" aria-hidden="true">🐾</span>01 | Tutor y mascota</h2>
+<div class="ps-grid">
+<div><span class="ps-label">Tutor</span>{{ solicitud.tutor }}</div>
+<div><span class="ps-label">Mascota</span>{{ solicitud.mascota }}</div>
+</div>
+</div>
+
+<div class="ps-card">
+<h2 class="ps-seccion-datos"><span class="ps-icono" aria-hidden="true">▦</span>02 | Datos de la solicitud</h2>
+<div class="ps-grid">
+<div><span class="ps-label">Fecha</span>{{ solicitud.fecha_preferida|date:"d/m/Y" }}</div>
+<div><span class="ps-label">Hora</span>{{ solicitud.hora_preferida|time:"H:i" }}</div>
+<div><span class="ps-label">Veterinario preferido</span>{{ solicitud.veterinario_preferido|default:"Sin preferencia" }}</div>
+<div>
+<span class="ps-label">Estado</span>
+<span class="{% if solicitud.estado == 'APROBADA' %}ps-estado-aprobada{% else %}ps-estado-otro{% endif %}">
+{{ solicitud.get_estado_display }}
+</span>
+</div>
+</div>
+<p><span class="ps-label">Motivo</span>{{ solicitud.motivo }}</p>
+</div>
+
+<!-- PETCARE 165R.353.10 - GESTION CLINICA -->
+<div class="ps-card">
+<h2 class="ps-seccion-clinica"><span class="ps-icono" aria-hidden="true">✚</span>03 | Gestión clínica</h2>
+<div class="ps-grid">
+    <div>
+        <span class="ps-label">Cita asociada</span>
+        {% if solicitud.cita_id %}
+        <strong>Cita N.º {{ solicitud.cita_id }}</strong>
+        {% else %}
+        <span>Sin cita asociada</span>
+        {% endif %}
+    </div>
+    <div>
+        <span class="ps-label">Observaciones</span>
+        <span>{{ solicitud.observaciones_clinica|default:"Sin observaciones" }}</span>
+    </div>
+</div>
+</div>
+
+{% if solicitud.estado == "PENDIENTE" and not solicitud.cita_id and puede_gestionar %}
+<div class="ps-card">
+<h2>04 | Aprobar solicitud</h2>
+<form method="post">
+{% csrf_token %}
+<input type="hidden" name="accion" value="aprobar">
+{{ formulario_aprobar.as_p }}
+{% if formulario_aprobar.errors %}<div class="ps-errors">{{ formulario_aprobar.errors }}</div>{% endif %}
+<button class="ps-btn ps-approve" type="submit">Aprobar y crear cita</button>
+</form>
+</div>
+
+<div class="ps-card">
+<h2>05 | Rechazar solicitud</h2>
+<form method="post">
+{% csrf_token %}
+<input type="hidden" name="accion" value="rechazar">
+{{ formulario_rechazar.as_p }}
+{% if formulario_rechazar.errors %}<div class="ps-errors">{{ formulario_rechazar.errors }}</div>{% endif %}
+<button class="ps-btn ps-reject" type="submit">Rechazar solicitud</button>
+</form>
+</div>
+{% else %}
+<div class="ps-card ps-resultado">
+{% if solicitud.estado == "APROBADA" %}
+    <span class="ps-resultado-icono ps-resultado-ok">✓</span>
+    <strong>
+        Solicitud aprobada.
+        {% if solicitud.cita_id %}
+        Cita N.º {{ solicitud.cita_id }} generada correctamente.
+        {% endif %}
+    </strong>
+{% elif solicitud.estado == "RECHAZADA" %}
+    <span class="ps-resultado-icono ps-resultado-error">×</span>
+    <strong>Solicitud rechazada.</strong>
+{% elif solicitud.estado == "CANCELADA" %}
+    <span class="ps-resultado-icono">—</span>
+    <strong>Solicitud cancelada.</strong>
+{% else %}
+    <span class="ps-resultado-icono">i</span>
+    <strong>Solicitud disponible solo para consulta.</strong>
+{% endif %}
+</div>
+{% endif %}
+</div>
+{% endblock %}

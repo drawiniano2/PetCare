@@ -558,6 +558,207 @@ body.pc-login-page {
 }
 </style>
 
+
+<style id="PETCARE_ACCESOS_ROLES_165R339">
+.pc-role-selector {
+    margin: 0 0 24px;
+}
+.pc-role-heading {
+    font-weight: 700;
+    color: #17354d;
+    margin-bottom: 12px;
+}
+.pc-role-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+.pc-role-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    min-height: 105px;
+    padding: 13px 8px;
+    background: #f5f8fb;
+    border: 1px solid #cbdced;
+    border-radius: 9px;
+    color: #17354d;
+    font: inherit;
+    cursor: pointer;
+    text-align: center;
+}
+.pc-role-option:hover,
+.pc-role-option:focus-visible {
+    border-color: #16b8aa;
+    background: #eaf8f6;
+}
+.pc-role-option.is-selected {
+    border: 2px solid #16b8aa;
+    background: #e4f8f5;
+}
+.pc-role-icon {
+    font-size: 25px;
+    line-height: 1;
+}
+.pc-role-option strong {
+    font-size: 13px;
+}
+.pc-role-option small {
+    font-size: 11px;
+    color: #526779;
+}
+.pc-role-message {
+    font-size: 12px;
+    color: #526779;
+    margin: 12px 0 0;
+}
+@media (max-width: 420px) {
+    .pc-role-grid {
+        gap: 7px;
+    }
+    .pc-role-option {
+        padding: 10px 5px;
+    }
+}
+</style>
+
+
+<style id="PETCARE_LOGIN_COMPACTO_165R344">
+
+/* Pantalla compacta de acceso por roles */
+body.pc-login-page {
+    padding: 14px 18px !important;
+}
+
+.pc-login-card {
+    width: min(940px, 100%) !important;
+}
+
+.pc-login-brand {
+    padding: 24px !important;
+}
+
+.pc-login-brand img {
+    max-width: 270px !important;
+}
+
+.pc-login-form {
+    padding: 22px 32px !important;
+}
+
+.pc-login-form h1 {
+    font-size: 25px !important;
+    margin-bottom: 5px !important;
+}
+
+.pc-login-subtitle {
+    margin-bottom: 14px !important;
+}
+
+.pc-role-selector {
+    margin-bottom: 14px !important;
+}
+
+.pc-role-heading {
+    margin-bottom: 8px !important;
+}
+
+.pc-role-grid {
+    gap: 7px !important;
+}
+
+.pc-role-option {
+    min-height: 72px !important;
+    padding: 8px 6px !important;
+    gap: 3px !important;
+}
+
+.pc-role-icon {
+    font-size: 20px !important;
+}
+
+.pc-role-message {
+    margin-top: 7px !important;
+}
+
+.pc-login-form label {
+    margin-bottom: 5px !important;
+}
+
+.pc-login-form input {
+    padding: 10px 12px !important;
+    margin-bottom: 12px !important;
+}
+
+.pc-password-wrapper input {
+    padding-right: 54px !important;
+}
+
+.pc-login-button {
+    padding: 11px !important;
+}
+
+.pc-login-register {
+    margin-top: 12px !important;
+}
+
+@media (max-width: 700px) {
+    .pc-login-card {
+        grid-template-columns: 1fr !important;
+    }
+
+    .pc-login-brand {
+        padding: 18px !important;
+    }
+
+    .pc-login-brand img {
+        max-width: 170px !important;
+    }
+
+    .pc-login-form {
+        padding: 20px !important;
+    }
+}
+</style>
+
+
+<style id="PETCARE_ESTILOS_REGISTRO_165R363">
+.pc-registro-opciones {
+    margin-top: 14px !important;
+}
+.pc-registro-titulo {
+    margin: 0 0 9px;
+    font-weight: 700;
+    color: #17354d;
+}
+.pc-registro-enlace {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 9px 12px;
+    margin-top: 7px;
+    border: 1px solid #cbdced;
+    border-radius: 9px;
+    background: #f5f8fb;
+    text-decoration: none !important;
+}
+.pc-registro-enlace:hover,
+.pc-registro-enlace:focus-visible {
+    background: #e4f8f5;
+    border-color: #16b8aa;
+}
+.pc-registro-enlace strong {
+    font-size: 13px;
+    color: #17354d;
+}
+.pc-registro-enlace small {
+    font-size: 11px;
+    color: #526779;
+}
+</style>
+
 </head>
 
 
@@ -642,6 +843,93 @@ body.pc-login-page {
 
 
 
+
+
+<style id="PETCARE_ICONOS_PRO_165R321">
+.pc-role-option {
+    transition: background .2s ease, border-color .2s ease,
+                box-shadow .2s ease;
+}
+.pc-role-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    background: #e8f1ff;
+    color: #2866a5;
+}
+.pc-role-icon svg {
+    width: 27px;
+    height: 27px;
+}
+.pc-role-option[data-role="Veterinario"] .pc-role-icon {
+    background: #e4f8f5;
+    color: #109b91;
+}
+.pc-role-option[data-role="Personal autorizado"] .pc-role-icon {
+    background: #fff3dc;
+    color: #b77d17;
+}
+.pc-role-option[data-role="Tutor"] .pc-role-icon {
+    background: #f1eafd;
+    color: #8059bb;
+}
+.pc-role-option:hover {
+    box-shadow: 0 5px 15px rgba(20,45,78,.10);
+}
+.pc-role-option.is-selected {
+    border-color: #16b8aa;
+    background: #e4f8f5;
+    box-shadow: 0 0 0 2px rgba(22,184,170,.15);
+}
+.pc-role-option:focus-visible {
+    outline: 3px solid #16b8aa;
+    outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+    .pc-role-option {
+        transition: none;
+    }
+}
+</style>
+
+<!-- PETCARE_ACCESOS_ROLES_165R339 -->
+            <div class="pc-role-selector" aria-label="Tipos de acceso">
+                <p class="pc-role-heading">Selecciona tu tipo de acceso</p>
+
+                <div class="pc-role-grid">
+                    <button type="button" class="pc-role-option" data-role="Administrador">
+                        <span class="pc-role-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+                        <strong>Administrador</strong>
+                        <small>Gestión general</small>
+                    </button>
+
+                    <button type="button" class="pc-role-option" data-role="Veterinario">
+                        <span class="pc-role-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v5a6 6 0 0 0 12 0V3"/><path d="M6 3H4m14 0h2"/><path d="M12 14v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="12" r="2"/></svg></span>
+                        <strong>Veterinario</strong>
+                        <small>Atención clínica</small>
+                    </button>
+
+                    <button type="button" class="pc-role-option" data-role="Personal autorizado">
+                        <span class="pc-role-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="18" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg></span>
+                        <strong>Personal autorizado</strong>
+                        <small>Revisión de solicitudes</small>
+                    </button>
+
+                    <button type="button" class="pc-role-option" data-role="Tutor">
+                        <span class="pc-role-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="7" cy="7" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="20" cy="11" r="1.8"/><path d="M12 11c-3 0-7 4-7 7a3 3 0 0 0 4 2c2-1 4-1 6 0a3 3 0 0 0 4-2c0-3-4-7-7-7Z"/></svg></span>
+                        <strong>Tutor</strong>
+                        <small>Mis mascotas y citas</small>
+                    </button>
+                </div>
+
+                <p id="pc-role-message" class="pc-role-message" aria-live="polite">
+                    Selecciona un perfil y utiliza tus credenciales.
+                </p>
+            </div>
+
             <form method="post" action="{% url 'petcare_login' %}">
 
 
@@ -716,12 +1004,24 @@ body.pc-login-page {
 
             </form>
 
-            <p class="pc-login-register">
-                ¿No tienes cuenta?
-                <a href="{% url 'registro_tutor' %}">
-                    Crear cuenta de tutor
+            <!-- PETCARE_REGISTRO_DOBLE_165R363 -->
+            <div class="pc-login-register pc-registro-opciones">
+                <p class="pc-registro-titulo">
+                    ¿Todavía no tienes una cuenta?
+                </p>
+
+                <a class="pc-registro-enlace"
+                   href="{% url 'registro_tutor' %}">
+                    <strong>Crear cuenta de tutor</strong>
+                    <small>Registro para propietarios de mascotas</small>
                 </a>
-            </p>
+
+                <a class="pc-registro-enlace"
+                   href="{% url 'solicitar_acceso' %}">
+                    <strong>Solicitar cuenta de personal</strong>
+                    <small>Veterinario o personal autorizado</small>
+                </a>
+            </div>
 
 
         </main>
@@ -761,6 +1061,34 @@ body.pc-login-page {
         boton.style.color = mostrar
             ? "#0a9d92"
             : "#17385d";
+    });
+})();
+</script>
+
+
+<script id="PETCARE_ROLES_SCRIPT_165R339">
+(function () {
+    "use strict";
+
+    const botones = document.querySelectorAll(".pc-role-option");
+    const mensaje = document.getElementById("pc-role-message");
+
+    botones.forEach(function (boton) {
+        boton.setAttribute("aria-pressed", "false");
+
+        boton.addEventListener("click", function () {
+            botones.forEach(function (otro) {
+                otro.classList.remove("is-selected");
+                otro.setAttribute("aria-pressed", "false");
+            });
+
+            boton.classList.add("is-selected");
+            boton.setAttribute("aria-pressed", "true");
+
+            mensaje.textContent =
+                "Acceso seleccionado: " + boton.dataset.role +
+                ". Ingresa tus credenciales para continuar.";
+        });
     });
 })();
 </script>

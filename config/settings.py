@@ -36,6 +36,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # PETCARE 165R.357.9.245A
+    "django.contrib.humanize",
+    'recordatorios',
     'mascotas',
     'tutores',
     'accounts',
@@ -57,6 +60,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'accounts.middleware.CambioPasswordObligatorioMiddleware',  # PETCARE_MIDDLEWARE_PASSWORD_165R428
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -149,7 +153,44 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 LOGIN_URL = "/accounts/login/"
 
-LOGIN_REDIRECT_URL = "/accounts/mi-panel/"
+
 
 LOGOUT_REDIRECT_URL = "/"
 
+# PETCARE_AWS_PRODUCTION
+# Configuracion de despliegue en AWS
+ALLOWED_HOSTS = ["34.230.184.71", "127.0.0.1", "localhost"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+# PETCARE_AWS_SUBPATH
+# Publicacion bajo /petcare/
+FORCE_SCRIPT_NAME = "/petcare"
+
+STATIC_URL = "/petcare/static/"
+
+LOGIN_URL = "/petcare/accounts/login/"
+
+LOGOUT_REDIRECT_URL = "/petcare/"
+
+
+# PETCARE_AWS_COOKIES_173
+# Cookies independientes de la API academica.
+SESSION_COOKIE_NAME = "petcare_sessionid"
+SESSION_COOKIE_PATH = "/petcare/"
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = "Lax"
+
+CSRF_COOKIE_NAME = "petcare_csrftoken"
+CSRF_COOKIE_PATH = "/petcare/"
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "Lax"
+
+# HTTPS terminado por Nginx.
+SECURE_PROXY_SSL_HEADER = (
+    "HTTP_X_FORWARDED_PROTO",
+    "https",
+)
+
+# PETCARE_LOGIN_ROLES_165R443
+LOGIN_REDIRECT_URL = "/petcare/"

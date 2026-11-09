@@ -1,0 +1,423 @@
+{% extends "base.html" %}
+{% load petcare_clp %}
+<!-- PETCARE 165R.357.9.245D -->
+{% block section_title %}Catálogo de servicios{% endblock %}
+{% block content %}
+<!-- PETCARE 165R.357.9.240 - PRECIO CLP -->
+<!-- PETCARE 165R.357.9.237 - CATALOGO BAUHAUS V2 -->
+<style>
+.pc-catalogo {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    border-top: 4px solid #168A80;
+    color: #19375E;
+}
+.pc-catalogo .cabecera,
+.pc-catalogo .filtros,
+.pc-catalogo .acciones {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.pc-catalogo .cabecera {
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.pc-catalogo h2 {
+    font-size: 23px;
+    margin: 0 0 6px;
+}
+.pc-catalogo .descripcion {
+    font-size: 15px;
+    margin: 0;
+}
+.pc-catalogo .resumen {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+.pc-catalogo .tarjeta {
+    background: #F3F6FB;
+    border-left: 4px solid #168A80;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 14px;
+}
+.pc-catalogo .tarjeta strong {
+    display: block;
+    font-size: 25px;
+    margin-bottom: 3px;
+}
+.pc-catalogo .filtros {
+    background: #F3F6FB;
+    padding: 14px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+}
+.pc-catalogo input,
+.pc-catalogo select {
+    padding: 10px 12px;
+    border: 1px solid #D7E1EB;
+    border-radius: 7px;
+    font-size: 15px;
+}
+.pc-catalogo input[type=search] {
+    flex: 1;
+    min-width: 180px;
+}
+.pc-catalogo .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 9px 12px;
+    border: 0;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.pc-catalogo .nuevo {
+    background: #E2AE4B;
+    color: #19375E;
+}
+.pc-catalogo .editar {
+    background: #168A80;
+    color: white;
+}
+.pc-catalogo .desactivar {
+    background: #C73532;
+    color: white;
+}
+.pc-catalogo .activar,
+.pc-catalogo .buscar,
+.pc-catalogo .limpiar {
+    background: #19375E;
+    color: white;
+}
+.pc-catalogo .tabla {
+    overflow-x: auto;
+}
+.pc-catalogo table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+.pc-catalogo th {
+    background: #19375E;
+    color: white;
+    text-align: left;
+    padding: 12px 10px;
+}
+.pc-catalogo td {
+    padding: 11px 10px;
+    border-bottom: 1px solid #E4EAF2;
+    vertical-align: middle;
+}
+.pc-catalogo .acciones {
+    gap: 8px;
+}
+.pc-catalogo .acciones form {
+    margin: 0;
+}
+.pc-catalogo .estado {
+    font-weight: 700;
+}
+.pc-catalogo .activo {
+    color: #168A80;
+}
+.pc-catalogo .inactivo {
+    color: #C73532;
+}
+@media(max-width:760px) {
+    .pc-catalogo {
+        padding: 16px;
+    }
+    .pc-catalogo .resumen {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* PETCARE 165R.357.9.244 - COMPACTACION */
+
+/* Contenedor principal */
+.pc-catalogo {
+    padding: 20px 24px;
+}
+
+/* Encabezado */
+.pc-catalogo .cabecera {
+    margin-bottom: 15px;
+}
+
+.pc-catalogo h2 {
+    font-size: 23px;
+    margin-bottom: 4px;
+}
+
+.pc-catalogo .descripcion {
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+/* Tarjetas estadísticas */
+.pc-catalogo .resumen {
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.pc-catalogo .tarjeta {
+    padding: 11px 16px;
+    font-size: 14px;
+}
+
+.pc-catalogo .tarjeta strong {
+    font-size: 24px;
+    margin-bottom: 2px;
+}
+
+/* Filtros */
+.pc-catalogo .filtros {
+    padding: 11px 13px;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.pc-catalogo input,
+.pc-catalogo select {
+    padding: 9px 11px;
+    font-size: 15px;
+}
+
+/* Tabla */
+.pc-catalogo table {
+    font-size: 15px;
+}
+
+.pc-catalogo th {
+    padding: 11px 10px;
+    white-space: nowrap;
+}
+
+.pc-catalogo td {
+    padding: 9px 10px;
+    line-height: 1.35;
+}
+
+/* Botones */
+.pc-catalogo .boton {
+    padding: 8px 11px;
+    font-size: 14px;
+    min-height: 36px;
+    box-sizing: border-box;
+}
+
+.pc-catalogo .acciones {
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+/* Evitar cortes de información */
+.pc-catalogo td:nth-child(3),
+.pc-catalogo td:nth-child(4),
+.pc-catalogo td:nth-child(5) {
+    white-space: nowrap;
+}
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 760px) {
+    .pc-catalogo {
+        padding: 16px;
+    }
+
+    .pc-catalogo .resumen {
+        grid-template-columns: 1fr;
+    }
+
+    .pc-catalogo .acciones {
+        flex-wrap: wrap;
+    }
+}
+
+
+/* PETCARE 165R.357.9.245D - CATEGORIAS */
+
+.pc-catalogo .pc-cat-medico,
+.pc-catalogo .pc-cat-estetica {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pc-catalogo .pc-cat-medico {
+    background: #E6EDF8;
+    color: #19375E;
+}
+
+.pc-catalogo .pc-cat-estetica {
+    background: #E2F3EF;
+    color: #168A80;
+}
+
+</style>
+
+<section class="pc-catalogo">
+    <div class="cabecera">
+        <div>
+            <h2>Catálogo de servicios</h2>
+            <p class="descripcion">
+                Administración de prestaciones veterinarias
+                y de estética.
+            </p>
+        </div>
+        {% if perms.citas.add_servicio %}
+        <a class="boton nuevo"
+           href="{% url 'citas:catalogo_servicios_nuevo' %}">
+            + Nuevo servicio
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="resumen">
+        <div class="tarjeta">
+            <strong>{{ total }}</strong>
+            Servicios registrados
+        </div>
+        <div class="tarjeta">
+            <strong>{{ medicos }}</strong>
+            Servicios médicos
+        </div>
+        <div class="tarjeta">
+            <strong>{{ estetica }}</strong>
+            Servicios de estética
+        </div>
+    </div>
+
+    <form method="get" class="filtros">
+        <input type="search"
+               name="q"
+               value="{{ q }}"
+               placeholder="Buscar servicio...">
+
+        <select name="categoria">
+            <option value="">Todas las categorías</option>
+            <option value="MEDICO"
+                {% if categoria == "MEDICO" %}selected{% endif %}>
+                Servicios médicos
+            </option>
+            <option value="ESTETICA"
+                {% if categoria == "ESTETICA" %}selected{% endif %}>
+                Estética e higiene
+            </option>
+        </select>
+
+        <select name="estado">
+            <option value="">Todos los estados</option>
+            <option value="activo"
+                {% if estado == "activo" %}selected{% endif %}>
+                Activos
+            </option>
+            <option value="inactivo"
+                {% if estado == "inactivo" %}selected{% endif %}>
+                Inactivos
+            </option>
+        </select>
+
+        <button class="boton buscar" type="submit">
+            Buscar
+        </button>
+        <a class="boton limpiar"
+           href="{% url 'citas:catalogo_servicios' %}">
+            Limpiar
+        </a>
+    </form>
+
+    <div class="tabla">
+        <table>
+            <thead>
+                <tr>
+                    <th>Servicio</th>
+                    <th>Categoría</th>
+                    <th>Duración</th>
+                    <th>Precio (CLP)</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for servicio in servicios %}
+                <tr>
+                    <td><strong>{{ servicio.nombre }}</strong></td>
+                    <td>
+    {% if servicio.categoria == "MEDICO" %}
+        <span class="pc-cat-medico">Médico</span>
+    {% elif servicio.categoria == "ESTETICA" %}
+        <span class="pc-cat-estetica">Estética</span>
+    {% else %}
+        {{ servicio.get_categoria_display }}
+    {% endif %}
+</td>
+                    <td>{{ servicio.duracion_minutos }} min</td>
+                    <td>
+                        {% if servicio.precio is not None %}
+                            {{ servicio.precio|precio_clp }}
+                        {% else %}
+                            <span style="color:#64748B">
+                                Sin definir
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if servicio.activo %}
+                        <span class="estado activo">● Activo</span>
+                        {% else %}
+                        <span class="estado inactivo">● Inactivo</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="acciones">
+                        {% if perms.citas.change_servicio %}
+                            <a class="boton editar"
+                               href="{% url 'citas:catalogo_servicios_editar' servicio.pk %}">
+                                ✎ Editar
+                            </a>
+
+                            <form method="post"
+                                  action="{% url 'citas:catalogo_servicios_estado' servicio.pk %}">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="boton {% if servicio.activo %}desactivar{% else %}activar{% endif %}"
+                                        onclick="return confirm('¿Confirmar cambio de estado del servicio?')">
+                                    {% if servicio.activo %}
+                                        Desactivar
+                                    {% else %}
+                                        Activar
+                                    {% endif %}
+                                </button>
+                            </form>
+                        {% else %}
+                            —
+                        {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">
+                        No se encontraron servicios.
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

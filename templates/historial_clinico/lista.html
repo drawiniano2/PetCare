@@ -123,14 +123,59 @@
         min-width: 620px;
     }
 }
+
+/* PETCARE 165R.355.28 - COMPACTACION MODERADA */
+
+/* Tarjeta principal */
+.pc-historial .pc-panel {
+    padding: 18px;
+}
+
+/* Título y buscador */
+.pc-historial .pc-cabecera {
+    margin-bottom: 14px;
+}
+
+.pc-historial .pc-buscador {
+    margin-bottom: 14px;
+}
+
+.pc-historial .pc-buscador input {
+    padding: 10px 12px;
+}
+
+/* Tabla compacta y legible */
+.pc-historial th {
+    padding: 11px 14px;
+}
+
+.pc-historial td {
+    padding: 10px 14px;
+}
+
+/* Botones */
+.pc-historial .pc-boton {
+    padding: 9px 15px;
+}
+
+/* Indicadores */
+.pc-historial .pc-etiqueta {
+    padding: 5px 11px;
+}
+
+/* Mantener comodidad en pantallas pequeñas */
+@media (max-width: 700px) {
+    .pc-historial .pc-panel {
+        padding: 15px;
+    }
+}
+
 </style>
 
 <div class="pc-historial">
 
-    <h1>Historial Cl&iacute;nico</h1>
-    <p class="pc-descripcion">
-        Consulta de fichas y antecedentes veterinarios de las mascotas.
-    </p>
+    {# PETCARE 165R.355.20B - BAUHAUS LOTE 3 #}
+{% include "components/encabezado_bauhaus.html" with titulo="Historial Clínico" subtitulo="Consulta de fichas y antecedentes veterinarios de las mascotas." %}
 
     <section class="pc-panel">
 

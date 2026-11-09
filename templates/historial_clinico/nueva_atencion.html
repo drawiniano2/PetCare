@@ -1,3 +1,4 @@
+{# PETCARE 165R.355.24 - REPARACION FINAL #}
 {% extends "base.html" %}
 
 {% block title %}Nueva atención veterinaria | PetCare{% endblock %}
@@ -160,22 +161,14 @@
 <div class="pc-atencion">
 
     {# PETCARE V19.3.2 #}
-    <h1 class="pc-titulo-edicion">
-        {% if modo_edicion %}
-            Editar atención veterinaria N.° {{ atencion.pk }}
-        {% else %}
-            Nueva atenci?n veterinaria
-        {% endif %}
-    </h1>
-    <p class="pc-descripcion">
-        {% if modo_edicion %}
-            Modifica los datos de la atencion clinica de
-            {{ mascota.nombre }}.
-        {% else %}
-            Registra una consulta, diagnostico o tratamiento en
-            el historial clinico de {{ mascota.nombre }}.
-        {% endif %}
-    </p>
+    {# PETCARE 165R.355.20B - BAUHAUS LOTE 3 #}
+{% if modo_edicion %}
+{# PETCARE 165R.355.20B - BAUHAUS LOTE 3 #}
+{% include "components/encabezado_bauhaus.html" with titulo="Editar atención veterinaria" subtitulo=mascota.nombre %}
+{% else %}
+{# PETCARE 165R.355.20B - BAUHAUS LOTE 3 #}
+{% include "components/encabezado_bauhaus.html" with titulo="Nueva atención veterinaria" subtitulo=mascota.nombre %}
+{% endif %}
 
     <section class="pc-panel">
         <h2>Datos de la mascota</h2>

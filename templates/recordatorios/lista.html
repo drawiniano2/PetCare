@@ -1,0 +1,463 @@
+{# PETCARE 165R.355.24 - REPARACION FINAL #}
+{% extends "base.html" %}
+
+{% block section_title %}Vacunas y controles{% endblock %}
+
+{% block content %}
+<section class="recordatorios">
+
+    {# PETCARE 165R.355.20B - BAUHAUS LOTE 3 #}
+{% include "components/encabezado_bauhaus.html" with titulo="Vacunas y controles" subtitulo="Seguimiento clínico y recordatorios internos de PetCare." %}
+
+    <header class="rec-encabezado">
+        <div class="rec-acciones">
+            {% if puede_crear_vacuna %}
+            <a href="{% url 'recordatorios_vacuna_crear' %}"
+               class="rec-boton rec-boton-primario">
+                + Registrar vacuna
+            </a>
+            {% endif %}
+
+            {% if puede_crear_control %}
+            <a href="{% url 'recordatorios_control_crear' %}"
+               class="rec-boton rec-boton-verde">
+                + Programar control
+            </a>
+            {% endif %}
+        </div>
+    </header>
+
+    <section class="rec-indicadores-bauhaus"
+             aria-label="Resumen sanitario">
+
+        <article class="rec-kpi rec-kpi-azul">
+            <div class="rec-kpi-cabecera">
+                <span>Vacunas próximas</span>
+                <span class="rec-figura rec-circulo"></span>
+            </div>
+            <strong>{{ indicadores.vacunas_proximas }}</strong>
+            <small>Próximos 30 días</small>
+        </article>
+
+        <article class="rec-kpi rec-kpi-rojo">
+            <div class="rec-kpi-cabecera">
+                <span>Vacunas vencidas</span>
+                <span class="rec-figura rec-cuadrado"></span>
+            </div>
+            <strong>{{ indicadores.vacunas_vencidas }}</strong>
+            <small>Fechas anteriores a hoy</small>
+        </article>
+
+        <article class="rec-kpi rec-kpi-verde">
+            <div class="rec-kpi-cabecera">
+                <span>Controles próximos</span>
+                <span class="rec-figura rec-cuadrado"></span>
+            </div>
+            <strong>{{ indicadores.controles_proximos }}</strong>
+            <small>Próximos 30 días</small>
+        </article>
+
+        <article class="rec-kpi rec-kpi-amarillo">
+            <div class="rec-kpi-cabecera">
+                <span>Controles vencidos</span>
+                <span class="rec-figura rec-circulo"></span>
+            </div>
+            <strong>{{ indicadores.controles_vencidos }}</strong>
+            <small>Pendientes fuera de plazo</small>
+        </article>
+
+    </section>
+
+    <!-- PETCARE FILTROS BAUHAUS 165R.330.5 -->
+    <section class="rec-panel rec-panel-filtros rec-filtros-superiores">
+        <div class="rec-filtros-titulo">
+            <h3>Buscar registros sanitarios</h3>
+            <p>Filtra vacunas y controles veterinarios.</p>
+        </div>
+
+        <form method="get" class="rec-filtros-form">
+            <div class="rec-filtro-campo rec-filtro-busqueda">
+                <label for="rec-q">Buscar mascota, vacuna o motivo</label>
+                <input id="rec-q" type="search" name="q"
+                       value="{{ filtro_busqueda }}"
+                       placeholder="Escribe un nombre o palabra clave">
+            </div>
+
+            <div class="rec-filtro-campo">
+                <label for="rec-estado">Estado</label>
+                <select id="rec-estado" name="estado">
+                    <option value="">Todos los estados</option>
+                    <option value="vencido" {% if filtro_estado == "vencido" %}selected{% endif %}>Vencido</option>
+                    <option value="hoy" {% if filtro_estado == "hoy" %}selected{% endif %}>Hoy</option>
+                    <option value="proximo" {% if filtro_estado == "proximo" %}selected{% endif %}>Próximo</option>
+                    <option value="pendiente" {% if filtro_estado == "pendiente" %}selected{% endif %}>Pendiente</option>
+                    <option value="realizado" {% if filtro_estado == "realizado" %}selected{% endif %}>Realizado</option>
+                    <option value="cancelado" {% if filtro_estado == "cancelado" %}selected{% endif %}>Cancelado</option>
+                </select>
+            </div>
+
+            <div class="rec-filtro-campo">
+                <label for="rec-desde">Desde</label>
+                <input id="rec-desde" type="date" name="desde"
+                       value="{{ filtro_desde }}">
+            </div>
+
+            <div class="rec-filtro-campo">
+                <label for="rec-hasta">Hasta</label>
+                <input id="rec-hasta" type="date" name="hasta"
+                       value="{{ filtro_hasta }}">
+            </div>
+
+            <div class="rec-filtros-acciones">
+                <button type="submit" class="rec-boton rec-boton-primario">
+                    Aplicar filtros
+                </button>
+                <a href="{% url 'recordatorios_lista' %}"
+                   class="rec-boton rec-boton-limpiar">
+                    Limpiar
+                </a>
+            </div>
+        </form>
+    </section>
+
+
+
+
+    <!-- PETCARE 165R.357.9.109 -->
+    <div class="rec-pestanas" role="tablist"
+         aria-label="Secciones sanitarias">
+
+        <button type="button"
+                class="rec-pestana activa"
+                role="tab"
+                id="rec-tab-recordatorios"
+                aria-controls="rec-panel-recordatorios"
+                aria-selected="true"
+                tabindex="0"
+                data-rec-tab="recordatorios">
+            Recordatorios
+        </button>
+
+        <button type="button"
+                class="rec-pestana"
+                role="tab"
+                id="rec-tab-vacunas"
+                aria-controls="rec-panel-vacunas"
+                aria-selected="false"
+                tabindex="-1"
+                data-rec-tab="vacunas">
+            Historial de vacunas
+        </button>
+
+        <button type="button"
+                class="rec-pestana"
+                role="tab"
+                id="rec-tab-controles"
+                aria-controls="rec-panel-controles"
+                aria-selected="false"
+                tabindex="-1"
+                data-rec-tab="controles">
+            Controles veterinarios
+        </button>
+    </div>
+
+<div class="rec-panel rec-panel-pestana" id="rec-panel-recordatorios" role="tabpanel" aria-labelledby="rec-tab-recordatorios">
+        <div>
+            <h4>Recordatorios internos</h4>
+            <p class="rec-descripcion">
+                Vacunas y controles vencidos o programados
+                para los próximos 30 días.
+            </p>
+
+            <h5>Próximas vacunas</h5>
+
+            <div class="table-responsive">
+                <table class="rec-tabla">
+                    <thead>
+                        <tr>
+                            <th>Mascota</th>
+                            <th>Vacuna</th>
+                            <th>Próxima dosis</th>
+                            <th>Situación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vacuna in avisos_vacunas %}
+                        <tr>
+                            <td>{{ vacuna.ficha.mascota.nombre }}</td>
+                            <td>{{ vacuna.nombre }}</td>
+                            <td>{{ vacuna.proxima_dosis|date:"d/m/Y" }}</td>
+                            <td>
+                                {% if vacuna.proxima_dosis < hoy %}
+                                    <span class="rec-estado rec-estado-vencido">VENCIDA</span>
+                                {% elif vacuna.proxima_dosis == hoy %}
+                                    <span class="rec-estado rec-estado-hoy">HOY</span>
+                                {% else %}
+                                    <span class="rec-estado rec-estado-proximo">PRÓXIMA</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4">
+                                No existen avisos de vacunas pendientes.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <h5 >Controles pendientes</h5>
+
+            <div class="table-responsive">
+                <table class="rec-tabla">
+                    <thead>
+                        <tr>
+                            <th>Mascota</th>
+                            <th>Motivo</th>
+                            <th>Fecha</th>
+                            <th>Situación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for control in avisos_controles %}
+                        <tr>
+                            <td>{{ control.ficha.mascota.nombre }}</td>
+                            <td>{{ control.motivo }}</td>
+                            <td>{{ control.fecha_programada|date:"d/m/Y" }}</td>
+                            <td>
+                                {% if control.fecha_programada < hoy %}
+                                    <span class="rec-estado rec-estado-vencido">VENCIDO</span>
+                                {% elif control.fecha_programada == hoy %}
+                                    <span class="rec-estado rec-estado-hoy">HOY</span>
+                                {% else %}
+                                    <span class="rec-estado rec-estado-proximo">PRÓXIMO</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4">
+                                No existen controles pendientes.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="rec-panel rec-panel-pestana" id="rec-panel-vacunas" role="tabpanel" aria-labelledby="rec-tab-vacunas">
+        <div>
+            <h4>Historial de vacunas</h4>
+
+            <div class="table-responsive">
+                <table class="rec-tabla">
+                    <thead>
+                        <tr>
+                            <th>Mascota</th>
+                            <th>Vacuna</th>
+                            <th>Aplicación</th>
+                            <th>Veterinario</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vacuna in vacunas %}
+                        <tr>
+                            <td>{{ vacuna.ficha.mascota.nombre }}</td>
+                            <td>{{ vacuna.nombre }}</td>
+                            <td>{{ vacuna.fecha_aplicacion|date:"d/m/Y" }}</td>
+                            <td>{{ vacuna.veterinario }}</td>
+                            <td>
+                                {% if vacuna.mostrar_editar %}
+<a href="{% url 'recordatorios_vacuna_editar' vacuna.pk %}"
+                                   class="rec-boton rec-boton-secundario">
+                                    Editar
+                                </a>
+{% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">No hay vacunas registradas.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="rec-panel rec-panel-pestana" id="rec-panel-controles" role="tabpanel" aria-labelledby="rec-tab-controles">
+        <div>
+            <h4>Controles veterinarios</h4>
+
+            <div class="table-responsive">
+                <table class="rec-tabla">
+                    <thead>
+                        <tr>
+                            <th>Mascota</th>
+                            <th>Motivo</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for control in controles %}
+                        <tr>
+                            <td>{{ control.ficha.mascota.nombre }}</td>
+                            <td>{{ control.motivo }}</td>
+                            <td>{{ control.fecha_programada|date:"d/m/Y" }}</td>
+                            <td>
+                                {% if control.estado == "Realizado" %}
+                                    <span class="rec-estado rec-estado-realizado">REALIZADO</span>
+                                {% elif control.estado == "Cancelado" %}
+                                    <span class="rec-estado rec-estado-cancelado">CANCELADO</span>
+                                {% elif control.fecha_programada < hoy %}
+                                    <span class="rec-estado rec-estado-vencido">VENCIDO</span>
+                                {% elif control.fecha_programada == hoy %}
+                                    <span class="rec-estado rec-estado-hoy">HOY</span>
+                                {% else %}
+                                    <span class="rec-estado rec-estado-pendiente">PENDIENTE</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if control.mostrar_editar %}
+<a href="{% url 'recordatorios_control_editar' control.pk %}"
+                                   class="rec-boton rec-boton-secundario">
+                                    Editar
+                                </a>
+{% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">No hay controles registrados.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+/* PETCARE 165R.357.9.109 - PESTANAS */
+(function () {
+    const raiz = document.querySelector(
+        ".recordatorios:not(.rec-form-bauhaus)"
+    );
+    if (!raiz) return;
+
+    const botones = Array.from(
+        raiz.querySelectorAll("[data-rec-tab]")
+    );
+
+    const paneles = Array.from(
+        raiz.querySelectorAll(".rec-panel-pestana")
+    );
+
+    if (botones.length !== 3 || paneles.length !== 3) return;
+
+    function activar(nombre, enfocar) {
+        botones.forEach(function (boton) {
+            const activo = boton.dataset.recTab === nombre;
+
+            boton.classList.toggle("activa", activo);
+            boton.setAttribute("aria-selected", String(activo));
+            boton.tabIndex = activo ? 0 : -1;
+
+            if (activo && enfocar) boton.focus();
+        });
+
+        paneles.forEach(function (panel) {
+            panel.hidden = panel.id !== "rec-panel-" + nombre;
+        });
+    }
+
+    botones.forEach(function (boton, indice) {
+        boton.addEventListener("click", function () {
+            activar(boton.dataset.recTab, false);
+        });
+
+        boton.addEventListener("keydown", function (evento) {
+            let siguiente = indice;
+
+            if (evento.key === "ArrowRight") {
+                siguiente = (indice + 1) % botones.length;
+            } else if (evento.key === "ArrowLeft") {
+                siguiente = (indice - 1 + botones.length)
+                    % botones.length;
+            } else if (evento.key === "Home") {
+                siguiente = 0;
+            } else if (evento.key === "End") {
+                siguiente = botones.length - 1;
+            } else {
+                return;
+            }
+
+            evento.preventDefault();
+            activar(botones[siguiente].dataset.recTab, true);
+        });
+    });
+
+    activar("recordatorios", false);
+})();
+</script>
+
+
+<script>
+/* PETCARE 165R.357.9.118 - POSICION FILTROS */
+(function () {
+    const clave = "petcare_recordatorios_scroll";
+
+    const formulario = document.querySelector(
+        ".recordatorios .rec-filtros-form"
+    );
+
+    if (!formulario) return;
+
+    const guardar = function () {
+        sessionStorage.setItem(
+            clave,
+            String(window.scrollY)
+        );
+    };
+
+    formulario.addEventListener("submit", guardar);
+
+    const limpiar = document.querySelector(
+        ".recordatorios .rec-boton-limpiar"
+    );
+
+    if (limpiar) {
+        limpiar.addEventListener("click", guardar);
+    }
+
+    const posicion = sessionStorage.getItem(clave);
+
+    if (posicion !== null) {
+        sessionStorage.removeItem(clave);
+
+        if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
+        }
+
+        window.addEventListener("load", function () {
+            window.scrollTo({
+                top: Number(posicion),
+                left: 0,
+                behavior: "instant"
+            });
+        }, { once: true });
+    }
+})();
+</script>
+
+{% endblock %}

@@ -5,18 +5,37 @@
 
 {% block content %}
 
-<div class="page-heading">
-    <div>
-        <h1>Ficha del veterinario</h1>
-        <p>Información personal y profesional registrada en PetCare.</p>
-    </div>
-</div>
+{# PETCARE 165R.355.5 - ENCABEZADO UNIFICADO #}
+{% include "components/encabezado_bauhaus.html" with titulo="Ficha del veterinario" subtitulo="Información personal y profesional registrada en PetCare." %}
 
-<section class="panel veterinarios-v172-ficha">
+<section class="panel veterinarios-v172-ficha
+    {% if veterinario.nombre|lower == 'salvador' %}
+        veterinarios-v3473-rojo
+    {% elif veterinario.nombre|lower == 'carlos' %}
+        veterinarios-v3473-mostaza
+    {% elif veterinario.nombre|lower == 'delos' %}
+        veterinarios-v3473-verde
+    {% else %}
+        veterinarios-v3473-azul
+    {% endif %}
+    ">
 
     <div class="veterinarios-v172-perfil">
-        <div class="veterinarios-v172-avatar">
-            {{ veterinario.nombre|first|upper }}{{ veterinario.apellido|first|upper }}
+        <div class="veterinarios-v172-avatar"
+             aria-hidden="true">
+            <svg width="34" height="34"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="1.8"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+                <path d="M6 3v5a6 6 0 0 0 12 0V3"/>
+                <path d="M4 3h4"/>
+                <path d="M16 3h4"/>
+                <path d="M12 14v3a4 4 0 0 0 8 0v-2"/>
+                <circle cx="20" cy="13" r="2"/>
+            </svg>
         </div>
 
         <div class="veterinarios-v172-identidad">
@@ -86,5 +105,237 @@
     </div>
 
 </section>
+
+
+
+<style>
+/* PETCARE 165R.347.7 - CSS CONSOLIDADO BAUHAUS */
+
+.veterinarios-v172-ficha {
+    --vet-acento: #183153;
+    --vet-fondo: #e8edf4;
+
+    max-width: 1050px;
+    padding: 20px 28px !important;
+    border: 1px solid #e6dacb;
+    border-radius: 16px;
+    background: #fffcf8;
+}
+
+.veterinarios-v3473-rojo {
+    --vet-acento: #c94b3f;
+    --vet-fondo: #f8e6e1;
+}
+
+.veterinarios-v3473-mostaza {
+    --vet-acento: #d9ac50;
+    --vet-fondo: #fbf0d6;
+}
+
+.veterinarios-v3473-verde {
+    --vet-acento: #21837c;
+    --vet-fondo: #e2f2ed;
+}
+
+.veterinarios-v3473-azul {
+    --vet-acento: #183153;
+    --vet-fondo: #e8edf4;
+}
+
+/* Perfil */
+
+.veterinarios-v172-ficha .veterinarios-v172-perfil {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 12px;
+    margin-bottom: 13px;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
+    border-radius: 12px;
+    background: var(--vet-fondo);
+    color: var(--vet-acento);
+    border: none;
+    border-bottom: 4px solid var(--vet-acento);
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-avatar svg {
+    width: 31px;
+    height: 31px;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-identidad h2 {
+    font-size: 24px;
+    line-height: 1.25;
+    margin: 0 0 3px;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-identidad p {
+    font-size: 14px;
+    margin: 0 0 6px;
+}
+
+/* Antecedentes */
+
+.veterinarios-v172-ficha .veterinarios-v172-subtitulo {
+    font-size: 20px;
+    margin: 0 0 12px;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-subtitulo::before {
+    height: 22px;
+    background: var(--vet-acento);
+}
+
+/* Tarjetas */
+
+.veterinarios-v172-ficha .veterinarios-v172-datos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px 14px;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-dato {
+    min-height: 66px;
+    padding: 10px 15px;
+    gap: 4px;
+    background: #f5f1eb;
+    border: 1px solid #e9dfd3;
+    border-top: 2px solid var(--vet-acento);
+    border-radius: 10px;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-dato:nth-child(2),
+.veterinarios-v172-ficha .veterinarios-v172-dato:nth-child(5) {
+    border-top-color: #c94b3f;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-dato:nth-child(3),
+.veterinarios-v172-ficha .veterinarios-v172-dato:nth-child(6) {
+    border-top-color: #d9ac50;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-dato:nth-child(4) {
+    border-top-color: #21837c;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-dato span {
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-dato strong {
+    font-size: 16px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+/* Acciones */
+
+.veterinarios-v172-ficha .veterinarios-v17-form-acciones {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 13px;
+    padding-top: 13px;
+}
+
+/* Título de página */
+
+.page-heading:has(+ .veterinarios-v172-ficha) {
+    margin-bottom: 16px;
+}
+
+.page-heading:has(+ .veterinarios-v172-ficha) h1 {
+    font-size: 27px;
+}
+
+/* Responsividad */
+
+@media (max-width: 768px) {
+    .veterinarios-v172-ficha {
+        padding: 18px !important;
+    }
+
+    .veterinarios-v172-ficha .veterinarios-v172-datos {
+        grid-template-columns: 1fr;
+    }
+
+    .veterinarios-v172-ficha .veterinarios-v172-identidad h2 {
+        font-size: 21px;
+    }
+
+    .page-heading:has(+ .veterinarios-v172-ficha) h1 {
+        font-size: 24px;
+    }
+}
+
+/* FIN PETCARE 165R.347.7 */
+</style>
+
+
+
+<style>
+/* PETCARE 165R.347.8 - ESTADO A LA DERECHA */
+
+.veterinarios-v172-ficha .veterinarios-v172-perfil {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-identidad {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 16px;
+    row-gap: 3px;
+    flex: 1;
+    min-width: 0;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-identidad h2 {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0 !important;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-identidad p {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0 !important;
+}
+
+.veterinarios-v172-ficha .veterinarios-v172-identidad
+.veterinarios-v17-estado {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    justify-self: end;
+    align-self: center;
+    white-space: nowrap;
+    margin: 0 !important;
+}
+
+@media (max-width: 600px) {
+    .veterinarios-v172-ficha .veterinarios-v172-identidad {
+        column-gap: 8px;
+    }
+
+    .veterinarios-v172-ficha .veterinarios-v172-identidad h2 {
+        font-size: 19px !important;
+    }
+}
+
+/* FIN PETCARE 165R.347.8 */
+</style>
 
 {% endblock %}

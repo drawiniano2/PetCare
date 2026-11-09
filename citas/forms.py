@@ -6,13 +6,15 @@ from veterinarios.models import Veterinario
 
 
 class CitaForm(forms.ModelForm):
+    # PETCARE 165R.357.9.215 - FORMULARIO DUAL
 
     class Meta:
         model = Cita
-
         fields = [
             "mascota",
+            "servicio",
             "veterinario",
+            "personal_servicio",
             "fecha",
             "hora_inicio",
             "duracion_minutos",
@@ -25,23 +27,27 @@ class CitaForm(forms.ModelForm):
                 format="%Y-%m-%d",
                 attrs={"type": "date"},
             ),
-            "hora_inicio": forms.TimeInput(
-                format="%H:%M",
-                attrs={"type": "time"},
+            "hora_inicio": forms.Select(
+                choices=[("", "Seleccione una hora disponible")],
+                attrs={"data-disponibilidad": "horas"},
             ),
             "duracion_minutos": forms.NumberInput(
-                attrs={"min": 1, "step": 1},
+                attrs={"min": 1, "max": 480, "step": 1},
             ),
-            "motivo": forms.Textarea(
-                attrs={"rows": 3},
-            ),
-            "observaciones": forms.Textarea(
-                attrs={"rows": 3},
-            ),
+            "motivo": forms.Textarea(attrs={"rows": 3}),
+            "observaciones": forms.Textarea(attrs={"rows": 3}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        from datetime import date, time
+        from types import MethodType
+        from .models import Servicio, PersonalServicio
+        from .disponibilidad import (
+            obtener_horas_disponibles,
+            obtener_horas_estetica,
+        )
 
         self.fields["mascota"].queryset = (
             Mascota.objects.filter(
@@ -54,24 +60,113 @@ class CitaForm(forms.ModelForm):
             Veterinario.objects.filter(activo=True)
         )
 
-        self.fields["mascota"].empty_label = (
-            "Seleccione una mascota"
+        self.fields["servicio"].queryset = (
+            Servicio.objects.filter(activo=True)
         )
 
-        self.fields["veterinario"].empty_label = (
-            "Seleccione un veterinario"
+        self.fields["personal_servicio"].queryset = (
+            PersonalServicio.objects.filter(activo=True)
         )
+
+        self.fields["mascota"].empty_label = "Seleccione una mascota"
+        self.fields["servicio"].empty_label = "Seleccione un servicio"
+        self.fields["veterinario"].empty_label = "Seleccione un veterinario"
+        self.fields["personal_servicio"].empty_label = (
+            "Seleccione personal de estética"
+        )
+
+        self.fields["servicio"].required = False
+        self.fields["veterinario"].required = False
+        self.fields["personal_servicio"].required = False
+        self.fields["observaciones"].required = False
 
         self.fields["fecha"].input_formats = ["%Y-%m-%d"]
         self.fields["hora_inicio"].input_formats = ["%H:%M"]
 
         self.fields["fecha"].label = "Fecha de la cita"
+        self.fields["servicio"].label = "Servicio"
+        self.fields["veterinario"].label = "Veterinario"
+        self.fields["personal_servicio"].label = "Personal de estética"
         self.fields["hora_inicio"].label = "Hora de inicio"
-        self.fields["duracion_minutos"].label = 'Duración (minutos)'
-        self.fields["motivo"].label = "Motivo de la consulta"
+        self.fields["duracion_minutos"].label = "Duración (minutos)"
+        self.fields["motivo"].label = "Motivo de la atención"
         self.fields["observaciones"].label = "Observaciones"
 
-        self.fields["observaciones"].required = False
+        campo_hora = self.fields["hora_inicio"]
+
+        def preparar_hora(campo, valor):
+            if isinstance(valor, time):
+                return valor.strftime("%H:%M")
+            return valor
+
+        campo_hora.prepare_value = MethodType(
+            preparar_hora,
+            campo_hora,
+        )
+
+        datos = self.data if self.is_bound else self.initial
+
+        servicio_id = datos.get("servicio")
+        veterinario_id = datos.get("veterinario")
+        personal_id = datos.get("personal_servicio")
+        fecha_texto = datos.get("fecha")
+        duracion = datos.get("duracion_minutos", 30)
+
+        if not self.is_bound and self.instance.pk:
+            servicio_id = self.instance.servicio_id
+            veterinario_id = self.instance.veterinario_id
+            personal_id = self.instance.personal_servicio_id
+            fecha_texto = self.instance.fecha
+            duracion = self.instance.duracion_minutos
+
+        opciones = [("", "Seleccione una hora disponible")]
+
+        try:
+            if isinstance(fecha_texto, date):
+                fecha = fecha_texto
+            else:
+                fecha = date.fromisoformat(str(fecha_texto))
+
+            categoria = "MEDICO"
+
+            if servicio_id:
+                servicio = Servicio.objects.filter(
+                    pk=servicio_id,
+                ).first()
+
+                if servicio:
+                    categoria = servicio.categoria
+
+            if categoria == Servicio.Categoria.ESTETICA:
+                horas = obtener_horas_estetica(
+                    personal_id,
+                    fecha,
+                    duracion,
+                    excluir_cita_id=self.instance.pk,
+                )
+            else:
+                horas = obtener_horas_disponibles(
+                    veterinario_id,
+                    fecha,
+                    duracion,
+                    excluir_cita_id=self.instance.pk,
+                )
+
+            opciones.extend((hora, hora) for hora in horas)
+
+            if not self.is_bound and self.instance.pk:
+                actual = self.instance.hora_inicio.strftime("%H:%M")
+
+                if actual not in horas:
+                    opciones.append(
+                        (actual, actual + " (hora actual)")
+                    )
+
+        except (ValueError, TypeError):
+            pass
+
+        campo_hora.widget.choices = opciones
+
 
 
 # PETCARE_SOLICITUD_CITA_FORM_165J
@@ -86,6 +181,7 @@ class SolicitudCitaForm(forms.ModelForm):
 
         fields = [
             "mascota",
+            "veterinario_preferido",
             "fecha_preferida",
             "hora_preferida",
             "motivo",
@@ -115,6 +211,24 @@ class SolicitudCitaForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.tutor = tutor
+
+        # PETCARE 165R.352.72 - VETERINARIO TUTOR
+        from veterinarios.models import Veterinario
+
+        self.fields["veterinario_preferido"].queryset = (
+            Veterinario.objects.filter(
+                activo=True
+            ).order_by("apellido", "nombre")
+        )
+
+        self.fields["veterinario_preferido"].empty_label = (
+            "Seleccione un veterinario"
+        )
+
+        self.fields["veterinario_preferido"].required = True
+        self.fields["veterinario_preferido"].label = (
+            "Veterinario preferido"
+        )
 
         self.fields["mascota"].queryset = (
             Mascota.objects.filter(
@@ -162,6 +276,47 @@ class SolicitudCitaForm(forms.ModelForm):
 
         return fecha
 
+    # PETCARE 165R.352.76 - VALIDACION DISPONIBILIDAD
+    def clean(self):
+        datos = super().clean()
+
+        veterinario = datos.get("veterinario_preferido")
+        fecha = datos.get("fecha_preferida")
+        hora = datos.get("hora_preferida")
+
+        if not veterinario or not fecha or not hora:
+            return datos
+
+        from citas.disponibilidad import obtener_horas_disponibles
+        from veterinarios.models import Veterinario
+
+        if not Veterinario.objects.filter(
+            pk=veterinario.pk,
+            activo=True,
+        ).exists():
+            self.add_error(
+                "veterinario_preferido",
+                "El veterinario seleccionado no está disponible.",
+            )
+            return datos
+
+        horas = obtener_horas_disponibles(
+            veterinario.pk,
+            fecha,
+            duracion_minutos=30,
+        )
+
+        hora_texto = hora.strftime("%H:%M")
+
+        if hora_texto not in horas:
+            self.add_error(
+                "hora_preferida",
+                "El horario seleccionado ya no está disponible. "
+                "Seleccione otro horario.",
+            )
+
+        return datos
+
     def clean_motivo(self):
         motivo = self.cleaned_data["motivo"].strip()
 
@@ -197,8 +352,10 @@ class EditarSolicitudCitaForm(SolicitudCitaForm):
     """
 
     class Meta(SolicitudCitaForm.Meta):
+        # PETCARE 165R.352.80 - CORRECCION EDICION
         fields = [
             "mascota",
+            "veterinario_preferido",
             "fecha_preferida",
             "hora_preferida",
             "motivo",

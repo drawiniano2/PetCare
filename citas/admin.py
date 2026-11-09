@@ -769,7 +769,7 @@ class SolicitudCitaAdmin(admin.ModelAdmin):
 
         return bool(
             grupos.intersection(
-                {"Administrador", "Recepcionista"}
+                {"Administrador", "Recepcionista", "Personal Autorizado"}
             )
         )
 
@@ -814,8 +814,18 @@ class SolicitudCitaAdmin(admin.ModelAdmin):
             rechazar_solicitud,
         )
 
+        # PETCARE 165R.352.42
         if not self.has_view_permission(request):
             raise PermissionDenied
+
+        if request.method == "POST":
+            if not (
+                request.user.is_superuser
+                or request.user.has_perm(
+                    "citas.change_solicitudcita"
+                )
+            ):
+                raise PermissionDenied
 
         if request.method not in ("GET", "POST"):
             return HttpResponseNotAllowed(["GET", "POST"])
@@ -827,7 +837,20 @@ class SolicitudCitaAdmin(admin.ModelAdmin):
             pk=solicitud_id,
         )
 
-        formulario_aprobar = AprobarSolicitudCitaForm()
+        # PETCARE 165R.352.88 - PRESELECCION VETERINARIO
+        veterinario_preferido = solicitud.veterinario_preferido
+
+        datos_iniciales = {}
+
+        if (
+            veterinario_preferido is not None
+            and veterinario_preferido.activo
+        ):
+            datos_iniciales["veterinario"] = veterinario_preferido.pk
+
+        formulario_aprobar = AprobarSolicitudCitaForm(
+            initial=datos_iniciales
+        )
         formulario_rechazar = RechazarSolicitudCitaForm()
 
         if request.method == "POST":
@@ -932,9 +955,10 @@ class SolicitudCitaAdmin(admin.ModelAdmin):
             obj.estado != SolicitudCita.Estado.PENDIENTE
             or obj.cita_id is not None
         ):
+            # PETCARE 165R.352.98 - CORRECCION FORMAT_HTML
             return format_html(
-                '<span style="color:#667788;">'
-                'Solicitud ya gestionada</span>'
+                '<span style="color:#667788;">{}</span>',
+                "Solicitud ya gestionada"
             )
 
         url = reverse(

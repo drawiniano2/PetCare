@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Ficha del tutor | PetCare{% endblock %}
@@ -6,10 +6,309 @@
 
 {% block content %}
 
-<section class="page-heading">
-    <h1>Ficha del tutor</h1>
-    <p>Información registrada del responsable de mascotas.</p>
-</section>
+<style>
+/* PETCARE 165R.340.2B - FICHA TUTOR COMPACTA */
+
+/* Ficha principal */
+.tutor-detalle-panel.tutor-v12 {
+    max-width: 1100px;
+    padding: 22px 26px;
+}
+
+.tutor-v12 .tutor-v12-encabezado {
+    grid-template-columns: 145px minmax(0, 1fr) auto;
+    gap: 20px;
+    padding-bottom: 18px;
+}
+
+.tutor-v12 .tutor-v12-ilustracion img {
+    width: 145px;
+    height: 145px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.tutor-v12 .tutor-v12-identidad {
+    padding-left: 18px;
+}
+
+.tutor-v12 .tutor-v12-identidad h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.tutor-v12 .tutor-v12-rut {
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin: 0;
+    font-size: 14px;
+}
+
+.tutor-v12 .tutor-v12-estado {
+    align-self: center;
+    padding-top: 0;
+}
+
+/* Datos personales */
+.tutor-v12 .tutor-v12-datos {
+    gap: 16px 24px;
+    padding: 18px 0 4px;
+}
+
+.tutor-v12 .tutor-v12-dato {
+    gap: 12px;
+}
+
+.tutor-v12 .tutor-v12-icono {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    font-size: 21px;
+}
+
+.tutor-v12 .tutor-v12-dato strong {
+    font-size: 14px;
+}
+
+.tutor-v12 .tutor-v12-dato p {
+    margin-top: 3px;
+    font-size: 15px;
+}
+
+/* Botones */
+.tutor-v12 .tutor-form-actions {
+    margin-top: 18px;
+    gap: 12px;
+}
+
+.tutor-v12 .tutor-form-actions a {
+    padding: 11px 17px;
+    min-height: 42px;
+}
+
+/* Mascotas asociadas */
+.tutor-mascotas-v13 {
+    max-width: 1100px;
+    margin-top: 16px;
+    padding: 22px 26px;
+}
+
+.tutor-mascotas-v13 .tutor-mascotas-encabezado {
+    margin-bottom: 16px;
+    gap: 10px;
+}
+
+.tutor-mascotas-v13 .tutor-mascotas-encabezado h2 {
+    font-size: 24px;
+}
+
+.tutor-mascotas-v13 .tutor-mascotas-encabezado p {
+    margin-top: 4px;
+    font-size: 14px;
+}
+
+.tutor-mascotas-v13 .tutor-mascotas-contador {
+    padding: 7px 12px;
+    font-size: 14px;
+}
+
+.tutor-mascotas-v13 .tutor-mascotas-grid {
+    gap: 14px;
+}
+
+.tutor-mascotas-v13 .tutor-mascota-card {
+    gap: 12px;
+    padding: 16px;
+    align-items: flex-start;
+}
+
+.tutor-mascotas-v13 .tutor-mascota-icono {
+    width: 48px;
+    height: 48px;
+    font-size: 25px;
+}
+
+.tutor-mascotas-v13 .tutor-mascota-info h3 {
+    font-size: 21px;
+    margin-bottom: 7px;
+}
+
+.tutor-mascotas-v13 .tutor-mascota-info p {
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+/* Pantallas medianas */
+@media (max-width: 900px) {
+    .tutor-v12 .tutor-v12-encabezado {
+        grid-template-columns: 125px minmax(0, 1fr);
+    }
+
+    .tutor-v12 .tutor-v12-ilustracion img {
+        width: 125px;
+        height: 125px;
+    }
+
+    .tutor-v12 .tutor-v12-estado {
+        grid-column: 2;
+        justify-self: start;
+    }
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 650px) {
+    .tutor-detalle-panel.tutor-v12,
+    .tutor-mascotas-v13 {
+        padding: 18px;
+    }
+
+    .tutor-v12 .tutor-v12-encabezado {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .tutor-v12 .tutor-v12-identidad {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .tutor-v12 .tutor-v12-estado {
+        grid-column: 1;
+    }
+
+    .tutor-v12 .tutor-v12-datos,
+    .tutor-mascotas-v13 .tutor-mascotas-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* PETCARE 165R.341.5B - SVG VISIBLE */
+
+.tutor-mascotas-v13 a.tutor-mascota-ver-ficha {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+
+.tutor-mascotas-v13 a.tutor-mascota-ver-ficha > svg {
+    display: block !important;
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    flex: 0 0 17px !important;
+    color: #193451 !important;
+    stroke: currentColor !important;
+    fill: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FIN PETCARE 165R.341.5B */
+
+</style>
+
+
+
+<style>
+/* PETCARE 165R.341.2 - AJUSTES FINALES TUTOR */
+
+/* Menor separación entre título y ficha */
+.page-heading {
+    margin-bottom: 18px;
+}
+
+.page-heading h1 {
+    margin-bottom: 8px;
+}
+
+.page-heading p {
+    margin-bottom: 0;
+}
+
+/* Enlace de navegación a la mascota */
+.tutor-mascotas-v13 .tutor-mascota-ver-ficha {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin-top: 12px;
+    padding: 8px 15px;
+    background: #e4edf3;
+    border: 1px solid #c9dce8;
+    border-radius: 7px;
+    color: #193451;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.tutor-mascotas-v13 .tutor-mascota-ver-ficha:hover {
+    background: #cbdfe9;
+    transform: translateY(-1px);
+}
+
+.tutor-mascotas-v13 .tutor-mascota-ver-ficha:focus-visible {
+    outline: 2px solid #287c88;
+    outline-offset: 3px;
+}
+
+/* PETCARE 165R.341.3B - ESPACIADO E ICONO */
+
+/* Menor separación entre ficha y mascotas */
+.tutor-detalle-panel {
+    margin-bottom: 10px !important;
+}
+
+.tutor-mascotas-v13 {
+    margin-top: 0 !important;
+}
+
+/* Icono discreto de ficha */
+.tutor-mascotas-v13 .tutor-mascota-ver-ficha {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.tutor-mascotas-v13 .tutor-mascota-ver-ficha::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm8 2v4h4l-4-4zM8 12v2h8v-2H8zm0 4v2h8v-2H8z'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm8 2v4h4l-4-4zM8 12v2h8v-2H8zm0 4v2h8v-2H8z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* FIN PETCARE 165R.341.3B */
+
+
+/* PETCARE 165R.341.4 - ICONO SVG DEFINITIVO */
+
+.tutor-mascotas-v13 .tutor-mascota-ver-ficha::before {
+    content: none !important;
+    display: none !important;
+}
+
+.tutor-mascotas-v13 .tutor-mascota-ver-ficha svg {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    flex: 0 0 15px;
+    vertical-align: middle;
+}
+
+/* FIN PETCARE 165R.341.4 */
+
+</style>
+
+{# PETCARE 165R.355.5 - ENCABEZADO UNIFICADO #}
+{% include "components/encabezado_bauhaus.html" with titulo="Ficha del tutor" subtitulo="Información registrada del responsable de mascotas." %}
 
 <section class="panel tutor-detalle-panel tutor-v12">
 
@@ -126,7 +425,32 @@
                         <span class="estado-cita estado-cancelada">Inactivo</span>
                     {% endif %}
                 </p>
-            </div>
+
+                {% if perms.mascotas.view_mascota %}
+                <a href="{% url 'mascotas:detalle' mascota.pk %}"
+                   class="tutor-mascota-ver-ficha">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="15"
+     height="15"
+     viewBox="0 0 24 24"
+     fill="none"
+     stroke="currentColor"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     aria-hidden="true"
+     focusable="false">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+    <path d="M14 2v6h6"/>
+    <path d="M8 13h8"/>
+    <path d="M8 17h8"/>
+</svg>
+
+                    Ver ficha
+                </a>
+                {% endif %}
+</div>
         </article>
         {% empty %}
         <p class="tutor-mascotas-vacio">

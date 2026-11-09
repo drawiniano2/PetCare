@@ -118,3 +118,124 @@ class RegistroTutorForm(UserCreationForm):
             )
 
         return username
+
+
+# PETCARE_FORM_SOLICITUD_ACCESO_165R355
+
+from accounts.models import SolicitudAcceso
+
+
+class SolicitudAccesoForm(forms.ModelForm):
+
+    class Meta:
+        model = SolicitudAcceso
+        fields = (
+            "tipo_cuenta",
+            "nombre",
+            "apellido",
+            "rut",
+            "correo",
+            "telefono",
+            "username_solicitado",
+        )
+
+        labels = {
+            "tipo_cuenta": "Tipo de cuenta solicitada",
+            "nombre": "Nombre",
+            "apellido": "Apellido",
+            "rut": "RUT chileno",
+            "correo": "Correo electrónico",
+            "telefono": "Teléfono",
+            "username_solicitado": "Nombre de usuario solicitado",
+        }
+
+        widgets = {
+            "tipo_cuenta": forms.Select(),
+            "nombre": forms.TextInput(
+                attrs={"autocomplete": "given-name"}
+            ),
+            "apellido": forms.TextInput(
+                attrs={"autocomplete": "family-name"}
+            ),
+            "rut": forms.TextInput(
+                attrs={"placeholder": "12345678-5"}
+            ),
+            "correo": forms.EmailInput(
+                attrs={"autocomplete": "email"}
+            ),
+            "telefono": forms.TextInput(
+                attrs={"autocomplete": "tel"}
+            ),
+            "username_solicitado": forms.TextInput(
+                attrs={"autocomplete": "username"}
+            ),
+        }
+
+    def clean_rut(self):
+        rut = (
+            self.cleaned_data["rut"]
+            .upper()
+            .replace(".", "")
+            .replace("-", "")
+            .strip()
+        )
+
+        validar_rut_chileno(rut)
+
+        if Tutor.objects.filter(rut__iexact=rut).exists():
+            raise ValidationError(
+                "Este RUT ya está registrado como tutor."
+            )
+
+        if SolicitudAcceso.objects.filter(
+            rut__iexact=rut,
+            estado__in=["PENDIENTE", "APROBADA"],
+        ).exists():
+            raise ValidationError(
+                "Ya existe una solicitud vigente para este RUT."
+            )
+
+        return rut
+
+    def clean_correo(self):
+        correo = self.cleaned_data["correo"].strip().lower()
+
+        if User.objects.filter(email__iexact=correo).exists():
+            raise ValidationError(
+                "Este correo ya pertenece a una cuenta."
+            )
+
+        if SolicitudAcceso.objects.filter(
+            correo__iexact=correo,
+            estado__in=["PENDIENTE", "APROBADA"],
+        ).exists():
+            raise ValidationError(
+                "Ya existe una solicitud vigente con este correo."
+            )
+
+        return correo
+
+    def clean_username_solicitado(self):
+        username = (
+            self.cleaned_data["username_solicitado"].strip()
+        )
+
+        if len(username) < 4:
+            raise ValidationError(
+                "El nombre de usuario debe tener al menos 4 caracteres."
+            )
+
+        if User.objects.filter(username__iexact=username).exists():
+            raise ValidationError(
+                "Este nombre de usuario ya está registrado."
+            )
+
+        if SolicitudAcceso.objects.filter(
+            username_solicitado__iexact=username,
+            estado__in=["PENDIENTE", "APROBADA"],
+        ).exists():
+            raise ValidationError(
+                "Este nombre de usuario ya está solicitado."
+            )
+
+        return username

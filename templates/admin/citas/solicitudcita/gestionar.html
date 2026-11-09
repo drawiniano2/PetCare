@@ -131,6 +131,55 @@
     gap:15px;
 }
 
+
+/* PETCARE 165R.352.64 - LEGIBILIDAD SOLICITUDES */
+
+.pc-gestion .pc-superior,
+.pc-gestion .pc-subtitulo {
+    font-size: 15px;
+}
+
+.pc-gestion .pc-estado {
+    font-size: 14px;
+}
+
+.pc-gestion .pc-dato strong {
+    font-size: 14px;
+}
+
+.pc-gestion .pc-dato span {
+    font-size: 16px;
+    line-height: 1.45;
+}
+
+.pc-gestion .pc-aviso,
+.pc-gestion .pc-disponibilidad {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.pc-gestion .pc-campo label {
+    font-size: 15px;
+}
+
+.pc-gestion .pc-campo select,
+.pc-gestion .pc-campo input,
+.pc-gestion .pc-campo textarea {
+    font-size: 16px;
+}
+
+.pc-gestion .pc-ayuda,
+.pc-gestion .pc-errores {
+    font-size: 14px;
+}
+
+.pc-gestion .pc-boton,
+.pc-gestion .pc-volver {
+    font-size: 15px;
+}
+
+/* FIN PETCARE 165R.352.64 */
+
 </style>
 
 <div class="pc-gestion">
@@ -151,6 +200,19 @@
     <div class="pc-datos">
       <div class="pc-dato"><strong>Tutor</strong><span>{{ solicitud.tutor }}</span></div>
       <div class="pc-dato"><strong>Mascota</strong><span>{{ solicitud.mascota }}</span></div>
+
+      <!-- PETCARE 165R.352.86 - VETERINARIO SOLICITADO -->
+      <div class="pc-dato">
+        <strong>Veterinario preferido</strong>
+        <span>
+          {% if solicitud.veterinario_preferido %}
+            {{ solicitud.veterinario_preferido.nombre }}
+            {{ solicitud.veterinario_preferido.apellido }}
+          {% else %}
+            No especificado
+          {% endif %}
+        </span>
+      </div>
       <div class="pc-dato"><strong>Fecha solicitada</strong><span>{{ solicitud.fecha_preferida|date:"d/m/Y" }}</span></div>
       <div class="pc-dato"><strong>Hora solicitada</strong><span>{{ solicitud.hora_preferida|time:"H:i" }}</span></div>
       <div class="pc-dato"><strong>Estado</strong><span>{{ solicitud.get_estado_display }}</span></div>

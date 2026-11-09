@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block section_title %}{{ titulo }}{% endblock %}
+{% block content %}
+<!-- PETCARE 165R.357.9.236 - FORMULARIO BAUHAUS -->
+<style>
+.pc-servicio-form {
+    max-width: 980px;
+    background: #fff;
+    padding: 26px 30px;
+    border-radius: 13px;
+    border-top: 4px solid #168A80;
+    box-shadow: 0 8px 24px rgba(20,45,78,.06);
+}
+.pc-servicio-form h2 {
+    color: #19375E;
+    font-size: 24px;
+    margin: 0 0 8px;
+}
+.pc-servicio-form .descripcion {
+    margin: 0 0 24px;
+    color: #64748B;
+    font-size: 15px;
+}
+.pc-servicio-form .campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 20px 24px;
+}
+.pc-servicio-form .campo label {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #19375E;
+    margin-bottom: 8px;
+}
+.pc-servicio-form .campo input:not([type=checkbox]),
+.pc-servicio-form .campo select {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid #D6E0EA;
+    border-radius: 8px;
+    font-size: 16px;
+    background: white;
+    color: #24364B;
+}
+.pc-servicio-form .campo input:focus,
+.pc-servicio-form .campo select:focus {
+    outline: 2px solid #168A80;
+    outline-offset: 1px;
+}
+.pc-servicio-form .campo input[type=checkbox] {
+    width: 19px;
+    height: 19px;
+    accent-color: #168A80;
+}
+.pc-servicio-form .ayuda {
+    font-size: 13px;
+    color: #64748B;
+    margin-top: 6px;
+}
+.pc-servicio-form .errorlist,
+.pc-servicio-form .error {
+    color: #C73532;
+    font-size: 14px;
+    margin: 7px 0;
+}
+.pc-servicio-form .acciones {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid #E4EAF2;
+}
+.pc-servicio-form .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 20px;
+    border: 0;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+.pc-servicio-form .guardar {
+    background: #168A80;
+    color: white;
+}
+.pc-servicio-form .volver {
+    background: #19375E;
+    color: white;
+}
+.pc-servicio-form .guardar:hover {
+    background: #116F67;
+}
+.pc-servicio-form .volver:hover {
+    background: #102B4C;
+}
+@media(max-width:720px) {
+    .pc-servicio-form {
+        padding: 20px;
+    }
+    .pc-servicio-form .campos {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<section class="pc-servicio-form">
+    <h2>{{ titulo }}</h2>
+    <p class="descripcion">
+        Complete los datos de la prestación veterinaria
+        o de estética e higiene animal.
+    </p>
+
+    <!-- PETCARE 165R.357.9.249 -->
+<form method="post" autocomplete="off">
+        {% csrf_token %}
+        {{ formulario.non_field_errors }}
+
+        <div class="campos">
+            {% for campo in formulario %}
+            <div class="campo">
+                <label for="{{ campo.id_for_label }}">
+                    {{ campo.label }}
+                </label>
+
+                {{ campo }}
+
+                {% if campo.help_text %}
+                <div class="ayuda">
+                    {{ campo.help_text }}
+                </div>
+                {% endif %}
+
+                {% for error in campo.errors %}
+                <div class="error">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="acciones">
+            <button type="submit" class="boton guardar">
+                ✓ Guardar servicio
+            </button>
+
+            <a href="{% url 'citas:catalogo_servicios' %}"
+               class="boton volver">
+                ← Volver al catálogo
+            </a>
+        </div>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,842 @@
+{% extends "base.html" %}
+{% block title %}Revisión de acceso | PetCare{% endblock %}
+{% block section_title %}Revisión de solicitud{% endblock %}
+
+{% block content %}
+{# PETCARE_REVISION_ACCESOS_165R324 #}
+<style>
+.pc-access-review {
+    max-width:1050px;
+    margin:12px auto 35px;
+    color:#17354d;
+}
+.pc-access-review * {box-sizing:border-box}
+.pc-ar-header {
+    background:#17354d;
+    color:white;
+    padding:22px 26px;
+    border-radius:12px;
+    margin-bottom:17px;
+}
+.pc-ar-header h1 {
+    color:white!important;
+    font-size:24px;
+    margin:0 0 8px;
+}
+.pc-ar-header p {color:#e0e9f0;margin:0}
+.pc-ar-card {
+    background:white;
+    border:1px solid #d8e1e9;
+    border-radius:12px;
+    padding:22px 25px;
+    margin-bottom:17px;
+}
+.pc-ar-card h2 {
+    font-size:18px;
+    color:#17354d;
+    border-bottom:1px solid #e1e6eb;
+    padding-bottom:12px;
+    margin:0 0 18px;
+}
+.pc-ar-grid {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:20px 28px;
+}
+.pc-ar-label {
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    color:#65798b;
+    margin-bottom:5px;
+}
+.pc-ar-value {
+    display:block;
+    font-size:15px;
+    overflow-wrap:anywhere;
+}
+.pc-ar-status {
+    display:inline-block;
+    padding:7px 13px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+    background:#fff0bd;
+    color:#755000;
+}
+.pc-ar-status.aprobada {
+    background:#e4f8f5;
+    color:#08685f;
+}
+.pc-ar-status.rechazada {
+    background:#fde9e7;
+    color:#9a2922;
+}
+.pc-ar-actions {
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+.pc-ar-btn {
+    display:inline-block;
+    padding:12px 18px;
+    border-radius:8px;
+    background:#17354d;
+    color:white!important;
+    text-decoration:none;
+    font-weight:700;
+}
+.pc-ar-btn.secondary {
+    background:#edf3f7;
+    color:#17354d!important;
+}
+.pc-ar-notice {
+    background:#e4f8f5;
+    border-left:4px solid #16b8aa;
+    padding:15px 18px;
+    border-radius:8px;
+    margin-bottom:17px;
+}
+@media(max-width:650px) {
+    .pc-ar-grid {grid-template-columns:1fr}
+    .pc-ar-card {padding:17px}
+}
+
+/* PETCARE_ESTILOS_APROBACION_165R3256 */
+
+.pc-access-review form {
+    width: 100%;
+}
+
+.pc-access-review form select,
+.pc-access-review form input[type="text"] {
+    width: 100%;
+    min-height: 46px;
+    padding: 11px 14px;
+    border: 1px solid #cad7e2;
+    border-radius: 9px;
+    background: #f9fbfd;
+    color: #17354d;
+    font-family: inherit;
+    font-size: 15px;
+    box-sizing: border-box;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.pc-access-review form select:focus,
+.pc-access-review form input[type="text"]:focus {
+    outline: none;
+    border-color: #16b8aa;
+    box-shadow: 0 0 0 3px rgba(22,184,170,.14);
+}
+
+.pc-access-review form input[type="checkbox"] {
+    appearance: auto;
+    width: 19px;
+    height: 19px;
+    min-width: 19px;
+    accent-color: #16b8aa;
+    cursor: pointer;
+    margin-top: 2px;
+}
+
+.pc-access-review form label {
+    cursor: pointer;
+}
+
+.pc-access-review form .errorlist {
+    color: #a52c2c;
+    background: #fff1ef;
+    padding: 10px 14px 10px 30px;
+    border-radius: 7px;
+    margin-top: 9px;
+    font-size: 13px;
+}
+
+.pc-access-review form button[type="submit"] {
+    background: #17354d;
+    color: #ffffff;
+    min-height: 46px;
+    padding: 12px 25px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    border: 0;
+    border-radius: 9px;
+    transition: background .2s, transform .2s;
+}
+
+.pc-access-review form button[type="submit"]:hover {
+    background: #16b8aa;
+    transform: translateY(-1px);
+}
+
+.pc-access-review .pc-ar-card:has(form) {
+    border-top: 4px solid #16b8aa;
+    box-shadow: 0 8px 24px rgba(20,45,78,.06);
+}
+
+.pc-access-review .pc-ar-card:has(form) h2 {
+    font-size: 20px;
+    letter-spacing: -.3px;
+}
+
+.pc-access-review .pc-ar-card:has(form) form > div {
+    margin-bottom: 23px !important;
+}
+
+.pc-access-review .pc-ar-card:has(form) .pc-ar-label {
+    font-size: 14px;
+    color: #17354d;
+    margin-bottom: 9px;
+}
+
+@media (min-width: 800px) {
+    .pc-access-review .pc-ar-card:has(form) form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 24px;
+        align-items: end;
+    }
+
+    .pc-access-review .pc-ar-card:has(form) form > div:first-of-type,
+    .pc-access-review .pc-ar-card:has(form) form > div:has(input[type="checkbox"]),
+    .pc-access-review .pc-ar-card:has(form) form > button {
+        grid-column: 1 / -1;
+    }
+
+    .pc-access-review .pc-ar-card:has(form) form > button {
+        justify-self: end;
+    }
+}
+
+
+/* PETCARE_FORMULARIO_VISUAL_165R3259 */
+
+.pc-access-review .pc-approval-card {
+    border-top: 4px solid #16b8aa;
+    padding: 26px;
+}
+
+.pc-access-review .pc-approval-heading {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.pc-access-review .pc-approval-icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 11px;
+    background: #17354d;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.pc-access-review .pc-approval-heading h2 {
+    margin: 0 0 5px;
+    border: 0;
+    padding: 0;
+    font-size: 21px;
+}
+
+.pc-access-review .pc-approval-heading p {
+    margin: 0;
+    color: #718096;
+    font-size: 14px;
+}
+
+.pc-access-review .pc-approval-form {
+    display: block !important;
+    width: 100%;
+}
+
+.pc-access-review .pc-approval-identity {
+    background: #f3f7fa;
+    border: 1px solid #dbe5ec;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 20px 0;
+}
+
+.pc-access-review .pc-approval-identity strong {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.pc-access-review .pc-approval-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+}
+
+.pc-access-review .pc-approval-checkbox input {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px;
+    accent-color: #16b8aa;
+}
+
+.pc-access-review .pc-approval-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin: 25px 0;
+}
+
+.pc-access-review .pc-approval-field {
+    min-width: 0;
+}
+
+.pc-access-review .pc-approval-field label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #17354d;
+}
+
+.pc-access-review .pc-approval-field select,
+.pc-access-review .pc-approval-field input {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 48px !important;
+    padding: 12px 14px !important;
+    border: 1px solid #cbd8e3 !important;
+    border-radius: 9px !important;
+    background: #ffffff !important;
+    color: #17354d !important;
+    font: inherit !important;
+    box-sizing: border-box !important;
+}
+
+.pc-access-review .pc-approval-field select:focus,
+.pc-access-review .pc-approval-field input:focus {
+    outline: none;
+    border-color: #16b8aa !important;
+    box-shadow: 0 0 0 3px rgba(22,184,170,.15);
+}
+
+.pc-access-review .pc-approval-field small {
+    display: block;
+    margin-top: 8px;
+    color: #718096;
+    font-size: 12px;
+}
+
+.pc-access-review .pc-approval-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    border-top: 1px solid #e4eaf2;
+    padding-top: 22px;
+}
+
+.pc-access-review .pc-approval-footer span {
+    color: #718096;
+    font-size: 13px;
+}
+
+.pc-access-review .pc-approval-submit {
+    display: inline-block;
+    width: auto !important;
+    min-height: 48px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 9px;
+    background: #17354d;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.pc-access-review .pc-approval-submit:hover {
+    background: #087f75;
+}
+
+.pc-access-review .pc-approval-errors {
+    padding: 12px;
+    background: #fff0ed;
+    border-radius: 8px;
+}
+
+@media (max-width: 700px) {
+    .pc-access-review .pc-approval-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .pc-access-review .pc-approval-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .pc-access-review .pc-approval-submit {
+        width: 100% !important;
+    }
+}
+
+
+/* PETCARE_AVISO_FICHA_165R32513 */
+.pc-ficha-warning {
+    margin-top: 14px;
+    padding: 18px;
+    background: #fff8e9;
+    border: 1px solid #e9d7a5;
+    border-left: 4px solid #d69b28;
+    border-radius: 9px;
+    color: #654d20;
+}
+
+.pc-ficha-warning-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.pc-ficha-warning p {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 8px 0;
+}
+
+.pc-ficha-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background: #17354d;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.pc-ficha-link:hover {
+    background: #087f75;
+}
+
+
+/* PETCARE_RECHAZO_NATIVO_165R3262 */
+.pc-access-review .pc-rejection-card {
+    border-top: 4px solid #c65b55;
+}
+.pc-access-review .pc-rejection-form {
+    display: block !important;
+}
+.pc-access-review .pc-rejection-form label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 15px 0 9px;
+}
+.pc-access-review .pc-rejection-form textarea {
+    display: block;
+    width: 100%;
+    min-height: 115px;
+    padding: 13px 15px;
+    border: 1px solid #cad7e2;
+    border-radius: 9px;
+    font: inherit;
+    font-size: 15px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+.pc-access-review .pc-rejection-form textarea:focus {
+    outline: none;
+    border-color: #c65b55;
+    box-shadow: 0 0 0 3px rgba(198,91,85,.12);
+}
+.pc-access-review .pc-rejection-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-top: 20px;
+}
+.pc-access-review .pc-rejection-footer span {
+    color: #718096;
+    font-size: 13px;
+}
+.pc-access-review .pc-rejection-submit {
+    background: #a43e38 !important;
+    color: white !important;
+    border: 0;
+    border-radius: 9px;
+    padding: 13px 22px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+.pc-access-review .pc-rejection-submit:hover {
+    background: #842c27 !important;
+}
+.pc-access-review .pc-rejection-error {
+    padding: 12px 15px;
+    background: #fff0ee;
+    color: #982f29;
+    border-radius: 8px;
+}
+@media(max-width:700px) {
+    .pc-access-review .pc-rejection-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+
+/* PETCARE_PANTALLA_ACTIVACION_165R3277 */
+.pc-activation-access {
+    background: #f0faf8;
+    border: 1px solid #b9e5df;
+    border-left: 4px solid #16b8aa;
+    border-radius: 12px;
+    padding: 22px;
+    margin: 22px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+.pc-activation-access h2 {
+    margin: 0 0 8px;
+    color: #17354d;
+}
+.pc-activation-access p {
+    margin: 0;
+    color: #536779;
+}
+.pc-activation-link {
+    display: inline-block;
+    background: #17354d;
+    color: white !important;
+    padding: 13px 20px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.pc-activation-link:hover {
+    background: #245270;
+}
+@media(max-width:700px) {
+    .pc-activation-access {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .pc-activation-link {
+        text-align: center;
+    }
+}
+
+</style>
+
+<div class="pc-access-review">
+
+    {# PETCARE 165R.355.11 - BAUHAUS LOTE 2 #}
+{% with tipo=solicitud.get_tipo_cuenta_display %}
+{% with numero=solicitud.pk|stringformat:"s" %}
+{% with subtitulo="Solicitud N.º "|add:numero|add:" · "|add:tipo %}
+{% include "components/encabezado_bauhaus.html" with titulo="Revisión de solicitud de acceso" subtitulo=subtitulo %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+
+    <section class="pc-ar-card">
+        <h2>Datos del solicitante</h2>
+
+        <div class="pc-ar-grid">
+            <div>
+                <span class="pc-ar-label">Nombre</span>
+                <span class="pc-ar-value">{{ solicitud.nombre }}</span>
+            </div>
+            <div>
+                <span class="pc-ar-label">Apellido</span>
+                <span class="pc-ar-value">{{ solicitud.apellido }}</span>
+            </div>
+            <div>
+                <span class="pc-ar-label">RUT</span>
+                <span class="pc-ar-value">{{ solicitud.rut }}</span>
+            </div>
+            <div>
+                <span class="pc-ar-label">Correo electrónico</span>
+                <span class="pc-ar-value">{{ solicitud.correo }}</span>
+            </div>
+            <div>
+                <span class="pc-ar-label">Teléfono</span>
+                <span class="pc-ar-value">{{ solicitud.telefono }}</span>
+            </div>
+            <div>
+                <span class="pc-ar-label">Usuario solicitado</span>
+                <span class="pc-ar-value">
+                    {{ solicitud.username_solicitado }}
+                </span>
+            </div>
+            <div>
+                <span class="pc-ar-label">Tipo de cuenta</span>
+                <span class="pc-ar-value">
+                    {{ solicitud.get_tipo_cuenta_display }}
+                </span>
+            </div>
+            <div>
+                <span class="pc-ar-label">Fecha de solicitud</span>
+                <span class="pc-ar-value">
+                    {{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <section class="pc-ar-card">
+        <h2>Estado de la solicitud</h2>
+
+        <p>
+            <span class="pc-ar-status {% if solicitud.estado == 'APROBADA' %}aprobada{% elif solicitud.estado == 'RECHAZADA' %}rechazada{% endif %}">
+                {{ solicitud.get_estado_display }}
+            </span>
+        </p>
+
+        {% if solicitud.observaciones %}
+        <p><strong>Observaciones:</strong></p>
+        <p>{{ solicitud.observaciones|linebreaksbr }}</p>
+        {% endif %}
+
+        {% if solicitud.revisado_por %}
+        <p>
+            <strong>Revisado por:</strong>
+            {{ solicitud.revisado_por.username }}
+        </p>
+        {% endif %}
+
+        {% if solicitud.fecha_revision %}
+        <p>
+            <strong>Fecha de revisión:</strong>
+            {{ solicitud.fecha_revision|date:"d/m/Y H:i" }}
+        </p>
+        {% endif %}
+
+        {% if solicitud.usuario_creado %}
+        <p>
+            <strong>Cuenta asociada:</strong>
+            {{ solicitud.usuario_creado.username }}
+        </p>
+        <p>
+            <strong>Activación:</strong>
+            {% if solicitud.usuario_creado.is_active %}
+                Activa
+            {% else %}
+                Pendiente de activación
+            {% endif %}
+        </p>
+        {% endif %}
+    </section>
+
+    {% if solicitud.estado == "PENDIENTE" %}
+    <div class="pc-ar-notice">
+        La solicitud está pendiente de revisión administrativa.
+        La aprobación exige verificar la identidad y, para
+        veterinarios, seleccionar una ficha profesional válida.
+    </div>
+    {% endif %}
+
+
+
+{# PETCARE_FORMULARIO_VISUAL_165R3259 #}
+{% if formulario_aprobacion %}
+<section class="pc-ar-card pc-approval-card">
+
+    <div class="pc-approval-heading">
+        <div class="pc-approval-icon">✓</div>
+        <div>
+            <h2>Aprobación administrativa</h2>
+            <p>Verificación y autorización de cuenta</p>
+        </div>
+    </div>
+
+    <div class="pc-ar-notice">
+        Verifique la identidad del solicitante.
+        La cuenta se creará inactiva y sin contraseña.
+        La activación se realizará posteriormente.
+    </div>
+
+    <form method="post" class="pc-approval-form">
+<input type="hidden" name="accion" value="aprobar">
+        {% csrf_token %}
+
+        {% if formulario_aprobacion.non_field_errors %}
+        <div class="pc-approval-errors">
+            {{ formulario_aprobacion.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <div class="pc-approval-identity">
+            <strong>01 · Verificación de identidad</strong>
+
+            <label class="pc-approval-checkbox">
+                {{ formulario_aprobacion.identidad_verificada }}
+                <span>
+                    Confirmo que verifiqué la identidad
+                    del solicitante.
+                </span>
+            </label>
+
+            {{ formulario_aprobacion.identidad_verificada.errors }}
+        </div>
+
+        <div class="pc-approval-fields">
+
+            {% if formulario_aprobacion.ficha_veterinaria %}
+            <div class="pc-approval-field">
+                <label for="{{ formulario_aprobacion.ficha_veterinaria.id_for_label }}">
+                    02 · Ficha profesional verificada
+                </label>
+
+                {{ formulario_aprobacion.ficha_veterinaria }}
+
+
+{{ formulario_aprobacion.ficha_veterinaria.errors }}
+
+{# PETCARE_AVISO_FICHA_165R32513 #}
+{% if not ficha_disponible %}
+<div class="pc-ficha-warning">
+    <div class="pc-ficha-warning-title">
+        ⚠ No se encontró una ficha veterinaria disponible
+    </div>
+
+    <p>
+        Para aprobar esta solicitud debe existir una ficha
+        profesional activa, con el mismo RUT del solicitante
+        y sin una cuenta de usuario asociada.
+    </p>
+
+    <p>
+        <strong>RUT solicitado:</strong> {{ solicitud.rut }}
+    </p>
+
+    <a href="{% url 'veterinarios:lista' %}"
+       class="pc-ficha-link">
+        Ir a Veterinarios
+    </a>
+</div>
+{% endif %}
+
+            </div>
+            {% endif %}
+
+            <div class="pc-approval-field">
+                <label for="{{ formulario_aprobacion.confirmacion.id_for_label }}">
+                    03 · Confirmación de aprobación
+                </label>
+
+                {{ formulario_aprobacion.confirmacion }}
+
+                <small>Escriba exactamente APROBAR.</small>
+
+                {{ formulario_aprobacion.confirmacion.errors }}
+            </div>
+
+        </div>
+
+        <div class="pc-approval-footer">
+            <span>
+                La aprobación creará una cuenta inactiva.
+            </span>
+
+            <button type="submit" class="pc-approval-submit">
+                ✓ Confirmar aprobación
+            </button>
+        </div>
+
+    </form>
+</section>
+{% endif %}
+
+
+{# PETCARE_RECHAZO_NATIVO_165R3262 #}
+{% if solicitud.estado == "PENDIENTE" %}
+<section class="pc-ar-card pc-rejection-card">
+    <h2>Rechazar solicitud</h2>
+
+    <p>
+        Esta operación registrará el rechazo de la solicitud.
+        Debe indicar obligatoriamente el motivo.
+    </p>
+
+    {% if error_rechazo %}
+    <div class="pc-rejection-error">
+        {{ error_rechazo }}
+    </div>
+    {% endif %}
+
+    <form method="post" class="pc-rejection-form">
+        {% csrf_token %}
+        <input type="hidden" name="accion" value="rechazar">
+
+        <label for="motivo_rechazo">
+            Motivo del rechazo
+        </label>
+
+        <textarea
+            id="motivo_rechazo"
+            name="motivo_rechazo"
+            rows="4"
+            maxlength="5000"
+            required
+            placeholder="Explique el motivo del rechazo..."
+        >{% if error_rechazo %}{{ request.POST.motivo_rechazo }}{% endif %}</textarea>
+
+        <div class="pc-rejection-footer">
+            <span>
+                La decisión quedará registrada con fecha
+                y administrador responsable.
+            </span>
+
+            <button type="submit" class="pc-rejection-submit">
+                Rechazar solicitud
+            </button>
+        </div>
+    </form>
+</section>
+{% endif %}
+
+
+{# PETCARE_PANTALLA_ACTIVACION_165R3277 #}
+{% if solicitud.estado == "APROBADA" and solicitud.usuario_creado and not solicitud.usuario_creado.is_active %}
+<section class="pc-activation-access">
+    <div>
+        <h2>Activación de cuenta</h2>
+        <p>
+            La solicitud fue aprobada. La cuenta todavía está
+            inactiva y requiere una contraseña temporal.
+        </p>
+    </div>
+    <a class="pc-activation-link"
+       href="{% url 'solicitudes_acceso_activar' solicitud.pk %}">
+        Activar cuenta
+    </a>
+</section>
+{% endif %}
+
+    <div class="pc-ar-actions">
+        <a class="pc-ar-btn secondary"
+           href="{% url 'solicitudes_acceso_lista' %}">
+            Volver al listado
+        </a>
+
+        <a class="pc-ar-btn secondary"
+           href="{% url 'dashboard' %}">
+            Panel principal
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -454,3 +454,508 @@ def cancelar_solicitud_cita(request, solicitud_id):
     )
 
     return redirect("panel_tutor")
+
+
+# PETCARE_VISTA_SOLICITUD_ACCESO_165R356
+
+from accounts.forms import SolicitudAccesoForm
+
+
+@require_http_methods(["GET", "POST"])
+def solicitar_acceso(request):
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+
+    if request.method == "POST":
+        formulario = SolicitudAccesoForm(request.POST)
+
+        if formulario.is_valid():
+            formulario.save()
+
+            return render(
+                request,
+                "registration/solicitud_acceso_confirmada.html",
+                status=200,
+            )
+    else:
+        formulario = SolicitudAccesoForm()
+
+    return render(
+        request,
+        "registration/solicitar_acceso.html",
+        {"form": formulario},
+    )
+
+
+# PETCARE_CAMBIO_PASSWORD_165R426
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import redirect, render
+from django.views.decorators.http import require_http_methods
+from accounts.models import SolicitudAcceso
+
+
+@login_required(login_url="petcare_login")
+@require_http_methods(["GET", "POST"])
+def cambiar_password_obligatorio(request):
+    solicitud = SolicitudAcceso.objects.filter(
+        usuario_creado=request.user,
+        estado=SolicitudAcceso.Estado.APROBADA,
+        cambio_password_obligatorio=True,
+    ).first()
+
+    if solicitud is None:
+        raise PermissionDenied(
+            "No existe un cambio obligatorio pendiente."
+        )
+
+    if request.method == "POST":
+        formulario = PasswordChangeForm(
+            request.user,
+            request.POST,
+        )
+
+        if formulario.is_valid():
+            usuario = formulario.save()
+            update_session_auth_hash(request, usuario)
+
+            solicitud.cambio_password_obligatorio = False
+            solicitud.save(
+                update_fields=["cambio_password_obligatorio"]
+            )
+
+            return redirect("dashboard")
+    else:
+        formulario = PasswordChangeForm(request.user)
+
+    return render(
+        request,
+        "registration/cambiar_password_obligatorio.html",
+        {"formulario": formulario},
+    )
+
+
+# PETCARE_LISTADO_ACCESOS_165R323
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
+from django.db.models import Q
+from accounts.models import SolicitudAcceso
+
+
+@login_required(login_url="petcare_login")
+def solicitudes_acceso_lista(request):
+    if not request.user.is_active or not request.user.is_superuser:
+        raise PermissionDenied
+
+    solicitudes = SolicitudAcceso.objects.all()
+
+    busqueda = request.GET.get("q", "").strip()
+    estado = request.GET.get("estado", "").strip()
+    tipo = request.GET.get("tipo", "").strip()
+
+    if busqueda:
+        solicitudes = solicitudes.filter(
+            Q(nombre__icontains=busqueda)
+            | Q(apellido__icontains=busqueda)
+            | Q(rut__icontains=busqueda)
+            | Q(correo__icontains=busqueda)
+            | Q(username_solicitado__icontains=busqueda)
+        )
+
+    estados_validos = {
+        valor for valor, etiqueta in SolicitudAcceso.Estado.choices
+    }
+    tipos_validos = {
+        valor for valor, etiqueta in SolicitudAcceso.TipoCuenta.choices
+    }
+
+    if estado in estados_validos:
+        solicitudes = solicitudes.filter(estado=estado)
+
+    if tipo in tipos_validos:
+        solicitudes = solicitudes.filter(tipo_cuenta=tipo)
+
+    solicitudes = solicitudes.order_by("-fecha_solicitud", "-pk")
+
+    pagina = Paginator(solicitudes, 10).get_page(
+        request.GET.get("page")
+    )
+
+    contexto = {
+        "solicitudes": pagina,
+        "busqueda": busqueda,
+        "estado": estado,
+        "tipo": tipo,
+        "total": solicitudes.count(),
+        "pendientes": SolicitudAcceso.objects.filter(
+            estado=SolicitudAcceso.Estado.PENDIENTE
+        ).count(),
+        "aprobadas": SolicitudAcceso.objects.filter(
+            estado=SolicitudAcceso.Estado.APROBADA
+        ).count(),
+        "rechazadas": SolicitudAcceso.objects.filter(
+            estado=SolicitudAcceso.Estado.RECHAZADA
+        ).count(),
+    }
+
+    return render(
+        request,
+        "accounts/solicitudes_acceso_lista.html",
+        contexto,
+    )
+
+
+# PETCARE_REVISION_ACCESOS_165R324
+from django.shortcuts import get_object_or_404
+
+
+@login_required(login_url="petcare_login")
+def solicitudes_acceso_revisar(request, solicitud_id):
+    # PETCARE_APROBACION_PANEL_165R325
+    from accounts.admin import (
+        AprobacionSolicitudForm,
+        aprobar_solicitud_acceso,
+    )
+    from django.contrib import messages
+    from django.core.exceptions import ValidationError
+    from django.shortcuts import redirect
+
+    if not request.user.is_active or not request.user.is_superuser:
+        raise PermissionDenied
+
+    solicitud = get_object_or_404(
+        SolicitudAcceso.objects.select_related(
+            "revisado_por",
+            "usuario_creado",
+        ),
+        pk=solicitud_id,
+    )
+
+    formulario = None
+    error_rechazo = None
+
+    # PETCARE_RECHAZO_NATIVO_165R3262
+    if request.method == "POST" and request.POST.get("accion") == "rechazar":
+        from django.db import transaction
+        from django.utils import timezone
+        from django.contrib import messages
+        from django.shortcuts import redirect
+
+        motivo = request.POST.get("motivo_rechazo", "").strip()
+
+        if not motivo:
+            error_rechazo = "Debe indicar el motivo del rechazo."
+        elif len(motivo) > 5000:
+            error_rechazo = "El motivo no puede superar 5000 caracteres."
+        else:
+            with transaction.atomic():
+                actual = get_object_or_404(
+                    SolicitudAcceso.objects.select_for_update(),
+                    pk=solicitud_id,
+                )
+
+                if actual.estado != SolicitudAcceso.Estado.PENDIENTE:
+                    error_rechazo = "Esta solicitud ya fue revisada."
+                elif actual.usuario_creado_id:
+                    error_rechazo = (
+                        "No se puede rechazar una solicitud "
+                        "que ya tiene una cuenta asociada."
+                    )
+                else:
+                    actual.estado = SolicitudAcceso.Estado.RECHAZADA
+                    actual.observaciones = motivo
+                    actual.revisado_por = request.user
+                    actual.fecha_revision = timezone.now()
+                    actual.save(update_fields=[
+                        "estado",
+                        "observaciones",
+                        "revisado_por",
+                        "fecha_revision",
+                    ])
+
+            if error_rechazo is None:
+                messages.success(
+                    request,
+                    "Solicitud rechazada y revisión registrada.",
+                )
+                return redirect(
+                    "solicitudes_acceso_revisar",
+                    solicitud_id,
+                )
+
+    if solicitud.estado == SolicitudAcceso.Estado.PENDIENTE:
+        formulario = AprobacionSolicitudForm(
+            request.POST if request.method == "POST" else None,
+            solicitud=solicitud,
+        )
+
+        if (
+            request.method == "POST"
+            and request.POST.get("accion") == "aprobar"  # PETCARE_ACCIONES_SEGURAS_165R3274
+            and formulario.is_valid()
+        ):
+            ficha = formulario.cleaned_data.get("ficha_veterinaria")
+
+            try:
+                aprobar_solicitud_acceso(
+                    solicitud_id=solicitud.pk,
+                    administrador=request.user,
+                    identidad_verificada=formulario.cleaned_data[
+                        "identidad_verificada"
+                    ],
+                    ficha_veterinaria_id=(
+                        ficha.pk if ficha is not None else None
+                    ),
+                )
+            except ValidationError as error:
+                formulario.add_error(None, error)
+            else:
+                messages.success(
+                    request,
+                    "Solicitud aprobada correctamente. "
+                    "La cuenta fue creada inactiva y sin contraseña.",
+                )
+                return redirect(
+                    "solicitudes_acceso_revisar",
+                    solicitud.pk,
+                )
+
+    # PETCARE_FICHA_DISPONIBLE_165R32515
+    ficha_disponible = True
+
+    if (
+        formulario is not None
+        and solicitud.tipo_cuenta == SolicitudAcceso.TipoCuenta.VETERINARIO
+    ):
+        ficha_disponible = (
+            formulario.fields["ficha_veterinaria"]
+            .queryset.exists()
+        )
+
+    return render(
+        request,
+        "accounts/solicitudes_acceso_revisar.html",
+        {
+            "solicitud": solicitud,
+            "formulario_aprobacion": formulario,
+            "ficha_disponible": ficha_disponible,
+            "error_rechazo": error_rechazo,
+        },
+    )
+
+
+# PETCARE_ACTIVACION_NATIVA_165R3276
+@login_required(login_url="petcare_login")
+@require_http_methods(["GET", "POST"])
+def solicitudes_acceso_activar(request, solicitud_id):
+    from django import forms
+    from django.contrib import messages
+    from django.contrib.auth import get_user_model
+    from django.contrib.auth.password_validation import validate_password
+    from django.core.exceptions import ValidationError
+    from django.db import transaction
+    from django.http import HttpResponse
+    from django.shortcuts import get_object_or_404, redirect, render
+
+    from accounts.models import SolicitudAcceso
+
+    if not request.user.is_active or not request.user.is_superuser:
+        raise PermissionDenied
+
+    solicitud = get_object_or_404(
+        SolicitudAcceso.objects.select_related("usuario_creado"),
+        pk=solicitud_id,
+    )
+
+    if (
+        solicitud.estado != SolicitudAcceso.Estado.APROBADA
+        or not solicitud.usuario_creado_id
+    ):
+        return HttpResponse(
+            "La solicitud no está aprobada o no tiene cuenta.",
+            status=409,
+        )
+
+    if solicitud.usuario_creado.is_active:
+        return HttpResponse(
+            "La cuenta ya está activa.",
+            status=409,
+        )
+
+    class FormularioActivacion(forms.Form):
+        password = forms.CharField(
+            label="Contraseña temporal",
+            widget=forms.PasswordInput(
+                attrs={"autocomplete": "new-password"}
+            ),
+        )
+        confirmar = forms.CharField(
+            label="Confirmar contraseña",
+            widget=forms.PasswordInput(
+                attrs={"autocomplete": "new-password"}
+            ),
+        )
+
+        def clean(self):
+            datos = super().clean()
+            password = datos.get("password")
+            confirmar = datos.get("confirmar")
+
+            if password and confirmar and password != confirmar:
+                self.add_error(
+                    "confirmar",
+                    "Las contraseñas no coinciden.",
+                )
+
+            return datos
+
+    formulario = FormularioActivacion(
+        request.POST if request.method == "POST" else None
+    )
+
+    if request.method == "POST" and formulario.is_valid():
+        password = formulario.cleaned_data["password"]
+
+        try:
+            validate_password(
+                password,
+                user=solicitud.usuario_creado,
+            )
+        except ValidationError as error:
+            formulario.add_error("password", error)
+        else:
+            with transaction.atomic():
+                actual = get_object_or_404(
+                    SolicitudAcceso.objects.select_for_update(),
+                    pk=solicitud_id,
+                )
+
+                if (
+                    actual.estado != SolicitudAcceso.Estado.APROBADA
+                    or not actual.usuario_creado_id
+                ):
+                    return HttpResponse(
+                        "La solicitud ya no está disponible.",
+                        status=409,
+                    )
+
+                User = get_user_model()
+
+                usuario = get_object_or_404(
+                    User.objects.select_for_update(),
+                    pk=actual.usuario_creado_id,
+                )
+
+                if usuario.is_active:
+                    return HttpResponse(
+                        "La cuenta ya está activa.",
+                        status=409,
+                    )
+
+                usuario.set_password(password)
+                usuario.is_active = True
+                usuario.save(
+                    update_fields=["password", "is_active"]
+                )
+
+                actual.cambio_password_obligatorio = True
+                actual.save(
+                    update_fields=["cambio_password_obligatorio"]
+                )
+
+            messages.success(
+                request,
+                "Cuenta activada correctamente. "
+                "El usuario deberá cambiar su contraseña "
+                "en el primer ingreso.",
+            )
+
+            return redirect(
+                "solicitudes_acceso_revisar",
+                solicitud_id,
+            )
+
+    return render(
+        request,
+        "accounts/solicitudes_acceso_activar.html",
+        {
+            "solicitud": solicitud,
+            "formulario": formulario,
+        },
+    )
+
+
+# PETCARE 165R.352.74 - DISPONIBILIDAD TUTOR
+@login_required(login_url="petcare_login")
+def disponibilidad_tutor(request):
+    from datetime import date
+    from django.http import JsonResponse
+    from citas.disponibilidad import obtener_horas_disponibles
+    from veterinarios.models import Veterinario
+
+    usuario = request.user
+
+    if (
+        usuario.is_superuser
+        or usuario.is_staff
+        or usuario.groups.exists()
+        or usuario.user_permissions.exists()
+    ):
+        return JsonResponse(
+            {"error": "Acceso exclusivo para tutores."},
+            status=403,
+        )
+
+    tutor = Tutor.objects.filter(
+        usuario=usuario,
+        activo=True,
+    ).first()
+
+    if tutor is None:
+        return JsonResponse(
+            {"error": "Tutor no autorizado."},
+            status=403,
+        )
+
+    if request.method != "GET":
+        return JsonResponse(
+            {"error": "Metodo no permitido."},
+            status=405,
+        )
+
+    try:
+        veterinario_id = int(
+            request.GET.get("veterinario", "")
+        )
+        fecha = date.fromisoformat(
+            request.GET.get("fecha", "")
+        )
+    except (ValueError, TypeError):
+        return JsonResponse(
+            {"error": "Parametros invalidos."},
+            status=400,
+        )
+
+    if not Veterinario.objects.filter(
+        pk=veterinario_id,
+        activo=True,
+    ).exists():
+        return JsonResponse(
+            {"error": "Veterinario no disponible."},
+            status=404,
+        )
+
+    horas = obtener_horas_disponibles(
+        veterinario_id,
+        fecha,
+        duracion_minutos=30,
+    )
+
+    return JsonResponse({
+        "fecha": fecha.isoformat(),
+        "horas": horas,
+        "total": len(horas),
+    })

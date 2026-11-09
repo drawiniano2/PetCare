@@ -5,12 +5,8 @@
 
 {% block content %}
 
-<div class="page-heading">
-    <div>
-        <h1>Gestión de Veterinarios</h1>
-        <p>Consulta y administración del equipo profesional de PetCare.</p>
-    </div>
-</div>
+{# PETCARE 165R.355.5 - ENCABEZADO UNIFICADO #}
+{% include "components/encabezado_bauhaus.html" with titulo="Gestión de Veterinarios" subtitulo="Consulta y administración del equipo profesional de PetCare." %}
 
 <section class="panel veterinarios-v17">
 
@@ -44,87 +40,499 @@
         {% endif %}
     </form>
 
-    <div class="veterinarios-v17-tabla">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Profesional</th>
-                    <th>RUT</th>
-                    <th>Especialidad</th>
-                    <th>Registro</th>
-                    <th>Contacto</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
 
-            <tbody>
-                {% for veterinario in veterinarios %}
-                    <tr>
-                        <td>
-                            <strong>
-                                {{ veterinario.nombre }}
-                                {{ veterinario.apellido }}
-                            </strong>
-                        </td>
 
-                        <td>{{ veterinario.rut }}</td>
+<!-- PETCARE 165R.345.7 - FICHAS HORIZONTALES -->
 
-                        <td>{{ veterinario.especialidad }}</td>
+<div class="veterinarios-v3457-lista">
 
-                        <td>{{ veterinario.numero_registro }}</td>
+    {% for veterinario in veterinarios %}
 
-                        <td>
-                            {{ veterinario.correo }}
-                            <div class="veterinarios-v17-telefono">
-                                {{ veterinario.telefono }}
-                            </div>
-                        </td>
+    <article class="veterinarios-v3457-ficha" data-veterinario-id="{{ veterinario.pk }}">
 
-                        <td>
-                            {% if veterinario.activo %}
-                                <span class="veterinarios-v17-estado activo">
-                                    Activo
-                                </span>
-                            {% else %}
-                                <span class="veterinarios-v17-estado inactivo">
-                                    Inactivo
-                                </span>
-                            {% endif %}
-                        </td>
+        <div class="veterinarios-v3457-cabecera">
 
-                        <td>
-                            <div class="veterinarios-v173-acciones">
-                                <a href="{% url 'veterinarios:detalle' veterinario.pk %}"
-                                   class="veterinarios-v173-ver">
-                                    Ver ficha
-                                </a>
+            <div class="veterinarios-v3457-identidad">
 
-                                {% if perms.veterinarios.change_veterinario %}
-                                <a href="{% url 'veterinarios:editar' veterinario.pk %}"
-                                   class="veterinarios-v173-editar">
-                                    Editar
-                                </a>
-                                {% endif %}
-                            </div>
-                        </td>
-                    </tr>
+                <div class="veterinarios-v3457-icono">
+                    <!-- PETCARE 165R.345.12B - ESTETOSCOPIO SVG -->
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="25"
+                        height="25"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.9"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+                        <path d="M6 3v5"/>
+                        <path d="M10 3v5"/>
+                        <path d="M6 3H5"/>
+                        <path d="M10 3h1"/>
+                        <path d="M5 8a3 3 0 0 0 6 0"/>
+                        <path d="M8 11v3a5 5 0 0 0 10 0v-2"/>
+                        <circle cx="18" cy="10" r="2"/>
+                    </svg>
+                </div>
 
-                {% empty %}
-                    <tr>
-                        <td colspan="7" class="veterinarios-v17-vacio">
-                            {% if busqueda %}
-                                No se encontraron profesionales con ese criterio.
-                            {% else %}
-                                Todavía no hay veterinarios registrados.
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                <div>
+                    <h3>
+                        {{ veterinario.nombre }}
+                        {{ veterinario.apellido }}
+                    </h3>
+
+                    <p>RUT: {{ veterinario.rut }}</p>
+                </div>
+
+            </div>
+
+            {% if veterinario.activo %}
+                <span class="veterinarios-v17-estado activo">
+                    Activo
+                </span>
+            {% else %}
+                <span class="veterinarios-v17-estado inactivo">
+                    Inactivo
+                </span>
+            {% endif %}
+
+        </div>
+
+        <div class="veterinarios-v3457-datos">
+
+            <div class="veterinarios-v3457-bloque">
+                <span>Especialidad</span>
+                <strong>{{ veterinario.especialidad }}</strong>
+                <small>
+                    Registro: {{ veterinario.numero_registro }}
+                </small>
+            </div>
+
+            <div class="veterinarios-v3457-bloque">
+                <span>Contacto</span>
+                <strong>{{ veterinario.correo }}</strong>
+                <small>{{ veterinario.telefono }}</small>
+            </div>
+
+        </div>
+
+        <div class="veterinarios-v3457-acciones">
+
+            <a href="{% url 'veterinarios:detalle' veterinario.pk %}"
+               class="veterinarios-v3457-ver">
+                Ver ficha
+            </a>
+
+            {% if perms.veterinarios.change_veterinario %}
+            <a href="{% url 'veterinarios:editar' veterinario.pk %}"
+               class="veterinarios-v3457-editar">
+                Editar
+            </a>
+            {% endif %}
+
+        </div>
+
+    </article>
+
+    {% empty %}
+
+    <div class="veterinarios-v17-vacio">
+        {% if busqueda %}
+            No se encontraron profesionales con ese criterio.
+        {% else %}
+            Todavía no hay veterinarios registrados.
+        {% endif %}
     </div>
 
+    {% endfor %}
+
+</div>
+
+<style>
+/* PETCARE 165R.345.7 - ESTILOS FICHAS HORIZONTALES */
+
+.veterinarios-v3457-lista {
+    display: grid;
+    gap: 15px;
+    margin-top: 22px;
+}
+
+.veterinarios-v3457-ficha {
+    background: #fffdf9;
+    border: 1px solid #e3ddd3;
+    border-left: 4px solid #c94b3f;
+    border-radius: 13px;
+    padding: 20px 22px;
+    box-shadow: 0 3px 12px rgba(20, 45, 78, .035);
+}
+
+.veterinarios-v3457-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.veterinarios-v3457-identidad {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+}
+
+.veterinarios-v3457-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    background: #e7f3ee;
+    color: #187c70;
+    border-radius: 12px;
+    font-size: 28px;
+}
+
+.veterinarios-v3457-identidad h3 {
+    margin: 0 0 5px;
+    color: #183153;
+    font-size: 19px;
+    line-height: 1.3;
+}
+
+.veterinarios-v3457-identidad p {
+    margin: 0;
+    color: #536477;
+    font-size: 14px;
+}
+
+.veterinarios-v3457-datos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 17px;
+}
+
+.veterinarios-v3457-bloque {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    padding: 13px 15px;
+    background: #f5f1e9;
+    border-radius: 9px;
+}
+
+.veterinarios-v3457-bloque span {
+    color: #687587;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.veterinarios-v3457-bloque strong {
+    color: #183153;
+    font-size: 15px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.veterinarios-v3457-bloque small {
+    color: #536477;
+    font-size: 13px;
+}
+
+.veterinarios-v3457-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.veterinarios-v3457-acciones a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 17px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.veterinarios-v3457-ver {
+    background: #183153;
+    color: #ffffff;
+}
+
+.veterinarios-v3457-editar {
+    background: #d9ad50;
+    color: #183153;
+}
+
+.veterinarios-v3457-ver:hover {
+    background: #284a75;
+    color: #ffffff;
+}
+
+.veterinarios-v3457-editar:hover {
+    background: #e8bb62;
+    color: #183153;
+}
+
+@media (max-width: 760px) {
+    .veterinarios-v3457-ficha {
+        padding: 16px;
+    }
+
+    .veterinarios-v3457-datos {
+        grid-template-columns: 1fr;
+    }
+
+    .veterinarios-v3457-cabecera {
+        flex-wrap: wrap;
+    }
+
+    .veterinarios-v3457-acciones {
+        justify-content: stretch;
+    }
+
+    .veterinarios-v3457-acciones a {
+        flex: 1;
+    }
+}
+
+/* FIN PETCARE 165R.345.7 */
+</style>
+
 </section>
+
+
+<style>
+/* PETCARE 165R.345.8 - FICHAS COMPACTAS */
+
+.veterinarios-v3457-lista {
+    gap: 11px;
+    margin-top: 16px;
+}
+
+.veterinarios-v3457-ficha {
+    padding: 13px 17px;
+    border-radius: 11px;
+}
+
+.veterinarios-v3457-cabecera {
+    gap: 10px;
+}
+
+.veterinarios-v3457-identidad {
+    gap: 12px;
+}
+
+.veterinarios-v3457-icono {
+    width: 42px;
+    height: 42px;
+    font-size: 23px;
+    border-radius: 9px;
+}
+
+.veterinarios-v3457-identidad h3 {
+    font-size: 18px;
+    margin-bottom: 2px;
+}
+
+.veterinarios-v3457-identidad p {
+    font-size: 13px;
+}
+
+.veterinarios-v3457-datos {
+    gap: 12px;
+    margin-top: 11px;
+}
+
+.veterinarios-v3457-bloque {
+    padding: 9px 12px;
+    gap: 3px;
+    border-radius: 8px;
+}
+
+.veterinarios-v3457-bloque span {
+    font-size: 12px;
+}
+
+.veterinarios-v3457-bloque strong {
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.veterinarios-v3457-bloque small {
+    font-size: 12px;
+}
+
+.veterinarios-v3457-acciones {
+    margin-top: 10px;
+    gap: 8px;
+}
+
+.veterinarios-v3457-acciones a {
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 8px;
+}
+
+@media (max-width: 760px) {
+    .veterinarios-v3457-ficha {
+        padding: 13px;
+    }
+
+    .veterinarios-v3457-datos {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* FIN PETCARE 165R.345.8 */
+</style>
+
+
+<style>
+/* PETCARE 165R.345.10A - ALINEACION HORIZONTAL */
+
+@media (min-width: 901px) {
+
+    .veterinarios-v3457-ficha {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 210px;
+        grid-template-areas:
+            "cabecera cabecera"
+            "datos acciones";
+        column-gap: 12px;
+        row-gap: 10px;
+        padding: 13px 17px;
+    }
+
+    .veterinarios-v3457-cabecera {
+        grid-area: cabecera;
+    }
+
+    .veterinarios-v3457-datos {
+        grid-area: datos;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 0;
+        min-width: 0;
+        align-items: stretch;
+    }
+
+    .veterinarios-v3457-acciones {
+        grid-area: acciones;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 0;
+        min-width: 0;
+    }
+
+    .veterinarios-v3457-acciones a {
+        flex: 1 1 0;
+        box-sizing: border-box;
+        width: auto;
+        min-width: 0;
+        padding: 10px 6px;
+        font-size: 13px;
+        text-align: center;
+        white-space: nowrap;
+    }
+}
+
+.veterinarios-v3457-identidad h3 {
+    font-size: 19px;
+}
+
+.veterinarios-v3457-identidad p {
+    font-size: 14px;
+}
+
+.veterinarios-v3457-bloque {
+    justify-content: center;
+    padding: 11px 13px;
+}
+
+.veterinarios-v3457-bloque span {
+    font-size: 14px;
+}
+
+.veterinarios-v3457-bloque strong {
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.veterinarios-v3457-bloque small {
+    font-size: 14px;
+}
+
+@media (max-width: 900px) {
+    .veterinarios-v3457-acciones {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}
+
+/* FIN PETCARE 165R.345.10A */
+</style>
+
+
+<style>
+/* PETCARE 165R.345.11 - COLORES BAUHAUS */
+
+/* Color predeterminado para futuros profesionales */
+.veterinarios-v3457-ficha {
+    --vet-color: #183153;
+    --vet-soft: #E8EDF3;
+    border-left-color: var(--vet-color) !important;
+    transition:
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+/* Salvador Gallina */
+.veterinarios-v3457-ficha[data-veterinario-id="3"] {
+    --vet-color: #C94B3F;
+    --vet-soft: #F8E9E5;
+}
+
+/* Carlos González */
+.veterinarios-v3457-ficha[data-veterinario-id="1"] {
+    --vet-color: #D9AC50;
+    --vet-soft: #FBF2DA;
+}
+
+/* Delos Tarros */
+.veterinarios-v3457-ficha[data-veterinario-id="2"] {
+    --vet-color: #238C91;
+    --vet-soft: #E5F4F1;
+}
+
+/* Icono personalizado */
+.veterinarios-v3457-ficha .veterinarios-v3457-icono {
+    background: var(--vet-soft) !important;
+    color: var(--vet-color) !important;
+}
+
+/* Interacción suave */
+.veterinarios-v3457-ficha:hover {
+    box-shadow: 0 5px 16px rgba(24, 49, 83, .09);
+}
+
+/* Mantener botones y tipografía existentes */
+
+/* FIN PETCARE 165R.345.11 */
+</style>
 
 {% endblock %}

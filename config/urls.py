@@ -1,4 +1,4 @@
-"""
+﻿"""
 
 URL configuration for config project.
 
@@ -35,11 +35,15 @@ from django.contrib.auth import views as auth_views
 
 from django.urls import include, path
 
-from config.views import dashboard
+from config.views import dashboard, panel_personal
 
 
 
 urlpatterns = [
+    path("recordatorios/", include("recordatorios.urls")),
+
+    path("personal/", panel_personal, name="panel_personal"),
+
     path(
         "accounts/login/",
         auth_views.LoginView.as_view(

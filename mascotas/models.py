@@ -70,6 +70,53 @@ class Mascota(models.Model):
         verbose_name_plural = "Mascotas"
         ordering = ["nombre"]
 
+
+    # PETCARE 165R.344.7C - EDAD CALCULADA
+    @property
+    def edad_mascota(self):
+        from django.utils import timezone
+
+        nacimiento = self.fecha_nacimiento
+
+        if not nacimiento:
+            return "No registrada"
+
+        hoy = timezone.localdate()
+
+        if nacimiento > hoy:
+            return "Fecha futura"
+
+        meses = (
+            (hoy.year - nacimiento.year) * 12
+            + hoy.month - nacimiento.month
+        )
+
+        if hoy.day < nacimiento.day:
+            meses -= 1
+
+        meses = max(0, meses)
+        anios, restantes = divmod(meses, 12)
+
+        if anios == 0 and restantes == 0:
+            dias = (hoy - nacimiento).days
+            return f"{dias} día" if dias == 1 else f"{dias} días"
+
+        partes = []
+
+        if anios:
+            partes.append(
+                f"{anios} año" if anios == 1
+                else f"{anios} años"
+            )
+
+        if restantes:
+            partes.append(
+                f"{restantes} mes" if restantes == 1
+                else f"{restantes} meses"
+            )
+
+        return " y ".join(partes)
+
     def __str__(self):
         return f"{self.nombre} - {self.tutor}"
 

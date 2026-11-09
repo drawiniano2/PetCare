@@ -8,8 +8,17 @@
 <div class="pc-receta-pagina">
 
     <div class="pc-receta-acciones">
+{# PETCARE 165R.357.9.58 - BOTON EDITAR #}
+{% if perms.historial_clinico.change_recetaveterinaria %}
+<a href="{% url 'historial_clinico:editar_receta' mascota.pk atencion.pk receta.pk %}"
+   class="pc-boton-editar-receta">
+    ✎ Editar receta
+</a>
+{% endif %}
+
         <a href="{% url 'historial_clinico:detalle_atencion' mascota.pk atencion.pk %}"
            class="pc-receta-volver">
+            <span class="pc-receta-flecha" aria-hidden="true">&larr;</span>
             Volver a la atenci&oacute;n
         </a>
 
@@ -74,7 +83,9 @@
             <div class="pc-receta-grid">
                 <div>
                     <strong>Veterinario</strong>
-                    <p>{{ atencion.veterinario }}</p>
+                    <p>{{ atencion.veterinario.nombre }} {{ atencion.veterinario.apellido }}</p>
+                    <p class="pc-receta-especialidad">{{ atencion.veterinario.especialidad }}</p>
+                    <p class="pc-receta-registro">Registro profesional: {{ atencion.veterinario.numero_registro }}</p>
                 </div>
 
                 <div>
@@ -133,6 +144,7 @@
             {% endfor %}
         </section>
 
+        <div class="pc-receta-notas-grid">
         {% if receta.indicaciones_generales %}
         <section class="pc-receta-bloque">
             <h2>Indicaciones generales</h2>
@@ -147,9 +159,16 @@
         </section>
         {% endif %}
 
+        </div>
+
+        <!-- PETCARE 165R.357.9.23 - ESPACIADOR DINAMICO A4 -->
+        <div id="pc-receta-espaciador" class="pc-receta-espacio-{{ receta.medicamentos.count }}" aria-hidden="true"></div>
+
         <div class="pc-receta-firma">
             <div class="pc-receta-linea-firma"></div>
-            <strong>{{ atencion.veterinario }}</strong>
+            <strong>{{ atencion.veterinario.nombre }} {{ atencion.veterinario.apellido }}</strong>
+            <span class="pc-receta-firma-especialidad">{{ atencion.veterinario.especialidad }}</span>
+            <span class="pc-receta-firma-registro">Registro profesional: {{ atencion.veterinario.numero_registro }}</span>
             <span>Firma y timbre profesional</span>
         </div>
 
@@ -1325,6 +1344,259 @@
     }
 
 }
+
+/* PETCARE 165R.357.5 - MEJORA VISUAL RECETA */
+
+@media screen and (min-width: 701px) {
+
+    .pc-receta-documento .pc-receta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px 22px;
+    }
+
+    .pc-receta-documento .pc-receta-grid > div {
+        min-width: 0;
+    }
+
+    .pc-receta-documento .pc-receta-grid p {
+        overflow-wrap: break-word;
+        line-height: 1.45;
+    }
+
+    .pc-receta-documento .pc-receta-notas-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        align-items: start;
+    }
+
+    .pc-receta-documento
+    .pc-receta-notas-grid .pc-receta-bloque {
+        min-width: 0;
+    }
+}
+
+@media screen and (max-width: 700px) {
+
+    .pc-receta-documento .pc-receta-notas-grid {
+        display: block;
+    }
+}
+
+
+/* PETCARE 165R.357.8.2 - FIRMA PROFESIONAL */
+
+@media screen {
+
+    .pc-receta-especialidad,
+    .pc-receta-registro {
+        margin-top: 4px !important;
+        color: #516178;
+    }
+
+    .pc-receta-firma {
+        width: 270px;
+        margin-top: 55px;
+    }
+
+    .pc-receta-firma-especialidad,
+    .pc-receta-firma-registro {
+        display: block;
+        overflow-wrap: break-word;
+    }
+}
+
+@media print {
+
+    .pc-receta-firma {
+        width: 52mm !important;
+        margin-top: 9mm !important;
+    }
+
+    .pc-receta-firma-especialidad,
+    .pc-receta-firma-registro {
+        display: block !important;
+        overflow-wrap: break-word !important;
+    }
+}
+
+
+/* PETCARE 165R.357.8.3C - BOTON BAUHAUS */
+
+@media screen {
+
+    .pc-receta-volver {
+        gap: 9px;
+        background: #efe8dd;
+        color: #17365d;
+        transition:
+            background-color .2s ease,
+            color .2s ease,
+            box-shadow .2s ease;
+    }
+
+    .pc-receta-flecha {
+        display: inline-block;
+        font-size: 21px;
+        line-height: 1;
+        transition: transform .2s ease;
+    }
+
+    .pc-receta-volver:hover {
+        background: rgba(196, 48, 43, .16);
+        color: #a52c25;
+        box-shadow: inset 0 0 0 1px rgba(196, 48, 43, .35);
+    }
+
+    .pc-receta-volver:hover .pc-receta-flecha {
+        transform: translateX(-3px);
+    }
+
+    .pc-receta-volver:focus-visible {
+        outline: 2px solid #a52c25;
+        outline-offset: 3px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pc-receta-volver,
+    .pc-receta-flecha {
+        transition: none !important;
+    }
+}
+
+
+
+
+/* PETCARE 165R.357.9.17 - FIRMA A4 CONTROLADA */
+
+@media print {
+
+    .pc-receta-documento {
+        position: relative !important;
+    }
+
+    .pc-receta-firma {
+        break-inside: avoid !important;
+    }
+
+    .pc-receta-pie {
+        break-inside: avoid !important;
+    }
+}
+
+
+
+/* PETCARE 165R.357.9.27 - PRUEBA ESPACIO 25MM */
+#pc-receta-espaciador {
+    display: none;
+}
+
+@media print {
+    #pc-receta-espaciador {
+        display: block !important;
+        height: 25mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+    }
+}
+
+
+/* PETCARE 165R.357.9.32 - ESPACIO ADAPTABLE */
+@media print {
+    #pc-receta-espaciador {
+        height: 0 !important;
+    }
+
+    #pc-receta-espaciador.pc-receta-espacio-0 {
+        height: 25mm !important;
+    }
+
+    #pc-receta-espaciador.pc-receta-espacio-1 {
+        height: 12mm !important;
+    }
+}
+
+
+/* PETCARE 165R.357.9.37 - IMPRESION A4 LEGIBLE */
+@media print {
+
+    @page {
+        size: A4 portrait;
+        margin: 12mm 10mm 10mm 10mm;
+    }
+
+    .pc-receta-documento {
+        font-size: 10.5pt !important;
+        line-height: 1.25 !important;
+    }
+
+    .pc-receta-bloque {
+        margin-top: 3mm !important;
+    }
+
+    .pc-receta-grid {
+        gap: 2mm 5mm !important;
+    }
+
+    .pc-receta-medicamento {
+        margin: 2mm 0 !important;
+        padding: 2.5mm !important;
+    }
+
+    .pc-receta-firma {
+        width: 52mm !important;
+        margin: 6mm 0 3mm auto !important;
+        font-size: 10pt !important;
+        line-height: 1.2 !important;
+        break-inside: avoid !important;
+    }
+
+    .pc-receta-firma strong {
+        font-size: 10pt !important;
+    }
+
+    .pc-receta-firma span {
+        font-size: 9pt !important;
+    }
+
+    .pc-receta-pie {
+        font-size: 9pt !important;
+        break-inside: avoid !important;
+    }
+
+    #pc-receta-espaciador {
+        height: 0 !important;
+    }
+}
+
 </style>
+
+<style>
+/* PETCARE 165R.357.9.58 */
+.pc-boton-editar-receta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 10px 20px;
+    border-radius: 9px;
+    background: #dcae50;
+    color: #19375e;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    box-sizing: border-box;
+    margin: 5px;
+}
+.pc-boton-editar-receta:hover {
+    background: #c99a3c;
+}
+</style>
+
+
+
+
 
 {% endblock %}

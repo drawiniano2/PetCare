@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Panel de Personal Autorizado</h1>
+    <p>Gestión de solicitudes de mascotas.</p>
+</section>
+
+<section class="card" style="padding:24px; margin-top:20px;">
+    <h2>Solicitudes pendientes</h2>
+
+    {% if puede_ver_solicitudes %}
+        <p style="font-size:32px; font-weight:700;">
+            {{ solicitudes_pendientes }}
+        </p>
+
+        <a href="{% url 'mascotas:solicitudes_lista' %}"
+           class="btn btn-primary">
+            Revisar solicitudes
+        </a>
+    {% else %}
+        <p>Esta cuenta no tiene permisos para consultar solicitudes.</p>
+    {% endif %}
+</section>
+{% endblock %}

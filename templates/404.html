@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Página no encontrada | PetCare{% endblock %}
+
+{% block content %}
+
+<div style="max-width:720px;margin:65px auto;padding:25px;text-align:center;">
+
+    <div style="font-size:90px;font-weight:800;color:#168a88;line-height:1.1;">
+        404
+    </div>
+
+    <h1 style="font-size:30px;margin:22px 0 15px;">
+        ¡Ups! Página no encontrada
+    </h1>
+
+    <p style="font-size:18px;color:#64748b;line-height:1.7;">
+        La página que buscas no existe o ha cambiado de dirección.
+        No te preocupes, puedes regresar al inicio y continuar
+        utilizando PetCare.
+    </p>
+
+    <div style="margin-top:35px;">
+        <a href="/petcare/"
+           style="display:inline-block;background:#168a88;color:white;
+                  padding:15px 32px;border-radius:12px;
+                  text-decoration:none;font-weight:700;
+                  font-size:17px;">
+            Volver al inicio de PetCare
+        </a>
+    </div>
+
+    <p style="margin-top:38px;color:#94a3b8;font-size:14px;">
+        PetCare · Sistema de Gestión Veterinaria
+    </p>
+
+</div>
+
+{% endblock %}

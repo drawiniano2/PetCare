@@ -6,7 +6,7 @@ from .models import Tutor
 from .forms import TutorForm
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("tutores.view_tutor", raise_exception=True)
 def lista_tutores(request):
     busqueda = request.GET.get("q", "").strip()
@@ -30,7 +30,7 @@ def lista_tutores(request):
     return render(request, "tutores/lista.html", contexto)
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("tutores.add_tutor", raise_exception=True)
 def crear_tutor(request):
     if request.method == "POST":
@@ -49,7 +49,7 @@ def crear_tutor(request):
     })
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("tutores.change_tutor", raise_exception=True)
 def editar_tutor(request, pk):
     tutor = get_object_or_404(Tutor, pk=pk)
@@ -70,7 +70,7 @@ def editar_tutor(request, pk):
     })
 
 
-@login_required(login_url="/admin/login/")
+@login_required(login_url="petcare_login")
 @permission_required("tutores.view_tutor", raise_exception=True)
 def detalle_tutor(request, pk):
     tutor = get_object_or_404(Tutor, pk=pk)

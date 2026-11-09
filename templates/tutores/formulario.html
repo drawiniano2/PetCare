@@ -1,14 +1,118 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}{{ titulo }} | PetCare{% endblock %}
 {% block section_title %}Gestión de Tutores{% endblock %}
 
 {% block content %}
 
-<section class="page-heading">
-    <h1>{{ titulo }}</h1>
-    <p>Complete los datos del responsable de la mascota.</p>
-</section>
+<style>
+/* PETCARE 165R.339.2 - FORMULARIO TUTORES BAUHAUS */
+
+.tutor-form-panel {
+    border: 1px solid #e2dbd0;
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(20,45,78,.05);
+}
+
+/* Campos */
+.tutor-form-panel .tutor-form-grid {
+    gap: 20px 22px;
+}
+
+.tutor-form-panel .tutor-form-field input:not([type="checkbox"]):focus,
+.tutor-form-panel .tutor-form-field select:focus,
+.tutor-form-panel .tutor-form-field textarea:focus {
+    outline: none;
+    border-color: #287c88;
+    box-shadow: 0 0 0 3px rgba(40,124,136,.15);
+}
+
+/* Estado del tutor */
+.tutor-form-panel .tutor-form-field-activo {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto;
+    align-items: center;
+    column-gap: 16px;
+    row-gap: 5px;
+    padding: 14px 18px;
+    border: 1px solid #c8e3dd;
+    border-radius: 10px;
+    background: #eaf6f2;
+}
+
+.tutor-form-panel .tutor-form-field-activo label {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    color: #193451;
+    font-weight: 700;
+}
+
+.tutor-form-panel .tutor-form-field-activo input[type="checkbox"] {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    accent-color: #287c88;
+    cursor: pointer;
+}
+
+.tutor-form-panel .tutor-activo-ayuda {
+    grid-column: 1;
+    grid-row: 2;
+    color: #516a70;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* Errores de validación */
+.tutor-form-panel .tutor-field-error {
+    padding: 7px 10px;
+    border-left: 3px solid #c96752;
+    border-radius: 4px;
+    background: #fff0ec;
+    color: #923e32;
+    font-size: 13px;
+}
+
+.tutor-form-panel .tutor-form-errors {
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    border: 1px solid #e9b9af;
+    border-radius: 8px;
+    background: #fff0ec;
+}
+
+/* Botones */
+.tutor-form-panel .tutor-form-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.tutor-form-panel .tutor-form-actions .tutor-btn-primary,
+.tutor-form-panel .tutor-form-actions .tutor-btn-secondary {
+    min-height: 46px;
+}
+
+@media (max-width: 760px) {
+    .tutor-form-panel .tutor-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tutor-form-panel .tutor-form-field-activo {
+        grid-column: 1;
+    }
+}
+</style>
+
+
+{# PETCARE 165R.355.5 - ENCABEZADO UNIFICADO #}
+{% include "components/encabezado_bauhaus.html" with titulo="{{ titulo }}" subtitulo="Complete los datos del responsable de la mascota." %}
 
 <section class="panel tutor-form-panel">
 
@@ -23,12 +127,18 @@
 
         <div class="tutor-form-grid">
             {% for campo in formulario %}
-                <div class="tutor-form-field">
+                <div class="tutor-form-field {% if campo.name == "activo" %}tutor-form-field-activo{% endif %}">
                     <label for="{{ campo.id_for_label }}">
                         {{ campo.label }}
                     </label>
 
                     {{ campo }}
+
+                    {% if campo.name == "activo" %}
+                        <small class="tutor-activo-ayuda">
+                            Indica si el tutor está habilitado en el sistema.
+                        </small>
+                    {% endif %}
 
                     {% if campo.help_text %}
                         <small>{{ campo.help_text }}</small>

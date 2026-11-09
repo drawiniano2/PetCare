@@ -373,40 +373,919 @@
     background: #206451;
 }
 
+
+/* PETCARE 165R.352.5 - TABLA COMPACTA */
+@media (min-width: 901px) {
+    .petcare-citas table {
+        min-width: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .petcare-citas th,
+    .petcare-citas td {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        vertical-align: middle;
+        font-size: 15px;
+        padding: 13px 9px;
+    }
+
+    .petcare-citas th:nth-child(1) { width: 20%; }
+    .petcare-citas th:nth-child(2) { width: 22%; }
+    .petcare-citas th:nth-child(3) { width: 15%; }
+    .petcare-citas th:nth-child(4) { width: 13%; }
+    .petcare-citas th:nth-child(5) { width: 30%; }
+
+    .petcare-citas th:nth-child(3),
+    .petcare-citas td:nth-child(3),
+    .petcare-citas th:last-child,
+    .petcare-citas td:last-child {
+        min-width: 0;
+    }
+
+    .petcare-citas .pc-acciones-fila {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .petcare-citas .pc-acciones-fila .pc-boton,
+    .petcare-citas .pc-form-archivar .pc-boton {
+        font-size: 14px;
+        padding: 9px 10px;
+    }
+
+    .petcare-citas .pc-form-archivar {
+        margin: 6px 0 0;
+    }
+}
+
+.petcare-citas .pc-datos-principales strong,
+.petcare-citas .pc-fecha-hora strong {
+    display: block;
+    font-weight: 700;
+}
+
+.petcare-citas .pc-datos-principales small,
+.petcare-citas .pc-fecha-hora small {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #65748A;
+    line-height: 1.4;
+}
+
+.petcare-citas .pc-veterinario {
+    line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+    .petcare-citas table {
+        min-width: 850px;
+    }
+}
+/* FIN PETCARE 165R.352.5 */
+
+
+/* PETCARE 165R.352.7 - AJUSTE VISUAL */
+
+@media (min-width: 901px) {
+
+    .petcare-citas th:nth-child(1) { width: 19%; }
+    .petcare-citas th:nth-child(2) { width: 22%; }
+    .petcare-citas th:nth-child(3) { width: 14%; }
+    .petcare-citas th:nth-child(4) { width: 15%; }
+    .petcare-citas th:nth-child(5) { width: 30%; }
+
+    .petcare-citas th,
+    .petcare-citas td {
+        overflow-wrap: normal;
+        word-break: normal;
+        padding: 14px 10px;
+        font-size: 15px;
+        line-height: 1.45;
+    }
+
+    .petcare-citas .pc-estado {
+        white-space: nowrap;
+        font-size: 13px;
+        padding: 7px 10px;
+    }
+
+    .petcare-citas .pc-acciones-fila {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .petcare-citas .pc-acciones-fila .pc-boton {
+        font-size: 14px;
+        padding: 9px 11px;
+        white-space: nowrap;
+    }
+
+    .petcare-citas .pc-veterinario {
+        overflow-wrap: break-word;
+        line-height: 1.5;
+    }
+
+    .petcare-citas .pc-datos-principales small,
+    .petcare-citas .pc-fecha-hora small {
+        font-size: 14px;
+    }
+}
+
+/* FIN PETCARE 165R.352.7 */
+
+
+/* PETCARE 165R.352.12 - ORDEN VISUAL DEFINITIVO */
+
+@media (min-width: 901px) {
+    .petcare-citas table {
+        width: 100%;
+        min-width: 0;
+        table-layout: fixed;
+    }
+
+    .petcare-citas th:nth-child(1) { width: 19%; }
+    .petcare-citas th:nth-child(2) { width: 21%; }
+    .petcare-citas th:nth-child(3) { width: 14%; }
+    .petcare-citas th:nth-child(4) { width: 14%; }
+    .petcare-citas th:nth-child(5) { width: 32%; }
+
+    .petcare-citas th,
+    .petcare-citas td {
+        font-size: 16px;
+        line-height: 1.45;
+        padding: 14px 11px;
+        vertical-align: middle;
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+
+    .petcare-citas .pc-acciones-fila {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .petcare-citas .pc-acciones-fila form,
+    .petcare-citas .pc-form-archivar {
+        margin: 0;
+    }
+
+    .petcare-citas .pc-acciones-fila .pc-boton,
+    .petcare-citas .pc-form-archivar .pc-boton {
+        font-size: 14px;
+        padding: 9px 12px;
+        white-space: nowrap;
+    }
+}
+
+.petcare-citas .pc-veterinario strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.petcare-citas .pc-veterinario small {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #65748A;
+    line-height: 1.4;
+}
+
+/* FIN PETCARE 165R.352.12 */
+
+
+/* PETCARE 165R.352.18 - AJUSTE COLUMNAS */
+
+@media (min-width: 901px) {
+
+    .petcare-citas th:nth-child(1) { width: 19%; }
+    .petcare-citas th:nth-child(2) { width: 25%; }
+    .petcare-citas th:nth-child(3) { width: 13%; }
+    .petcare-citas th:nth-child(4) { width: 13%; }
+    .petcare-citas th:nth-child(5) { width: 30%; }
+
+    .petcare-citas .pc-veterinario small {
+        font-size: 14px;
+        line-height: 1.4;
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+
+}
+
+/* FIN PETCARE 165R.352.18 */
+
+
+/* PETCARE 165R.352.60 - TABLA ORDENADA */
+@media (min-width: 901px) {
+    .petcare-citas table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .petcare-citas th:nth-child(1) { width: 19%; }
+    .petcare-citas th:nth-child(2) { width: 25%; }
+    .petcare-citas th:nth-child(3) { width: 14%; }
+    .petcare-citas th:nth-child(4) { width: 13%; }
+    .petcare-citas th:nth-child(5) { width: 29%; }
+
+    .petcare-citas th,
+    .petcare-citas td {
+        font-size: 16px;
+        line-height: 1.45;
+        padding: 14px 11px;
+        vertical-align: middle;
+        word-break: normal;
+        overflow-wrap: break-word;
+    }
+
+    .petcare-citas .pc-fecha-hora strong {
+        white-space: nowrap;
+    }
+
+    .petcare-citas .pc-acciones-fila {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .petcare-citas .pc-acciones-fila form,
+    .petcare-citas .pc-form-archivar,
+    .petcare-citas .pc-form-restaurar {
+        margin: 0;
+    }
+
+    .petcare-citas .pc-acciones-fila .pc-boton,
+    .petcare-citas .pc-form-archivar .pc-boton {
+        font-size: 14px;
+        padding: 9px 11px;
+        white-space: nowrap;
+    }
+}
+/* FIN PETCARE 165R.352.60 */
+
+
+/* PETCARE 165R.357.9.143 - ACCIONES BAUHAUS */
+
+.petcare-citas .pc-acciones-fila .pc-boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 12px;
+    transition:
+        background-color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease;
+}
+
+.petcare-citas .pc-acciones-fila .pc-azul {
+    background: #19375E;
+    color: #FFFFFF;
+}
+
+.petcare-citas .pc-confirmar {
+    background: #E2AE4B;
+    color: #19375E;
+}
+
+.petcare-citas .pc-completar {
+    background: #168A80;
+    color: #FFFFFF;
+}
+
+.petcare-citas .pc-cancelar {
+    background: #FCEDEC;
+    color: #C73532;
+    border: 1px solid #C73532;
+}
+
+.petcare-citas .pc-acciones-fila .pc-boton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(25,55,94,.16);
+}
+
+.petcare-citas .pc-cancelar:hover {
+    background: #C73532;
+    color: #FFFFFF;
+}
+
+.petcare-citas .pc-acciones-fila .pc-boton:focus-visible {
+    outline: 3px solid #E2AE4B;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .petcare-citas .pc-acciones-fila .pc-boton {
+        transition: none;
+    }
+    .petcare-citas .pc-acciones-fila .pc-boton:hover {
+        transform: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.144 - TRES BOTONES HORIZONTALES */
+
+.petcare-citas .pc-acciones-fila {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 7px;
+}
+
+.petcare-citas .pc-acciones-fila > form {
+    display: inline-flex;
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.petcare-citas .pc-acciones-fila .pc-boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-size: 14px;
+    padding: 9px 10px;
+    min-height: 39px;
+    margin: 0;
+}
+
+.petcare-citas .pc-acciones-fila > a {
+    flex: 0 0 auto;
+}
+
+
+
+/* PETCARE 165R.357.9.145 - TABLA SIN DESBORDAMIENTO */
+
+.petcare-citas table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+}
+
+.petcare-citas th,
+.petcare-citas td {
+    box-sizing: border-box;
+    padding-left: 8px;
+    padding-right: 8px;
+    overflow-wrap: anywhere;
+}
+
+.petcare-citas th:nth-child(1),
+.petcare-citas td:nth-child(1) {
+    width: 19%;
+}
+
+.petcare-citas th:nth-child(2),
+.petcare-citas td:nth-child(2) {
+    width: 23%;
+}
+
+.petcare-citas th:nth-child(3),
+.petcare-citas td:nth-child(3) {
+    width: 14%;
+}
+
+.petcare-citas th:nth-child(4),
+.petcare-citas td:nth-child(4) {
+    width: 13%;
+}
+
+.petcare-citas th:nth-child(5),
+.petcare-citas td:nth-child(5) {
+    width: 31%;
+}
+
+.petcare-citas .pc-acciones-fila {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 5px;
+    align-items: center;
+}
+
+.petcare-citas .pc-acciones-fila .pc-boton {
+    font-size: 13px;
+    padding: 8px 7px;
+    min-height: 36px;
+    white-space: nowrap;
+}
+
+.petcare-citas .pc-acciones-fila > form {
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+.petcare-citas .pc-acciones-fila > a {
+    flex: 0 0 auto;
+}
+
+.petcare-citas td {
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.petcare-citas th {
+    font-size: 15px;
+}
+
+
+
+/* PETCARE 165R.357.9.146 - EFECTOS BAUHAUS */
+
+/* Efecto base */
+.petcare-citas .pc-acciones-fila .pc-boton {
+    transition:
+        background-color .18s ease,
+        color .18s ease,
+        box-shadow .18s ease,
+        transform .18s ease;
+}
+
+/* EDITAR - Azul marino */
+.petcare-citas .pc-acciones-fila .pc-azul:hover {
+    background: #102A49;
+    color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(25,55,94,.30);
+}
+
+/* CONFIRMAR - Amarillo mostaza */
+.petcare-citas .pc-acciones-fila .pc-confirmar:hover {
+    background: #D49A2D;
+    color: #19375E;
+    box-shadow: 0 4px 12px rgba(226,174,75,.40);
+}
+
+/* COMPLETAR - Verde petroleo */
+.petcare-citas .pc-acciones-fila .pc-completar:hover {
+    background: #106E66;
+    color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(22,138,128,.35);
+}
+
+/* CANCELAR - Rojo Bauhaus */
+.petcare-citas .pc-acciones-fila .pc-cancelar:hover {
+    background: #C73532;
+    color: #FFFFFF;
+    border-color: #C73532;
+    box-shadow: 0 4px 12px rgba(199,53,50,.35);
+}
+
+/* Accesibilidad: enfoque de teclado por color */
+.petcare-citas .pc-acciones-fila .pc-azul:focus-visible {
+    outline: 3px solid #19375E;
+}
+
+.petcare-citas .pc-acciones-fila .pc-confirmar:focus-visible {
+    outline: 3px solid #E2AE4B;
+}
+
+.petcare-citas .pc-acciones-fila .pc-completar:focus-visible {
+    outline: 3px solid #168A80;
+}
+
+.petcare-citas .pc-acciones-fila .pc-cancelar:focus-visible {
+    outline: 3px solid #C73532;
+}
+
+.petcare-citas .pc-acciones-fila .pc-boton:focus-visible {
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .petcare-citas .pc-acciones-fila .pc-boton {
+        transition: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.150 - PESTANAS MULTICOLOR */
+
+.petcare-citas .pc-pestana {
+    transition:
+        background-color .2s ease,
+        color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease;
+}
+
+/* ACTIVAS - AZUL */
+.petcare-citas .pc-tab-activas {
+    background: #E8EEF6;
+    color: #19375E;
+    border-color: #C9D7E8;
+}
+
+.petcare-citas .pc-tab-activas.seleccionada,
+.petcare-citas .pc-tab-activas:hover {
+    background: #19375E;
+    color: #FFFFFF;
+    border-color: #19375E;
+    box-shadow: inset 0 -3px 0 #E2AE4B;
+}
+
+/* COMPLETADAS - VERDE */
+.petcare-citas .pc-tab-completadas {
+    background: #E4F4F1;
+    color: #126E66;
+    border-color: #B8DDD6;
+}
+
+.petcare-citas .pc-tab-completadas.seleccionada,
+.petcare-citas .pc-tab-completadas:hover {
+    background: #168A80;
+    color: #FFFFFF;
+    border-color: #168A80;
+    box-shadow: inset 0 -3px 0 #0D5C55;
+}
+
+/* CANCELADAS - ROJO */
+.petcare-citas .pc-tab-canceladas {
+    background: #FCEDEC;
+    color: #C73532;
+    border-color: #E9B7B5;
+}
+
+.petcare-citas .pc-tab-canceladas.seleccionada,
+.petcare-citas .pc-tab-canceladas:hover {
+    background: #C73532;
+    color: #FFFFFF;
+    border-color: #C73532;
+    box-shadow: inset 0 -3px 0 #922522;
+}
+
+/* ARCHIVADAS - MOSTAZA */
+.petcare-citas .pc-tab-archivadas {
+    background: #FFF4DD;
+    color: #795310;
+    border-color: #EED39D;
+}
+
+.petcare-citas .pc-tab-archivadas.seleccionada,
+.petcare-citas .pc-tab-archivadas:hover {
+    background: #E2AE4B;
+    color: #19375E;
+    border-color: #D39B31;
+    box-shadow: inset 0 -3px 0 #19375E;
+}
+
+/* Prioridad frente al hover general anterior */
+.petcare-citas .pc-pestana:hover:not(.seleccionada) {
+    transform: translateY(-1px);
+}
+
+.petcare-citas .pc-tab-activas:hover:not(.seleccionada) {
+    background: #19375E;
+    color: #FFFFFF;
+}
+
+.petcare-citas .pc-tab-completadas:hover:not(.seleccionada) {
+    background: #168A80;
+    color: #FFFFFF;
+}
+
+.petcare-citas .pc-tab-canceladas:hover:not(.seleccionada) {
+    background: #C73532;
+    color: #FFFFFF;
+}
+
+.petcare-citas .pc-tab-archivadas:hover:not(.seleccionada) {
+    background: #E2AE4B;
+    color: #19375E;
+}
+
+.petcare-citas .pc-pestana:focus-visible {
+    outline: 3px solid #19375E;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .petcare-citas .pc-pestana {
+        transition: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.152 - HOVER BAUHAUS COMPLETO */
+
+/* Transiciones generales */
+.petcare-citas .pc-cabecera .pc-dorado,
+.petcare-citas .pc-acciones-fila .pc-boton {
+    transition:
+        background-color .2s ease,
+        color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease;
+}
+
+/* NUEVA CITA - MOSTAZA */
+.petcare-citas .pc-cabecera .pc-dorado:hover {
+    background: #C9942D;
+    color: #19375E;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(226,174,75,.55);
+}
+
+/* EDITAR - AZUL */
+.petcare-citas .pc-acciones-fila .pc-azul:hover {
+    background: #102A49;
+    color: #FFFFFF;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(25,55,94,.45);
+}
+
+/* CONFIRMAR - MOSTAZA */
+.petcare-citas .pc-acciones-fila .pc-confirmar:hover {
+    background: #C9942D;
+    color: #19375E;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(226,174,75,.55);
+}
+
+/* COMPLETAR - VERDE PETROLEO */
+.petcare-citas .pc-acciones-fila .pc-completar:hover {
+    background: #106E66;
+    color: #FFFFFF;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(22,138,128,.50);
+}
+
+/* CANCELAR - ROJO BAUHAUS */
+.petcare-citas .pc-acciones-fila .pc-cancelar:hover {
+    background: #C73532;
+    color: #FFFFFF;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(199,53,50,.45);
+}
+
+/* Foco accesible */
+.petcare-citas .pc-cabecera .pc-dorado:focus-visible,
+.petcare-citas .pc-acciones-fila .pc-boton:focus-visible {
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .petcare-citas .pc-cabecera .pc-dorado,
+    .petcare-citas .pc-acciones-fila .pc-boton {
+        transition: none;
+    }
+
+    .petcare-citas .pc-cabecera .pc-dorado:hover,
+    .petcare-citas .pc-acciones-fila .pc-boton:hover {
+        transform: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.153 - TRANSPARENCIA BAUHAUS */
+
+/* Estado normal: color translucido */
+.petcare-citas .pc-cabecera .pc-dorado,
+.petcare-citas .pc-acciones-fila .pc-azul,
+.petcare-citas .pc-acciones-fila .pc-confirmar,
+.petcare-citas .pc-acciones-fila .pc-completar {
+    opacity: .72;
+    transition:
+        opacity .22s ease,
+        background-color .22s ease,
+        box-shadow .22s ease,
+        transform .22s ease;
+}
+
+/* Al pasar el cursor: color solido */
+.petcare-citas .pc-cabecera .pc-dorado:hover,
+.petcare-citas .pc-acciones-fila .pc-azul:hover,
+.petcare-citas .pc-acciones-fila .pc-confirmar:hover,
+.petcare-citas .pc-acciones-fila .pc-completar:hover {
+    opacity: 1;
+}
+
+/* Foco de teclado: conservar legibilidad */
+.petcare-citas .pc-cabecera .pc-dorado:focus-visible,
+.petcare-citas .pc-acciones-fila .pc-boton:focus-visible {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .petcare-citas .pc-cabecera .pc-dorado,
+    .petcare-citas .pc-acciones-fila .pc-boton {
+        transition: none;
+    }
+}
+
+
+/* PETCARE 165R.357.9.158 - FONDOS TRANSLUCIDOS */
+
+/* Fondo suave con texto totalmente visible */
+.petcare-citas .pc-cabecera .pc-dorado {
+    background-color: rgba(226,174,75,.35);
+    color: #19375E;
+    opacity: 1;
+}
+
+.petcare-citas .pc-acciones-fila .pc-azul {
+    background-color: rgba(25,55,94,.22);
+    color: #19375E;
+    opacity: 1;
+}
+
+.petcare-citas .pc-acciones-fila .pc-confirmar {
+    background-color: rgba(226,174,75,.35);
+    color: #19375E;
+    opacity: 1;
+}
+
+.petcare-citas .pc-acciones-fila .pc-completar {
+    background-color: rgba(22,138,128,.22);
+    color: #106E66;
+    opacity: 1;
+}
+
+.petcare-citas .pc-acciones-fila .pc-cancelar {
+    background-color: rgba(199,53,50,.12);
+    color: #C73532;
+    opacity: 1;
+}
+
+/* Hover: colores solidos */
+.petcare-citas .pc-cabecera .pc-dorado:hover {
+    background-color: #C9942D;
+    color: #19375E;
+}
+
+.petcare-citas .pc-acciones-fila .pc-azul:hover {
+    background-color: #102A49;
+    color: #FFFFFF;
+}
+
+.petcare-citas .pc-acciones-fila .pc-confirmar:hover {
+    background-color: #C9942D;
+    color: #19375E;
+}
+
+.petcare-citas .pc-acciones-fila .pc-completar:hover {
+    background-color: #106E66;
+    color: #FFFFFF;
+}
+
+.petcare-citas .pc-acciones-fila .pc-cancelar:hover {
+    background-color: #C73532;
+    color: #FFFFFF;
+}
+
+
+/* PETCARE 165R.357.9.164 - BAUHAUS UNIFICADO */
+
+/* Pestanas: fondos suaves y bordes */
+.petcare-citas .pc-tab-activas,
+.petcare-citas .pc-tab-activas.seleccionada {
+    background: #E8EEF6;
+    color: #19375E;
+    border: 1px solid #19375E;
+}
+
+.petcare-citas .pc-tab-completadas,
+.petcare-citas .pc-tab-completadas.seleccionada {
+    background: #E4F4F1;
+    color: #126E66;
+    border: 1px solid #168A80;
+}
+
+.petcare-citas .pc-tab-canceladas,
+.petcare-citas .pc-tab-canceladas.seleccionada {
+    background: #FCEDEC;
+    color: #C73532;
+    border: 1px solid #C73532;
+}
+
+.petcare-citas .pc-tab-archivadas,
+.petcare-citas .pc-tab-archivadas.seleccionada {
+    background: #FFF4DD;
+    color: #795310;
+    border: 1px solid #D39B31;
+}
+
+/* Seleccionada: sin linea amarilla */
+.petcare-citas .pc-pestana.seleccionada {
+    box-shadow: 0 0 0 2px currentColor;
+}
+
+/* Buscar */
+.petcare-citas .pc-buscador .pc-azul {
+    background: #E8EEF6;
+    color: #19375E;
+    border: 1px solid #19375E;
+}
+
+/* Limpiar */
+.petcare-citas .pc-buscador .pc-gris {
+    background: #F0F2F5;
+    color: #19375E;
+    border: 1px solid #AAB5C2;
+}
+
+/* Bordes de acciones */
+.petcare-citas .pc-cabecera .pc-dorado {
+    border: 1px solid #D39B31;
+}
+
+.petcare-citas .pc-acciones-fila .pc-azul {
+    border: 1px solid #19375E;
+}
+
+.petcare-citas .pc-acciones-fila .pc-confirmar {
+    border: 1px solid #D39B31;
+}
+
+.petcare-citas .pc-acciones-fila .pc-completar {
+    border: 1px solid #168A80;
+}
+
+.petcare-citas .pc-acciones-fila .pc-cancelar {
+    border: 1px solid #C73532;
+}
+
+/* Hover: colores solidos */
+.petcare-citas .pc-tab-activas:hover {
+    background: #19375E;
+    color: #FFFFFF;
+    box-shadow: none;
+}
+
+.petcare-citas .pc-tab-completadas:hover {
+    background: #168A80;
+    color: #FFFFFF;
+    box-shadow: none;
+}
+
+.petcare-citas .pc-tab-canceladas:hover {
+    background: #C73532;
+    color: #FFFFFF;
+    box-shadow: none;
+}
+
+.petcare-citas .pc-tab-archivadas:hover {
+    background: #E2AE4B;
+    color: #19375E;
+    box-shadow: none;
+}
+
+.petcare-citas .pc-buscador .pc-azul:hover {
+    background: #19375E;
+    color: #FFFFFF;
+}
+
+.petcare-citas .pc-buscador .pc-gris:hover {
+    background: #CBD3DD;
+    color: #19375E;
+}
+
 </style>
 
 <div class="petcare-citas">
-    <div class="pc-cabecera">
-        <div>
-            <h1 class="pc-titulo">Gestión de Citas</h1>
-            <p class="pc-subtitulo">
-                Administración de reservas y atención veterinaria.
-            </p>
-        </div>
-        {% if perms.citas.add_cita %}
+    {# PETCARE 165R.355.16 - BAUHAUS ESPECIAL #}
+{% include "components/encabezado_bauhaus.html" with titulo="Gestión de Citas" subtitulo="Administración de reservas y atención veterinaria." %}
+<div class="pc-cabecera pc-cabecera-acciones">
+{% if perms.citas.add_cita %}
         <a href="{% url 'citas:nueva' %}"
            class="pc-boton pc-dorado">+ Nueva cita</a>
         {% endif %}
-    </div>
+</div>
 
     <div class="pc-tarjeta">
         
         <!-- PETCARE FILTROS Y ARCHIVO CITAS V1 -->
         <div class="pc-pestanas">
             <a href="{% url 'citas:lista' %}?filtro=activas"
-               class="pc-pestana {% if filtro == 'activas' %}seleccionada{% endif %}">
+               class="pc-pestana pc-tab-activas {% if filtro == 'activas' %}seleccionada{% endif %}">
                 Activas
             </a>
             <a href="{% url 'citas:lista' %}?filtro=completadas"
-               class="pc-pestana {% if filtro == 'completadas' %}seleccionada{% endif %}">
+               class="pc-pestana pc-tab-completadas {% if filtro == 'completadas' %}seleccionada{% endif %}">
                 Completadas
             </a>
             <a href="{% url 'citas:lista' %}?filtro=canceladas"
-               class="pc-pestana {% if filtro == 'canceladas' %}seleccionada{% endif %}">
+               class="pc-pestana pc-tab-canceladas {% if filtro == 'canceladas' %}seleccionada{% endif %}">
                 Canceladas
             </a>
             <a href="{% url 'citas:lista' %}?filtro=archivadas"
-               class="pc-pestana {% if filtro == 'archivadas' %}seleccionada{% endif %}">
+               class="pc-pestana pc-tab-archivadas {% if filtro == 'archivadas' %}seleccionada{% endif %}">
                 Archivadas
             </a>
         </div>
@@ -428,11 +1307,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Mascota</th>
-                        <th>Tutor</th>
+                        <th>Mascota / Tutor</th>
                         <th>Veterinario</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
+                        <th>Fecha / Hora</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -440,12 +1317,21 @@
                 <tbody>
                     {% for cita in citas %}
                     <tr>
-                        <td>{{ cita.mascota.nombre }}</td>
-                        <td>{{ cita.mascota.tutor.nombre }}
-                            {{ cita.mascota.tutor.apellido }}</td>
-                        <td>{{ cita.veterinario }}</td>
-                        <td>{{ cita.fecha|date:"d/m/Y" }}</td>
-                        <td>{{ cita.hora_inicio|time:"H:i" }}</td>
+                        <td class="pc-datos-principales">
+                            <strong>{{ cita.mascota.nombre }}</strong>
+                            <small>
+                                {{ cita.mascota.tutor.nombre }}
+                                {{ cita.mascota.tutor.apellido }}
+                            </small>
+                        </td>
+                        <td class="pc-veterinario">
+                            <strong>{{ cita.veterinario.nombre }} {{ cita.veterinario.apellido }}</strong>
+                            <small>{{ cita.veterinario.especialidad }}</small>
+                        </td>
+                        <td class="pc-fecha-hora">
+                            <strong>{{ cita.fecha|date:"d/m/Y" }}</strong>
+                            <small>{{ cita.hora_inicio|time:"H:i" }}</small>
+                        </td>
                         <td>
                             <span class="pc-estado pc-{{ cita.estado|lower }}">
                                 {{ cita.get_estado_display }}
@@ -459,7 +1345,7 @@
                                 {% if cita.estado != 'COMPLETADA' and cita.estado != 'CANCELADA' %}
                                 <a class="pc-boton pc-azul"
                                    href="{% url 'citas:editar' cita.pk %}">
-                                    Editar
+                                    ✎ Editar
                                 </a>
                                 {% endif %}
 
@@ -470,19 +1356,20 @@
                                     <input type="hidden" name="accion" value="confirmar">
                                     <button type="submit"
                                             class="pc-boton pc-confirmar">
-                                        Confirmar
+                                        ✓ Confirmar
                                     </button>
                                 </form>
                                 {% endif %}
 
                                 {% if cita.estado == 'CONFIRMADA' %}
                                 <form method="post"
+onsubmit="return confirm('¿Confirma que desea marcar esta cita como completada?');"
                                       action="{% url 'citas:cambiar_estado' cita.pk %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="accion" value="completar">
                                     <button type="submit"
                                             class="pc-boton pc-completar">
-                                        Completar
+                                        ✓ Completar
                                     </button>
                                 </form>
                                 {% endif %}
@@ -490,12 +1377,12 @@
                                 {% if cita.estado == 'PROGRAMADA' or cita.estado == 'CONFIRMADA' %}
                                 <form method="post"
                                       action="{% url 'citas:cambiar_estado' cita.pk %}"
-                                      onsubmit="return confirm('?Confirma que desea cancelar esta cita?');">
+                                      onsubmit="return confirm('¿Confirma que desea cancelar esta cita?');">
                                     {% csrf_token %}
                                     <input type="hidden" name="accion" value="cancelar">
                                     <button type="submit"
                                             class="pc-boton pc-cancelar">
-                                        Cancelar
+                                        × Cancelar
                                     </button>
                                 </form>
                                 {% endif %}
@@ -548,7 +1435,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="7" style="text-align:center;padding:28px;">
+                        <td colspan="5" style="text-align:center;padding:28px;">
                             No se encontraron citas registradas.
                         </td>
                     </tr>

@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solicitar cuenta | PetCare</title>
+<link rel="stylesheet" href="{% static 'css/petcare.css' %}">
+
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    background: #f3f6fb;
+    color: #142d4e;
+    font-family: Arial, sans-serif;
+}
+.pagina {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+}
+.tarjeta {
+    display: grid;
+    grid-template-columns: minmax(240px, .8fr) minmax(0, 1.5fr);
+    width: min(1050px, 100%);
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 18px 55px rgba(20,45,78,.13);
+}
+.marca {
+    background: #142d4e;
+    color: white;
+    padding: 34px 26px;
+    text-align: center;
+}
+.marca img {
+    width: min(100%, 250px);
+    height: auto;
+}
+.marca p {
+    color: #d4e6ec;
+    line-height: 1.6;
+}
+.contenido { padding: 30px 36px; }
+h1 { font-size: 27px; margin: 0 0 10px; }
+.subtitulo {
+    color: #60748b;
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+.campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 16px;
+}
+.campo { min-width: 0; }
+.campo label {
+    display: block;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+.campo input, .campo select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    background: white;
+    color: #142d4e;
+    font: inherit;
+}
+.campo input:focus, .campo select:focus {
+    outline: 2px solid #16b8aa;
+    outline-offset: 1px;
+}
+.errores {
+    color: #b42318;
+    font-size: 13px;
+    margin-top: 6px;
+}
+.errores ul { padding-left: 18px; }
+.aviso {
+    background: #e4f8f5;
+    border-left: 4px solid #16b8aa;
+    padding: 13px 15px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 18px 0;
+}
+.boton {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-radius: 9px;
+    background: #e4b343;
+    color: #142d4e;
+    padding: 14px;
+    font-weight: 800;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+}
+.boton:hover { background: #f0c45c; }
+.pie {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+.pie a { color: #2563a6; font-weight: 700; }
+@media(max-width: 750px) {
+    .tarjeta { grid-template-columns: 1fr; }
+    .marca { padding: 18px; }
+    .marca img { max-width: 155px; }
+    .contenido { padding: 22px; }
+}
+@media(max-width: 480px) {
+    .campos { grid-template-columns: 1fr; }
+}
+</style>
+
+</head>
+<body>
+<main class="pagina">
+<div class="tarjeta">
+
+<section class="marca">
+<img src="{% static 'img/petcare_logo_bauhaus.png' %}"
+     alt="PetCare Clínica Veterinaria">
+<h2>Solicitud de acceso</h2>
+<p>Clínica Veterinaria PetCare</p>
+<p>Acceso para profesionales y personal autorizado.</p>
+</section>
+
+<section class="contenido">
+<h1>Solicitar cuenta</h1>
+<p class="subtitulo">
+Complete sus datos para solicitar acceso al sistema.
+Un administrador revisará su solicitud antes de habilitar una cuenta.
+</p>
+
+<form method="post">
+{% csrf_token %}
+
+{% if form.non_field_errors %}
+<div class="errores" role="alert">
+{{ form.non_field_errors }}
+</div>
+{% endif %}
+
+<div class="campos">
+{% for campo in form %}
+<div class="campo">
+<label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+{{ campo }}
+{% if campo.errors %}
+<div class="errores" role="alert">{{ campo.errors }}</div>
+{% endif %}
+</div>
+{% endfor %}
+</div>
+
+<div class="aviso">
+<strong>Importante:</strong>
+Enviar esta solicitud no habilita el acceso inmediatamente.
+La creación y activación de la cuenta requiere aprobación administrativa.
+No debe enviar contraseñas mediante este formulario.
+</div>
+
+<button type="submit" class="boton">
+ENVIAR SOLICITUD
+</button>
+</form>
+
+<p class="pie">
+¿Ya tiene una cuenta?
+<a href="{% url 'petcare_login' %}">Iniciar sesión</a>
+</p>
+
+</section>
+</div>
+</main>
+</body>
+</html>
